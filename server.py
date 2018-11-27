@@ -27,6 +27,8 @@ DREAMS = ['Python. Python, everywhere.']
 
 DBNAME = 'database.db'
 
+# TODO don't call this every start-up (see below where called in if...__MAIN__)
+# probably a way with flask to have an initial database.db instead
 def bootstrap_db():
 
   if os.path.exists(DBNAME):
@@ -49,6 +51,7 @@ def bootstrap_db():
   conn.close()
 
 
+# TODO I bet it is fine to leave sqlite connection persistent instead of opening/closing for each call
 def store_dream(dream):
   conn = sqlite3.connect(DBNAME)
 
