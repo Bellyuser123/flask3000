@@ -61,7 +61,7 @@ def store_dream(dream):
 
   dream_dat = [(dream,)]
   
-  print("dream data to ins
+  print("dream data to insert: " + str(dream_dat))
 
   c.execute("INSERT INTO dreams VALUES (?)", dream_dat)
 
