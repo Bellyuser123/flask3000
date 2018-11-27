@@ -26,8 +26,6 @@ app.secret = os.environ.get('SECRET')
 DREAMS = ['Python. Python, everywhere.']
 
 
-
-
 DBNAME = 'database.db'
 
 def bootstrap_db():
@@ -39,15 +37,13 @@ def bootstrap_db():
 
   c = conn.cursor()
 
-  c.execute('''CREATE TABLE dreams (dream text)''')
+  c.execute('CREATE TABLE dreams (dream text)')
 
-  dream_test = [("Hello World")]
+  c.execute('INSERT INTO dreams VALUES (?)', DREAMS)
 
-  c.execute("INSERT INTO dreams VALUES ('hello world')")
+  # c.execute('SELECT * FROM dreams')
 
-  c.execute('SELECT * FROM dreams')
-
-  print("first dream in db: " + str(c.fetchone()))
+  # print("first dream in db: " + str(c.fetchone()))
 
   conn.commit()
 
@@ -59,7 +55,7 @@ def store_dream(dream):
 
   c = conn.cursor()
 
-  dream_dat = [(dream,)]
+  dream_dat = [dream,]
   
   print("dream data to insert: " + str(dream_dat))
 
@@ -111,7 +107,7 @@ def dreams():
     # Add a dream to the in-memory database, if given. 
     if 'dream' in request.args:
         new_dream = request.args['dream']
-        DREAMS.append(new_dream)
+        # DREAMS.append(new_dream)
         store_dream(new_dream)
     
     # Return the list of remembered dreams. 
