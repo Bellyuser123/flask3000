@@ -11,6 +11,9 @@
 # A 'Fog Creek'–inspired demo by Kenneth Reitz™
 
 import os
+import sqlite3
+import pandas as pd
+
 from flask import Flask, request, render_template, jsonify
 
 # Support for gomix's 'front-end' and 'back-end' UI.
@@ -21,6 +24,22 @@ app.secret = os.environ.get('SECRET')
 
 # Dream database. Store dreams in memory for now. 
 DREAMS = ['Python. Python, everywhere.']
+
+
+dbname = 'database.db'
+
+if os.path.exists(dbname):
+  os.remove(
+
+conn = sqlite3.connect('database.db')
+
+c = conn.cursor()
+
+c.execute('''CREATE TABLE dreams (dream text)''')
+
+conn.commit()
+
+conn.close()
 
 
 @app.after_request
