@@ -59,18 +59,30 @@ def store_dream(dream):
 
   c = conn.cursor()
 
-
   dream_dat = [(dream,)]
+  
+  print("dream data to ins
 
   c.execute("INSERT INTO dreams VALUES (?)", dream_dat)
-
-  c.execute('SELECT * FROM dreams')
-
-  print("first dream in db: " + str(c.fetchone()))
 
   conn.commit()
 
   conn.close()
+  
+def get_dreams():
+  conn = sqlite3.connect(DBNAME)
+
+  c = conn.cursor()
+
+  c.execute('SELECT * FROM dreams')
+
+  ret = c.fetchall()
+  
+  conn.commit()
+
+  conn.close()  
+  
+  return ret
 
 @app.after_request
 def apply_kr_hello(response):
@@ -98,10 +110,13 @@ def dreams():
   
     # Add a dream to the in-memory database, if given. 
     if 'dream' in request.args:
-        DREAMS.append(request.args['dream'])
+        new_dream = request.args['dream']
+        DREAMS.append(new_dream)
+        store_dream(new_dream)
     
     # Return the list of remembered dreams. 
-    return jsonify(DREAMS)
+    #return jsonify(DREAMS)
+    return jsonify(get_dreams())
 
 if __name__ == '__main__':
     bootstrap_db()
