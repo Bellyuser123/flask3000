@@ -26,21 +26,51 @@ app.secret = os.environ.get('SECRET')
 DREAMS = ['Python. Python, everywhere.']
 
 
-dbname = 'database.db'
 
-if os.path.exists(dbname):
-  os.remove(
 
-conn = sqlite3.connect('database.db')
+DBNAME = 'database.db'
 
-c = conn.cursor()
+def bootstrap_db():
 
-c.execute('''CREATE TABLE dreams (dream text)''')
+  if os.path.exists(DBNAME):
+    os.remove(DBNAME)
 
-conn.commit()
+  conn = sqlite3.connect(DBNAME)
 
-conn.close()
+  c = conn.cursor()
 
+  c.execute('''CREATE TABLE dreams (dream text)''')
+
+  dream_test = [("Hello World")]
+
+  c.execute("INSERT INTO dreams VALUES ('hello world')")
+
+  c.execute('SELECT * FROM dreams')
+
+  print("first dream in db: " + str(c.fetchone()))
+
+  conn.commit()
+
+  conn.close()
+
+
+def store_dream(dream):
+  conn = sqlite3.connect(DBNAME)
+
+  c = conn.cursor()
+
+
+  dream_dat = [(dream,)]
+
+  c.execute("INSERT INTO dreams VALUES (?)", dream_dat)
+
+  c.execute('SELECT * FROM dreams')
+
+  print("first dream in db: " + str(c.fetchone()))
+
+  conn.commit()
+
+  conn.close()
 
 @app.after_request
 def apply_kr_hello(response):
@@ -74,4 +104,5 @@ def dreams():
     return jsonify(DREAMS)
 
 if __name__ == '__main__':
+    bootstrap_db()
     app.run()
