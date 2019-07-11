@@ -108,13 +108,19 @@ def dreams():
   
     # Add a dream to the in-memory database, if given. 
     if request.method == 'POST':
-      
-        if 'dream' in request.args:
-          new_dream = request.args['dream']
-          # DREAMS.append(new_dream)
-          store_dream(new_dream)
+      data = None
+      if request.is_json:
+        data = request.get_json()
+        print('JSON!')
+      else:
+        data = request.args
+        
+      if 'dream' in data:
+        new_dream = data['dream']
+        # DREAMS.append(new_dream)
+        store_dream(new_dream)
           
-        #return jsonify(request.args)
+      #return jsonify(request.args)
     
     # Return the list of remembered dreams. 
     #return jsonify(DREAMS)
