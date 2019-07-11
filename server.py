@@ -112,8 +112,11 @@ def dreams():
       if request.is_json:
         data = request.get_json()
         print('JSON!')
+        print(data)
       else:
         data = request.args
+        print('NOT JSON!')
+        print(data)
         
       if 'dream' in data:
         new_dream = data['dream']
