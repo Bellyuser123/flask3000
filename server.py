@@ -114,6 +114,9 @@ def dreams():
         print('JSON!')
         print(data)
       else:
+        # Note: request args is bad form for POSTs
+        # However, we're preserving this approach so that the HTML client
+        # can still work
         data = request.args
         print('NOT JSON!')
         print(data)
@@ -122,9 +125,7 @@ def dreams():
         new_dream = data['dream']
         # DREAMS.append(new_dream)
         store_dream(new_dream)
-          
-      #return jsonify(request.args)
-    
+              
     # Return the list of remembered dreams. 
     #return jsonify(DREAMS)
     return jsonify(get_dreams())
