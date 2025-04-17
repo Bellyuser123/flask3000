@@ -3,6 +3,7 @@ import os
 
 app = Flask(__name__)
 
+app.secret_key = os.getenv('key')
 admin_user = os.getenv('admin_user')
 admin_password = os.getenv('admin_password')
 
@@ -13,7 +14,7 @@ def welcome():
       return render_template('main.html')
     return render_template('main.html')
   elif request.method == 'POST':
-    username = request.form.get('email')
+    username = request.form.get('name')
     password = request.form.get('pass')
     if username == admin_user and password == admin_password:
       session['user'] = username
