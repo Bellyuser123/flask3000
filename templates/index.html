@@ -9,8 +9,16 @@
     <link rel="stylesheet" href="/public/style.css">
   </head>
   <body>
-    <form>
-      
+    <form action="/" method="POST">
+      <fieldset>
+        <label>Username</label>
+        <input type="text" min-lenght="8" max-lenght="15">
+        <label>Password</label>
+        <input type="password" min-lenght="8" max-lenght="15">
+      </fieldset>
+      <button type="submit">
+        Login
+      </button>
     </form>
   </body>
 </html>
