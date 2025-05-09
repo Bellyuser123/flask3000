@@ -1,11 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>main page</title>
+    <title>Main page</title>
   </head>
   <body>
     <h1>
       Main Page
     </h1>
+    <form action="/" method="POST">
+      <fieldset>
+        <legend>
+          General Information
+        </legend>
+        <label for="name">Name<input id="name" name="name" type="text" minlenght="3" maxlenght="15" placeholder="Enter your name"></label>
+      </fieldset>
+      <button type="submit">
+        Submit
+      </button>
+    </form>
   </body>
 </html>
