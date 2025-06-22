@@ -1,11 +1,13 @@
 from flask import Flask, render_template, request, session, redirect, flash
 import os
 
+
 app = Flask(__name__)
 
 app.secret_key = os.getenv('key')
 admin_user = os.getenv('admin_user')
 admin_password = os.getenv('admin_password')
+
 
 @app.route('/', methods=['POST', 'GET'])
 def welcome():
@@ -20,6 +22,7 @@ def welcome():
       session['user'] = username
       return render_template('main.html')
   return render_template('index.html')
-  
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
