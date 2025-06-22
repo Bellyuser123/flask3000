@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, flash
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import DateTime
 import os
 
 
@@ -22,6 +24,12 @@ def welcome():
       session['user'] = username
       return render_template('main.html')
   return render_template('index.html')
+
+
+@app.route("/logout")
+def logout():
+    session.pop('user')
+    return redirect('/')
 
 
 if __name__ == '__main__':
