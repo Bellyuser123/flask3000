@@ -59,9 +59,12 @@ def welcome():
 @app.route('/admin_panel', methods=['POST', 'GET'])
 def admin_panel_main():
     if 'user' in session and session['user'] == admin_user:
+        data = []
         if request.method == 'POST':
             data = Family.query.all()
-        return render_template('main.html', data=data)
+            return render_template('admin_panel.html', data=data)
+        data = Family.query.all()
+        return render_template('admin_panel.html', data=data)
 
 
 @app.route("/logout")
