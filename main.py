@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, session, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime
+from datetime import datetime
 import os
 
 
@@ -27,8 +28,8 @@ class Family(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), nullable=False)
-    ghatak = db.Column(db.Text, nullable=False)
-    pradeshik = db.Column(db.Text, nullable=False)
+    ghatak = db.Column(db.String(50), nullable=False)
+    pradeshik = db.Column(db.String(50), nullable=False)
     date = db.Column(DateTime)
 
 
