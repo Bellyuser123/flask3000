@@ -37,14 +37,21 @@ class Family(db.Model):
 def welcome():
   if 'user' in session and session['user'] == admin_user:
     if request.method == 'POST':
-      return redirect('/admin_panel')
-    return render_template('main.html')
-  elif request.method == 'POST':
-    username = request.form.get('name')
-    password = request.form.get('pass')
-    if username == admin_user and password == admin_password:
-      session['user'] = username
-      return render_template('main.html')
+          name = request.form.get('name')
+          email = request.form.get('email')
+          ghatak = request.form.get('ghatak')
+          pradeshik = request.form.get('pradeshik')
+          date = datetime.now()
+          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
+          db.session.add(entry)
+          db.session.commit()
+    return render_template('mani.html')
+    elif request.method == 'POST':
+        username = request.form.get('name')
+        password = request.form.get('pass')
+        if username == admin_user and password == admin_password:
+            session['user'] = username
+            return render_template('main.html')
   return render_template('index.html')
                          
                          
@@ -57,7 +64,7 @@ def admin_panel_main():
             ghatak = request.form.get('ghatak')
             pradeshik = request.form.get('pradeshik')
             date = datetime.now()
-            entry = Contacts(name=name, email=email, ghata pradeshik=pradeshik, date=date)
+            entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
             db.session.add(entry)
             db.session.commit()
         return render_template('main.html')
