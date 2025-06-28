@@ -46,13 +46,13 @@ def welcome():
           entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
           db.session.add(entry)
           db.session.commit()
-    return render_template('main.html')
+    return render_template('main2.html')
   elif request.method == 'POST':
     username = request.form.get('name')
     password = request.form.get('pass')
     if username == admin_user and password == admin_password:
       session['user'] = username
-      return render_template('main.html')
+      return render_template('main2.html')
   return render_template('index.html')
                          
                          
