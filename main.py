@@ -45,13 +45,13 @@ def welcome():
           entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
           db.session.add(entry)
           db.session.commit()
-    return render_template('mani.html')
-    elif request.method == 'POST':
-        username = request.form.get('name')
-        password = request.form.get('pass')
-        if username == admin_user and password == admin_password:
-            session['user'] = username
-            return render_template('main.html')
+    return render_template('main.html')
+  elif request.method == 'POST':
+    username = request.form.get('name')
+    password = request.form.get('pass')
+    if username == admin_user and password == admin_password:
+      session['user'] = username
+      return render_template('main.html')
   return render_template('index.html')
                          
                          
@@ -59,15 +59,8 @@ def welcome():
 def admin_panel_main():
     if 'user' in session and session['user'] == admin_user:
         if request.method == 'POST':
-            name = request.form.get('name')
-            email = request.form.get('email')
-            ghatak = request.form.get('ghatak')
-            pradeshik = request.form.get('pradeshik')
-            date = datetime.now()
-            entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
-            db.session.add(entry)
-            db.session.commit()
-        return render_template('main.html')
+            data = Family.query.all()
+        return render_template('main.html', data=data)
 
 
 @app.route("/logout")
