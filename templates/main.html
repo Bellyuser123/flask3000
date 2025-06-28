@@ -4,36 +4,428 @@
     <title>Main page</title>
   </head>
   <body>
-    <h1>
-      Main Page
-    </h1>
+    <h1>Main Page</h1>
     <a href="/logout">Logout</a>
     <form action="/" method="POST">
       <fieldset>
-        <legend>
-          General Information
-        </legend>
-        <label for="name">Name<input id="name" name="name" type="text" minlenght="3" maxlenght="15" placeholder="Enter your name"></label>
-        <label for="email">email<input id="email" name="email" type="email" minlenght="3" maxlenght="15" placeholder="Enter your eamil"></label>
-        <label for="ghatak">ghatak<input id="ghatak" name="ghatak" type="text" minlenght="3" maxlenght="15" placeholder="Enter your ghatak"></label>
-        <label for="pradeshik">pradeshik<input id="pradeshik" name="pradeshik" type="text" minlenght="3" maxlenght="15" placeholder="Enter your pradeshik"></label>
-        Full Name of Family Head
-        Kuldevi name
-        Kuldevi's Village
-        Native Place
-        Your Family Gotra
-        Residential Address
-        Residential PIN CODE 
-        Residential Phone no.
-        Office Address
-        Office PIN CODE
-        Office Phone no.
-        How many family members are there?
+        <legend>General Information</legend>
+        <label for="name"
+          >Name<input
+            id="name"
+            name="name"
+            type="text"
+            minlenght="3"
+            maxlenght="15"
+            placeholder="Enter your name"
+        /></label>
+        <label for="email"
+          >email<input
+            id="email"
+            name="email"
+            type="email"
+            minlenght="3"
+            maxlenght="15"
+            placeholder="Enter your eamil"
+        /></label>
+        <label for="ghatak"
+          >ghatak<input
+            id="ghatak"
+            name="ghatak"
+            type="text"
+            minlenght="3"
+            maxlenght="15"
+            placeholder="Enter your ghatak"
+        /></label>
+        <label for="pradeshik"
+          >pradeshik<input
+            id="pradeshik"
+            name="pradeshik"
+            type="text"
+            minlenght="3"
+            maxlenght="15"
+            placeholder="Enter your pradeshik"
+        /></label>
+        Full Name of Family Head Kuldevi name Kuldevi's Village Native Place
+        Your Family Gotra Residential Address Residential PIN CODE Residential
+        Phone no. Office Address Office PIN CODE Office Phone no. How many
+        family members are there?
       </fieldset>
-      <button type="submit">
-        Submit
-      </button>
+      <button type="submit">Submit</button>
     </form>
     <a href="/admin_panel">View results</a>
+    <!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8" />
+        <title>Family Registration Form</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+      </head>
+      <body class="bg-[#f5f5dc] text-gray-800">
+        <div class="max-w-4xl mx-auto p-8 mt-10 bg-white rounded-lg shadow-lg">
+          <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
+            Family Information Form
+          </h1>
+          <form class="space-y-8">
+            <!-- Section 1: Contact Info -->
+            <section>
+              <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Contact Information
+              </h2>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="block font-medium mb-1"
+                  >Email <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="email"
+                   
+                  name="email"
+                  required
+                  placeholder="Enter your email"
+                  class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#006400]"
+                />
+              </div>
+            </section>
+
+            <!-- Section 2: Ghatak & Pradeshik -->
+            <section>
+              <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Ghatak and Pradeshik
+              </h2>
+
+              <!-- Ghatak -->
+              <div>
+                <label for="ghatak" class="block font-medium mb-1"
+                  >Ghatak <span class="text-red-500">*</span></label
+                >
+                <select
+                   
+                  name="ghatak"
+                  required
+                  class="w-full border border-gray-300 p-2 rounded-md mb-2"
+                >
+                  <option value="">Select Ghatak</option>
+                  <option>Pune</option>
+                  <option>Mumbai</option>
+                  <option>Delhi</option>
+                  <option>Other</option>
+                </select>
+                <input
+                  type="text"
+                  name="ghatak_other"
+                  placeholder="If Other, specify"
+                  class="w-full border border-gray-300 rounded-md p-2 mt-1"
+                />
+              </div>
+
+              <!-- Pradeshik -->
+              <div>
+                <label for="pradeshik" class="block font-medium mb-1"
+                  >Pradeshik <span class="text-red-500">*</span></label
+                >
+                <select
+                   
+                  name="pradeshik"
+                  required
+                  class="w-full border border-gray-300 p-2 rounded-md mb-2"
+                >
+                  <option value="">Select Pradeshik</option>
+                  <option>pradeshik-1</option>
+                  <option>pradeshik-2</option>
+                  <option>Other</option>
+                </select>
+                <input
+                  type="text"
+                  name="pradeshik_other"
+                  placeholder="If Other, specify"
+                  class="w-full border border-gray-300 rounded-md p-2 mt-1"
+                />
+              </div>
+            </section>
+
+            <!-- Section 3: Family Details -->
+            <section>
+              <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Family Details
+              </h2>
+
+              <!-- Full Name -->
+              <div>
+                <label class="block font-medium mb-1"
+                  >Full Name of Family Head
+                  <span class="text-red-500">*</span></label
+                >
+                <div class="grid grid-cols-3 gap-4">
+                  <input
+                    type="text"
+                    id="first_name"
+                    name="first_name"
+                    required
+                    placeholder="First Name"
+                    minlength="3"
+                    maxlength="20"
+                    class="border border-gray-300 p-2 rounded-md"
+                  />
+                  <input
+                    type="text"
+                    id="middle_name"
+                    name="middle_name"
+                    required
+                    placeholder="Middle Name"
+                    minlength="3"
+                    maxlength="20"
+                    class="border border-gray-300 p-2 rounded-md"
+                  />
+                  <input
+                    type="text"
+                    id="last_name"
+                    name="last_name"
+                    required
+                    placeholder="Last Name"
+                    minlength="3"
+                    maxlength="20"
+                    class="border border-gray-300 p-2 rounded-md"
+                  />
+                </div>
+              </div>
+
+              <!-- Kuldevi -->
+              <div>
+                <label class="block font-medium mb-1"
+                  >Kuldevi Name <span class="text-red-500">*</span></label
+                >
+                <div class="flex flex-wrap gap-4">
+                  <label
+                    ><input
+                      type="radio"
+                      name="kuldevi"
+                      value="Durga"
+                      required
+                    />
+                    Durga</label
+                  >
+                  <label
+                    ><input type="radio" name="kuldevi" value="Amba" />
+                    Amba</label
+                  >
+                  <label
+                    ><input type="radio" name="kuldevi" value="Chamunda" />
+                    Chamunda</label
+                  >
+                  <label
+                    ><input type="radio" name="kuldevi" value="Other" />
+                    Other</label
+                  >
+                </div>
+              </div>
+
+              <!-- Kuldevi Village -->
+              <div>
+                <label for="kuldevi_village" class="block font-medium mb-1"
+                  >Kuldevi Village <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="kuldevi_village"
+                  name="kuldevi_village"
+                  required
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                  <option value="">Select village</option>
+                  <option>Village A</option>
+                  <option>Village B</option>
+                </select>
+              </div>
+
+              <!-- Native Village -->
+              <div>
+                <label for="native_village" class="block font-medium mb-1"
+                  >Native Village <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="native_village"
+                  name="native_village"
+                  required
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                  <option value="">Select native village</option>
+                  <option>Village X</option>
+                  <option>Village Y</option>
+                </select>
+              </div>
+
+              <!-- Gotra -->
+              <div>
+                <label for="gotra" class="block font-medium mb-1">Gotra</label>
+                <select
+                  id="gotra"
+                  name="gotra"
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                  <option value="">Select Gotra</option>
+                  <option>Bharadwaj</option>
+                  <option>Kashyap</option>
+                </select>
+              </div>
+            </section>
+
+            <!-- Section 4: Address & Contact -->
+            <section>
+              <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Address & Contact
+              </h2>
+
+              <!-- Residential Address -->
+              <div>
+                <label class="block font-medium mb-1"
+                  >Residential Address
+                  <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  name="building"
+                  required
+                  placeholder="Building Name"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="area"
+                  required
+                  placeholder="Area"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="street"
+                  required
+                  placeholder="Road/Street"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="landmark"
+                  placeholder="Landmark (optional)"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="pincode"
+                  required
+                  placeholder="Pincode (6 digits)"
+                  pattern="\d{6}"
+                  maxlength="6"
+                  minlength="6"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+              </div>
+
+              <!-- Residential Phone -->
+              <div>
+                <label for="res_phone" class="block font-medium mb-1"
+                  >Residential Phone Number
+                  <span class="text-red-500">*</span></label
+                >
+                <input
+                  type="text"
+                  id="res_phone"
+                  name="res_phone"
+                  required
+                  placeholder="Enter number"
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                />
+              </div>
+
+              <!-- Office Address -->
+              <div>
+                <label class="block font-medium mb-1"
+                  >Office Address (optional)</label
+                >
+                <input
+                  type="text"
+                  name="office_building"
+                  placeholder="Building Name"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="office_area"
+                  placeholder="Area"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="office_street"
+                  placeholder="Road/Street"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="office_landmark"
+                  placeholder="Landmark"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                  type="text"
+                  name="office_pincode"
+                  placeholder="Pincode (6 digits)"
+                  pattern="\d{6}"
+                  maxlength="6"
+                  minlength="6"
+                  class="w-full border p-2 rounded-md mb-2"
+                />
+              </div>
+
+              <!-- Office Phone -->
+              <div>
+                <label for="office_phone" class="block font-medium mb-1"
+                  >Office Phone Number (optional)</label
+                >
+                <input
+                  type="text"
+                  id="office_phone"
+                  name="office_phone"
+                  placeholder="Enter number"
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                />
+              </div>
+            </section>
+
+            <!-- Section 5: Family Members -->
+            <section>
+              <div>
+                <label for="family_members" class="block font-medium mb-1"
+                  >Number of Family Members
+                  <span class="text-red-500">*</span></label
+                >
+                <select
+                  id="family_members"
+                  name="family_members"
+                  required
+                  class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                  <option value="">Select</option>
+                  <option>1</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5+</option>
+                </select>
+              </div>
+            </section>
+
+            <!-- Submit -->
+            <div class="text-center mt-8">
+              <button
+                type="submit"
+                class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
+              >
+                Next
+              </button>
+            </div>
+          </form>
+        </div>
+      </body>
+    </html>
   </body>
 </html>
