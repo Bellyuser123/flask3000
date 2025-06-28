@@ -23,11 +23,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-class Contacts(db.Model):
+class Family(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), nullable=False)
-    message = db.Column(db.Text, nullable=False)
+    ghatak = db.Column(db.Text, nullable=False)
+    pradeshik = db.Column(db.Text, nullable=False)
     date = db.Column(DateTime)
 
 
@@ -36,7 +37,7 @@ class Contacts(db.Model):
 def welcome():
   if 'user' in session and session['user'] == admin_user:
     if request.method == 'POST':
-      return render_template('main.html')
+      return redirect('/admin_panel')
     return render_template('main.html')
   elif request.method == 'POST':
     username = request.form.get('name')
@@ -44,13 +45,22 @@ def welcome():
     if username == admin_user and password == admin_password:
       session['user'] = username
       return render_template('main.html')
-  return render_template('index.html
+  return render_template('index.html')
                          
                          
 @app.route('/admin_panel', methods=['POST', 'GET'])
 def admin_panel_main():
     if 'user' in session and session['user'] == admin_user:
-        return render_template('')
+        if request.method == 'POST':
+            name = request.form.get('name')
+            email = request.form.get('email')
+            ghatak = request.form.get('ghatak')
+            pradeshik = request.form.get('pradeshik')
+            date = datetime.now()
+            entry = Contacts(name=name, email=email, ghata pradeshik=pradeshik, date=date)
+            db.session.add(entry)
+            db.session.commit()
+        return render_template('main.html')
 
 
 @app.route("/logout")
