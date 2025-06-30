@@ -103,9 +103,10 @@ def welcome():
     return render_template('index.html')
   
 
-@app.route('/form2', methods=['GET', 'POST'])
-def form2():
-  if request.method == 'POST':
+@app.route('/form2/<mem>', methods=['GET', 'POST'])
+def form2(mem):
+  for i in range(int(mem)):
+      if request.method == 'POST':
             try:
                 print("Processing form submission...")
                 # gather form data
@@ -135,6 +136,7 @@ def form2():
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
             return render_template('form2.html')
+      i += 1
   return render_template('form2.html')
                          
                          
