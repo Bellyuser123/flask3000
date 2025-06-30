@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Family Registration Form</title>
+    <title>E Vastik Patark Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
@@ -11,9 +11,11 @@
       class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
     >
       <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
-        Family Information Form
+        E Vastik Patark Form
       </h1>
-
+      <h2 class="text-2xl font-bold text-[#006459] mb-6 text-center">
+        For Mahasabha 25-26
+      </h2>
       <form class="space-y-6 sm:space-y-8">
         <!-- Section 1: Contact Info -->
         <section>
@@ -63,7 +65,7 @@
               Pradeshik <span class="text-red-500">*</span>
             </label>
             <select
-                    id="pradeshik"
+              id="pradeshik"
               name="pradeshik"
               required
               class="w-full border border-gray-300 p-2 rounded-md mb-2"
@@ -129,10 +131,10 @@
                 <input
                   type="checkbox"
                   name="kuldevi[]"
-                  value="Durga"
+                  value="1"
                   required
                 />
-                <span>Durga</span>
+                <span>Brahmani Maa</span>
               </label>
               <label class="flex items-center space-x-2">
                 <input type="checkbox" name="kuldevi[]" value="Amba" />
@@ -210,7 +212,7 @@
               >Residential Address <span class="text-red-500">*</span></label
             >
             <input
-                   id = "address1"
+              id="address1"
               type="text"
               name="building"
               required
@@ -218,7 +220,7 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
-                   id = "address2"
+              id="address2"
               type="text"
               name="area"
               required
@@ -226,7 +228,7 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
-                   id = "address3"
+              id="address3"
               type="text"
               name="street"
               required
@@ -234,14 +236,14 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
-                   id = "address4"
+              id="address4"
               type="text"
               name="landmark"
               placeholder="Landmark (optional)"
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
-                   id = "address5"
+              id="address5"
               type="text"
               name="pincode"
               required
@@ -336,11 +338,20 @@
               class="w-full border border-gray-300 p-2 rounded-md"
             >
               <option value="" disabled selected>Select</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
-              <option>4</option>
-              <option>5+</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="5">6</option>
+              <option value="5">7</option>
+              <option value="5">8</option>
+              <option value="5">9</option>
+              <option value="5">10</option>
+              <option value="5">11</option>
+              <option value="5">12</option>
+              <option value="5">13</option>
+              <option value="5">14</option>
             </select>
           </div>
         </section>
