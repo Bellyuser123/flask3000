@@ -77,13 +77,13 @@ def welcome():
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
-        return render_template('main2.html')
+        return render_template('form1.html')
     elif request.method == 'POST':
         username = request.form.get('name')
         password = request.form.get('pass')
         if username == admin_user and password == admin_password:
           session['user'] = username
-          return render_template('main2.html')
+          return render_template('form1.html')
     return render_template('index.html')
                          
                          

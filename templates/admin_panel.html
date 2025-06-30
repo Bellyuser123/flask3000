@@ -18,12 +18,12 @@
           <th class="py-2 px-4 border-b bg-gray-100">Kuldevi</th>
           <th class="py-2 px-4 border-b bg-gray-100">Kuldevi Village</th>
           <th class="py-2 px-4 border-b bg-gray-100">Native Village</th>
-          <th class="py-2 px-4 border-b bg-gray-100">go</th>
-          <th class="py-2 px-4 border-b bg-gray-100">pradeshik</th>
-          <th class="py-2 px-4 border-b bg-gray-100">pradeshik</th>
-          <th class="py-2 px-4 border-b bg-gray-100">pradeshik</th>
-          <th class="py-2 px-4 border-b bg-gray-100">pradeshik</th>
-          <th class="py-2 px-4 border-b bg-gray-100">pradeshik</th>
+          <th class="py-2 px-4 border-b bg-gray-100">Gotra</th>
+          <th class="py-2 px-4 border-b bg-gray-100">Address</th>
+          <th class="py-2 px-4 border-b bg-gray-100">Residential Number</th>
+          <th class="py-2 px-4 border-b bg-gray-100">Office Address</th>
+          <th class="py-2 px-4 border-b bg-gray-100">office number</th>
+          <th class="py-2 px-4 border-b bg-gray-100">nu. of members</th>
         </tr>
       </thead>
       {% for contact in data %}
@@ -34,6 +34,15 @@
           <td class="py-2 px-6 border-b">{{ contact.email }}</td>
           <td class="py-2 px-4 border-b">{{ contact.ghatak }}</td>
           <td class="py-2 px-4 border-b">{{ contact.pradeshik }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.k_name }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.k_village }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.village }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.gotra }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.res_add }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.res_phone }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.off_add }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.off_phone }}</td>
+          <td class="py-2 px-4 border-b">{{ contact.mem_num }}</td>
         </tr>
       </tbody>
       {% endfor %}
