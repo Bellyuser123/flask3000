@@ -103,8 +103,8 @@ def form1():
                 db.session.add(entry)
                 db.session.commit()
                 print("Data saved successfully.")
-
-                return redirect(url_for('form2', mem=num_of_memb))
+                mem = int(num_of_memb
+                return return redirect('/form2/' + mem)
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
