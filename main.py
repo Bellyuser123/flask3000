@@ -30,7 +30,15 @@ class Family(db.Model):
     email = db.Column(db.String(120), nullable=False)
     ghatak = db.Column(db.String(50), nullable=False)
     pradeshik = db.Column(db.String(50), nullable=False)
-    
+    k_name = db.Column(db.String(50), nullable=False)
+    k_village = db.Column(db.String(50), nullable=False)
+    village = db.Column(db.String(50), nullable=False)
+    gotra = db.Column(db.String(50), nullable=True)
+    res_add = db.Column(db.String(50), nullable=False)
+    res_phone = db.Column(db.String(50), nullable=False)
+    off_add = db.Column(db.String(50), nullable=True)
+    off_phone = db.Column(db.String(50), nullable=True)
+    mem_num = db.Column(db.String(50), nullable=False)
     date = db.Column(DateTime)
 
 
@@ -49,20 +57,20 @@ def welcome():
           gotra = request.form.get('gotra')
           address1 = request.form.get('address1') + " | " + request.form.get('address2') + " | " + request.form.get('address3') + " | " + request.form.get('address4') + " | " + request.form.get('address5')
           phone1 = request.form.get('res_phone')
-          address2 = request.form.get('address1') + " | " + request.form.get('address2') + " | " + request.form.get('address3') + " | " + request.form.get('address4') + " | " + request.form.get('address5')
-          phone2 = request.form.get('res_phone')
+          address2 = request.form.get('office1') + " | " + request.form.get('office2') + " | " + request.form.get('office3') + " | " + request.form.get('office3') + " | " + request.form.get('office5')
+          phone2 = request.form.get('office_phone')
+          num_of_memb = request.form.get('family_members')
           date = datetime.now()
-          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
+          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date, k_name=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra, res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, memb_num=num_of_memb)
           db.session.add(entry)
           db.session.commit()
-          pass
-    return render_template('main2.html')
+    return render_template('main.html')
   elif request.method == 'POST':
     username = request.form.get('name')
     password = request.form.get('pass')
     if username == admin_user and password == admin_password:
       session['user'] = username
-      return render_template('main2.html')
+      return render_template('main.html')
   return render_template('index.html')
                          
                          
