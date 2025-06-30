@@ -104,8 +104,8 @@ def welcome():
     return render_template('index.html')
   
 
-@app.route('/form2/<mem_num>', methods=['GET', 'POST'])
-def form2(mem_num):
+@app.route('/form2', methods=['GET', 'POST'])
+def form2():
   if request.method == 'POST':
             try:
                 print("Processing form submission...")
@@ -118,16 +118,16 @@ def form2(mem_num):
                 marriage = request.form.get('marriage')
                 dob = request.form.get('dob')
                 photo = request.form.get('photo')
-                edu =  request.form.get('photo')
-                occu =  request.form.get('photo')
+                edu =  request.form.get('edu')
+                occu =  request.form.get('occu')
                 phone = int(request.form.get('phone'))
                 email = request.form.get('email')
-                blood = int(request.form.get('blood'))
+                blood = request.form.get('blood')
 
                 entry = Member(
                     name=name, father=father, gender=gender, relation=relation, date=date,
-                    peear=peear, marraige=kuldevi_village, village=native_village, gotra=gotra,
-                    res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
+                    peear=peear, marraige=marriage, dob=dob, photo=photo,
+                    edu=edu, occu=occu, phone=phone, email=eamil, blood=blood
                 )
                 db.session.add(entry)
                 db.session.commit()
@@ -135,7 +135,7 @@ def form2(mem_num):
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
-        return render_template('form2.html')
+            return render_template('form2.html')
   return render_template('form2.html')
                          
                          
@@ -151,6 +151,19 @@ def admin_panel_main():
             flash("Failed to retrieve data.")
     return redirect('/')
 
+  
+@app.route('/admin_panel', methods=['GET', 'POST'])
+def admin_panel_main():
+    if 'user' in session and session['user'] == admin_user:
+        try:
+            data = Family.query.all()
+            print(f"Retrieved {len(data)} entries.")
+            return render_template('admin_panel.html', data=data)
+        except Exception as e:
+            print("Database query failed:", e)
+            flash("Failed to retrieve data.")
+    return redirect('/')
+  
 
 @app.route("/logout")
 def logout():
