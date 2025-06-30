@@ -39,14 +39,22 @@ class Family(db.Model):
 def welcome():
   if 'user' in session and session['user'] == admin_user:
     if request.method == 'POST':
-          # name = request.form.get('name')
-          # email = request.form.get('email')
-          # ghatak = request.form.get('ghatak')
-          # pradeshik = request.form.get('pradeshik')
-          # date = datetime.now()
-          # entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
-          # db.session.add(entry)
-          # db.session.commit()
+          name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
+          email = request.form.get('email')
+          ghatak = request.form.get('ghatak')
+          pradeshik = request.form.get('pradeshik')
+          kuldevi_name = request.form.get('Kuldevi_name')
+          kuldevi_village = request.form.get('kuldevi_village')
+          native_village = request.form.get('native_village')
+          gotra = request.form.get('gotra')
+          address1 = request.form.get('address1') + " | " + request.form.get('address2') + " | " + request.form.get('address3') + " | " + request.form.get('address4') + " | " + request.form.get('address5')
+          phone1 = request.form.get('res_phone')
+          address2 = request.form.get('address1') + " | " + request.form.get('address2') + " | " + request.form.get('address3') + " | " + request.form.get('address4') + " | " + request.form.get('address5')
+          phone2 = request.form.get('res_phone')
+          date = datetime.now()
+          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
+          db.session.add(entry)
+          db.session.commit()
           pass
     return render_template('main2.html')
   elif request.method == 'POST':
