@@ -64,18 +64,6 @@ class Member(db.Model):
 def form1():
     if request.method == 'POST':
         # If this is a login form submission
-        if 'name' in request.form and 'pass' in request.form:
-            username = request.form.get('name')
-            password = request.form.get('pass')
-            if username == admin_user and password == admin_password:
-                session['user'] = username
-                return render_template('form1.html')
-            else:
-                flash('Invalid login')
-                return render_template('index.html')
-
-        # Otherwise, this is the actual family form
-        if 'user' in session and session['user'] == admin_user:
             try:
                 print("Processing form submission...")
                 # gather form data
@@ -105,21 +93,13 @@ def form1():
                 print("Data saved successfully.")
                 mem = str(num_of_memb)
                 if mem:
-                  return redirect('/form2/' + mem)
+                    return redirect('/form2/' + mem)
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
                 return render_template('form1.html')
-        else:
-            flash("Please log in first.")
-            return redirect('/')
+    return render_template('form1.html')
 
-    # GET request
-    if 'user' in session and session['user'] == admin_user:
-        return render_template('form1.html')
-    return render_template('index.html')
-
-  
 
 @app.route('/form2/<int:mem>', methods=['GET', 'POST'])
 def form2(mem):
@@ -171,10 +151,23 @@ def form2(mem):
     return render_template('form2.html', mem=mem)
 
   
-                         
-                         
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel_main():
+    if 'name' in request.form and 'pass' in request.form:
+            username = request.form.get('name')
+            password = request.form.get('pass')
+            if username == admin_user and password == admin_password:
+                session['user'] = username
+                return render_template('admin_panel1.html')
+            else:
+                flash('Invalid login')
+                return render_template('index.html')
+    else:
+        return render_template('index.html')        
+    
+    
+@app.route('/admin_panel1', methods=['GET', 'POST'])
+def admin_panel1():
     if 'user' in session and session['user'] == admin_user:
         try:
             data = Family.query.all()
@@ -187,7 +180,7 @@ def admin_panel_main():
 
   
 @app.route('/admin_panel2', methods=['GET', 'POST'])
-def admin_panel_main2():
+def admin_panel2():
     if 'user' in session and session['user'] == admin_user:
         try:
             data = Member.query.all()
