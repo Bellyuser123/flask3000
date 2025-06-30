@@ -1,468 +1,150 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>E Vastik Patark Form</title>
+    <title>E-Vastik Patrak</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div
-      class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
-    >
-      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
-        E Vastik Patark Form
-      </h1>
-      <h2 class="text-2xl font-bold text-[#006459] mb-6 text-center">
-        For Mahasabha 25-26
-      </h2>
-      <form class="space-y-6 sm:space-y-8" method="POST">
-        <!-- Section 1: Contact Info -->
-        <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Individual details 
-          </h2>
+    <div class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">Family Member Form</h1>
+
+      <!-- Repeat this block for each member -->
+      <div class="border-t pt-6 mb-10">
+        <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member 1 Details</h2>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+          <!-- Name -->
           <div>
-            <label for="email" class="block font-medium mb-1">
-              Email <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              required
-              placeholder="Enter your email"
-              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#006400]"
-            />
-          </div>
-        </section>
-
-        <!-- Section 2: Ghatak & Pradeshik -->
-        <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Ghatak and Pradeshik
-          </h2>
-
-          <!-- Ghatak -->
-          <div>
-            <label for="ghatak" class="block font-medium mb-1">
-              Ghatak <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="ghatak"
-              name="ghatak"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md mb-2"
-            >
-              <option value="" disabled selected>Select Ghatak</option>
-              <option value="pune">Pune</option>
-            </select>
-          </div>
-
-          <!-- Pradeshik -->
-          <div>
-            <label for="pradeshik" class="block font-medium mb-1">
-              Pradeshik <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="pradeshik"
-              name="pradeshik"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md mb-2"
-            >
-              <option value="" disabled selected>Select Pradeshik</option>
-              <option value="mumbai">Mumbai</option>
-            </select>
-          </div>
-        </section>
-
-        <!-- Section 3: Family Details -->
-        <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Family Details
-          </h2>
-
-          <!-- Full Name -->
-          <div>
-            <label class="block font-medium mb-1">
-              Full Name of Family Head <span class="text-red-500">*</span>
-            </label>
+            <label class="block font-medium mb-1">Name <span class="text-red-500">*</span></label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                required
-                placeholder="First Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
-              <input
-                type="text"
-                id="middle_name"
-                name="middle_name"
-                required
-                placeholder="Middle Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                required
-                placeholder="Last Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
+              <input type="text" name="first_name" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="middle_name" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="last_name" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
             </div>
           </div>
 
-          <!-- Kuldevi -->
+          <!-- Father's Name -->
           <div>
-            <label class="block font-medium mb-1">
-              Kuldevi Name <span class="text-red-500">*</span>
-            </label>
-            <div class="flex flex-wrap gap-4">
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="1" required />
-                <span>Brahmani Maa</span>
+            <label class="block font-medium mb-1">Father's Name <span class="text-red-500">*</span></label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <input type="text" name="father_first_name" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="father_middle_name" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="father_last_name" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+            </div>
+          </div>
+
+          <!-- Gender -->
+          <div>
+            <label class="block font-medium mb-1">Gender <span class="text-red-500">*</span></label>
+            <div class="flex space-x-4">
+              <label class="flex items-center">
+                <input type="radio" name="gender" value="male" required />
+                <span class="ml-2">Male</span>
               </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="2" />
-                <span>Butbhavani Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="3" />
-                <span>Chamunda Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="4" />
-                <span>Chaval Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="5" />
-                <span>Gatrad Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="6" />
-                <span>Kalika Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="7" />
-                <span>Khodiar Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="8" />
-                <span>Momai Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="9" />
-                <span>Pithad Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="10" />
-                <span>Saval Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="11" />
-                <span>Sikoter Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="12" />
-                <span>Vishal Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="13" />
-                <span>Truthiad Maa</span>
+              <label class="flex items-center">
+                <input type="radio" name="gender" value="female" />
+                <span class="ml-2">Female</span>
               </label>
             </div>
           </div>
 
-          <!-- Kuldevi Village -->
+          <!-- Relation with Family Head -->
           <div>
-            <label for="kuldevi_village" class="block font-medium mb-1">
-              Kuldevi Village <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="kuldevi_village"
-              name="kuldevi_village"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled selected>Select village</option>
-              <option value="1" >Anjar</option>
-              <option value="2" >chandia</option>
-              <option value="3" >Devaliya</option>
-              <option value="4" >Galpadar</option>
-              <option value="5" >Hajapar</option>
-              <option value="6" >Jambudi</option>
-              <option value="7" >khambhra</option>
-              <option value="8" >khedol</option>
-              <option value="9" >kumbharia</option>
-              <option value="10" >kukma</option>
-              <option value="11" >lovaria</option>
-              <option value="12" >Madhapar</option>
-              <option value="13" >Meghpar</option>
-              <option value="14" >Nagalpar</option>
-              <option value="15" >Nagor</option>
-              <option value="16" >Reha</option>
-              <option value="17" >Sinogara</option>
-              <option value="18" >Vidi</option>
+            <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
+            <select name="relation" required class="w-full border p-2 rounded-md">
+              <option value="" disabled selected>Select relation</option>
+              <option value="wife">Wife</option>
+              <option value="son">Son</option>
+              <option value="daughter">Daughter</option>
+              <option value="mother">Mother</option>
+              <option value="father">Father</option>
+              <option value="brother">Brother</option>
+              <option value="sister">Sister</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
-          <!-- Native Village -->
+          <!-- Peer -->
           <div>
-            <label for="native_village" class="block font-medium mb-1">
-              Native Village <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="native_village"
-              name="native_village"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled selected>Select native village</option>
-              <option value="1" >Anjar</option>
-              <option value="2" >chandia</option>
-              <option value="3" >Devaliya</option>
-              <option value="4" >Galpadar</option>
-              <option value="5" >Hajapar</option>
-              <option value="6" >Jambudi</option>
-              <option value="7" >khambhra</option>
-              <option value="8" >khedol</option>
-              <option value="9" >kumbharia</option>
-              <option value="10" >kukma</option>
-              <option value="11" >lovaria</option>
-              <option value="12" >Madhapar</option>
-              <option value="13" >Meghpar</option>
-              <option value="14" >Nagalpar</option>
-              <option value="15" >Nagor</option>
-              <option value="16" >Reha</option>
-              <option value="17" >Sinogara</option>
-              <option value="18" >Vidi</option>
+            <label class="block font-medium mb-1">Peer</label>
+            <input type="text" name="peer" placeholder="Peer" class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Marital Status -->
+          <div>
+            <label class="block font-medium mb-1">Marital Status <span class="text-red-500">*</span></label>
+            <select name="marital_status" required class="w-full border p-2 rounded-md">
+              <option value="" disabled selected>Select status</option>
+              <option value="single">Single</option>
+              <option value="married">Married</option>
+              <option value="widowed">Widowed</option>
+              <option value="divorced">Divorced</option>
             </select>
           </div>
 
-          <!-- Gotra -->
+          <!-- Date of Birth -->
           <div>
-            <label for="gotra" class="block font-medium mb-1">Gotra</label>
-            <select
-              id="gotra"
-              name="gotra"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled selected>Select Gotra</option>
-              <option value="1">ATREE</option>
-              <option value="2">BHARDWAJ</option>
-              <option value="3">GARG</option>
-              <option value="4">GAUTAM</option>
-              <option value="5">KASHYAP</option>
-              <option value="6">KAUDINYA</option>
-              <option value="7">SANKADI</option>
-              <option value="8">SHANDIL</option>
-              <option value="9">SHAUNAK</option>
-              <option value="10">SONAL</option>
-              <option value="11">VALMIK</option>
-              <option value="12">VARSHA</option>
-              <option value="13">VASHISHTHA</option>
-              <option value="14">VATSA</option>
-              <option value="15">VISHVAMITRA</option>
-              <option value="16">OTHER</option>
+            <label class="block font-medium mb-1">Date of Birth <span class="text-red-500">*</span></label>
+            <input type="date" name="dob" required class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Photo -->
+          <div>
+            <label class="block font-medium mb-1">Upload Photo</label>
+            <input type="file" name="photo" accept="image/*" class="w-full" />
+          </div>
+
+          <!-- Education -->
+          <div>
+            <label class="block font-medium mb-1">Education <span class="text-red-500">*</span></label>
+            <input type="text" name="education" required class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Occupation -->
+          <div>
+            <label class="block font-medium mb-1">Occupation <span class="text-red-500">*</span></label>
+            <input type="text" name="occupation" required class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Mobile No. -->
+          <div>
+            <label class="block font-medium mb-1">Mobile No. <span class="text-red-500">*</span></label>
+            <input type="number" name="mobile" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Email -->
+          <div>
+            <label class="block font-medium mb-1">Email</label>
+            <input type="email" name="email" class="w-full border p-2 rounded-md" />
+          </div>
+
+          <!-- Blood Group -->
+          <div>
+            <label class="block font-medium mb-1">Blood Group <span class="text-red-500">*</span></label>
+            <select name="blood_group" required class="w-full border p-2 rounded-md">
+              <option value="" disabled selected>Select blood group</option>
+              <option value="A+">A+</option>
+              <option value="A-">A-</option>
+              <option value="B+">B+</option>
+              <option value="B-">B-</option>
+              <option value="O+">O+</option>
+              <option value="O-">O-</option>
+              <option value="AB+">AB+</option>
+              <option value="AB-">AB-</option>
             </select>
           </div>
-        </section>
 
-        <!-- Section 4: Address & Contact -->
-        <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Address and Contact
-          </h2>
-
-          <!-- Residential Address -->
-          <div>
-            <label class="block font-medium mb-1"
-              >Residential Address <span class="text-red-500">*</span></label
-            >
-            <input
-              id="address1"
-              type="text"
-              name="building"
-              required
-              placeholder="Building Name"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address2"
-              type="text"
-              name="area"
-              required
-              placeholder="Area"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address3"
-              type="text"
-              name="street"
-              required
-              placeholder="Road/Street"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address4"
-              type="text"
-              name="landmark"
-              placeholder="Landmark (optional)"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address5"
-              type="text"
-              name="pincode"
-              required
-              placeholder="Pincode (6 digits)"
-              pattern="\d{6}"
-              maxlength="6"
-              minlength="6"
-              class="w-full border p-2 rounded-md mb-2"
-            />
+          <!-- Submit Button (optional if only one member) -->
+          <div class="text-center mt-6 sm:mt-8">
+            <button type="submit" class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800">
+              Save Member
+            </button>
           </div>
-
-          <!-- Residential Phone -->
-          <div>
-            <label for="res_phone" class="block font-medium mb-1">
-              Residential Phone Number <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="res_phone"
-              name="res_phone"
-              required
-              placeholder="Enter number"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            />
-          </div>
-
-          <!-- Office Address -->
-          <div>
-            <label class="block font-medium mb-1"
-              >Office Address (optional)</label
-            >
-            <input
-              id="office1"
-              type="text"
-              name="office_building"
-              placeholder="Building Name"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office2"
-              type="text"
-              name="office_area"
-              placeholder="Area"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office3"
-              type="text"
-              name="office_street"
-              placeholder="Road/Street"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office4"
-              type="text"
-              name="office_landmark"
-              placeholder="Landmark"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office5"
-              type="text"
-              name="office_pincode"
-              placeholder="Pincode (6 digits)"
-              pattern="\d{6}"
-              maxlength="6"
-              minlength="6"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-          </div>
-
-          <!-- Office Phone -->
-          <div>
-            <label for="office_phone" class="block font-medium mb-1">
-              Office Phone Number (optional)
-            </label>
-            <input
-              type="text"
-              id="office_phone"
-              name="office_phone"
-              placeholder="Enter number"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            />
-          </div>
-        </section>
-
-        <!-- Section 5: Family Members -->
-        <section>
-          <div>
-            <label for="family_members" class="block font-medium mb-1">
-              Number of Family Members <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="family_members"
-              name="family_members"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled selected>Select</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-              <option value="11">11</option>
-              <option value="12">12</option>
-              <option value="13">13</option>
-              <option value="14">14</option>
-              <option value="15">15+</option>
-            </select>
-          </div>
-        </section>
-
-        <!-- Submit -->
-        <div class="text-center mt-6 sm:mt-8">
-          <button
-            type="submit"
-            class="w-full sm:w-auto bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
-          >
-            Next
-          </button>
-        </div>
-      </form>
-      <a href="/admin_panel">View results</a>
+        </form>
+      </div>
+      <!-- End of member section -->
     </div>
   </body>
 </html>
-name
-father name
-gender
-relation with family head
-peear
-marital status
-date of birth
-photo
-education
-occupation
-mobile no.
-email
-blood group 

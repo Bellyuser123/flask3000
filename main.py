@@ -115,6 +115,11 @@ def welcome():
           session['user'] = username
           return render_template('form1.html')
     return render_template('index.html')
+  
+
+@app.route('/form2', methods=['GET', 'POST'])
+def form2():
+  return render_template('form2.html')
                          
                          
 @app.route('/admin_panel', methods=['GET', 'POST'])
