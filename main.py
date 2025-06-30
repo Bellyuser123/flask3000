@@ -62,15 +62,16 @@ def welcome():
           num_of_memb = request.form.get('family_members')
           date = datetime.now()
           entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date, k_name=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra, res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, memb_num=num_of_memb)
+          logger(entry)
           db.session.add(entry)
           db.session.commit()
-    return render_template('main.html')
+    return render_template('main2.html')
   elif request.method == 'POST':
     username = request.form.get('name')
     password = request.form.get('pass')
     if username == admin_user and password == admin_password:
       session['user'] = username
-      return render_template('main.html')
+      return render_template('main2.html')
   return render_template('index.html')
                          
                          
