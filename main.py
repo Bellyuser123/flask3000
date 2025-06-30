@@ -49,15 +49,14 @@ class Member(db.Model):
     gender = db.Column(db.String(50), nullable=False)
     relation = db.Column(db.String(50), nullable=False)
     peear = db.Column(db.String(50), nullable=True)
-    marrage = db.Column(db.String(50), nullable=False)
+    marriage = db.Column(db.String(50), nullable=False)
     dob = db.Column(db.String(50), nullable=False)
     photo = db.Column(db.String(50), nullable=True)
     edu = db.Column(db.Text(50), nullable=False)
-    occupation = db.Column(db.Integer, nullable=False)
+    occu = db.Column(db.Integer, nullable=False)
     phone = db.Column(db.Text(50), nullable=False)
     email = db.Column(db.Integer, nullable=True)
     blood = db.Column(db.Integer, nullable=False)
-    date = db.Column(DateTime)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -152,13 +151,13 @@ def admin_panel_main():
     return redirect('/')
 
   
-@app.route('/admin_panel', methods=['GET', 'POST'])
-def admin_panel_main():
+@app.route('/admin_panel2', methods=['GET', 'POST'])
+def admin_panel_main2():
     if 'user' in session and session['user'] == admin_user:
         try:
-            data = Family.query.all()
+            data = Member.query.all()
             print(f"Retrieved {len(data)} entries.")
-            return render_template('admin_panel.html', data=data)
+            return render_template('admin_panel2.html', data=data)
         except Exception as e:
             print("Database query failed:", e)
             flash("Failed to retrieve data.")
