@@ -122,13 +122,6 @@ def form2(mem):
             phone_list = request.form.getlist('phone[]')
             email_list = request.form.getlist('email[]')
             blood_list = request.form.getlist('blood[]')
-            lists = [ln_list, fn_list, mn_list, fln_list, ffn_list, fmn_list,
-               gender_list, relation_list, peear_list, marriage_list,
-               dob_list, photo_list, edu_list, occu_list, phone_list,
-               email_list, blood_list]
-            if not all(len(lst) == mem for lst in lists):
-                print("Mismatch in submitted member data. Please fill all fields.")
-                return render_template('form2.html', mem=mem)
 
 
             for i in range(mem):
@@ -137,18 +130,18 @@ def form2(mem):
                     father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
                     gender=gender_list[i],
                     relation=relation_list[i],
-                    peear=peear_list[i],
+                    peear=peear_list[i] if i < len(peear_list) else "",
                     marriage=marriage_list[i],
                     dob=dob_list[i],
-                    photo=photo_list[i],  # if text, else handle files
+                    photo=photo_list[i] if i < len(photo_list) else "",  # if text, else handle files
                     edu=edu_list[i],
                     occu=occu_list[i],
                     phone=int(phone_list[i]),
-                    email=email_list[i],
+                    email=email_list[i] if i < len(email_list) else "",
                     blood=blood_list[i]
                 )
                 db.session.add(entry)
-                db.session.commit()
+            db.session.commit()
             flash("All members saved successfully.")
             return redirect(url_for('admin_panel2'))
         except Exception as e:
