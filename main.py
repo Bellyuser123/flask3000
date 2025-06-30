@@ -40,6 +40,36 @@ class Family(db.Model):
     off_phone = db.Column(db.Integer, nullable=True)
     mem_num = db.Column(db.Integer, nullable=False)
     date = db.Column(DateTime)
+    
+    
+class Kuldevi(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    
+    
+class village(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    
+    
+class member(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    ghatak = db.Column(db.String(50), nullable=False)
+    pradeshik = db.Column(db.String(50), nullable=False)
+    k_name = db.Column(db.String(50), nullable=False)
+    k_village = db.Column(db.String(50), nullable=False)
+    village = db.Column(db.String(50), nullable=False)
+    gotra = db.Column(db.String(50), nullable=True)
+    res_add = db.Column(db.Text(50), nullable=False)
+    res_phone = db.Column(db.Integer, nullable=False)
+    off_add = db.Column(db.Text(50), nullable=True)
+    off_phone = db.Column(db.Integer, nullable=True)
+    mem_num = db.Column(db.Integer, nullable=False)
+    date = db.Column(DateTime)
 
 
 
