@@ -52,11 +52,11 @@ class Member(db.Model):
     marriage = db.Column(db.String(50), nullable=False)
     dob = db.Column(db.String(50), nullable=False)
     photo = db.Column(db.String(50), nullable=True)
-    edu = db.Column(db.Text(50), nullable=False)
-    occu = db.Column(db.Integer, nullable=False)
-    phone = db.Column(db.Text(50), nullable=False)
-    email = db.Column(db.Integer, nullable=True)
-    blood = db.Column(db.Integer, nullable=False)
+    edu = db.Column(db.String(50), nullable=False)
+    occu = db.Column(db.String(50), nullable=False)
+    phone = db.Column(db.String(50), nullable=False)
+    email = db.Column(db.String(50), nullable=True)
+    blood = db.Column(db.String(50), nullable=False)
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -122,11 +122,11 @@ def form2():
                 phone = int(request.form.get('phone'))
                 email = request.form.get('email')
                 blood = request.form.get('blood')
-
+                
                 entry = Member(
-                    name=name, father=father, gender=gender, relation=relation, date=date,
-                    peear=peear, marraige=marriage, dob=dob, photo=photo,
-                    edu=edu, occu=occu, phone=phone, email=eamil, blood=blood
+                    name=name, father=father, gender=gender, relation=relation,
+                    peear=peear, marriage=marriage, dob=dob, photo=photo,
+                    edu=edu, occu=occu, phone=phone, email=email, blood=blood
                 )
                 db.session.add(entry)
                 db.session.commit()
