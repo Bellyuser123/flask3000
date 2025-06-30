@@ -39,14 +39,15 @@ class Family(db.Model):
 def welcome():
   if 'user' in session and session['user'] == admin_user:
     if request.method == 'POST':
-          name = request.form.get('name')
-          email = request.form.get('email')
-          ghatak = request.form.get('ghatak')
-          pradeshik = request.form.get('pradeshik')
-          date = datetime.now()
-          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
-          db.session.add(entry)
-          db.session.commit()
+          # name = request.form.get('name')
+          # email = request.form.get('email')
+          # ghatak = request.form.get('ghatak')
+          # pradeshik = request.form.get('pradeshik')
+          # date = datetime.now()
+          # entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date)
+          # db.session.add(entry)
+          # db.session.commit()
+          pass
     return render_template('main2.html')
   elif request.method == 'POST':
     username = request.form.get('name')
