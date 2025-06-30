@@ -30,6 +30,7 @@ class Family(db.Model):
     email = db.Column(db.String(120), nullable=False)
     ghatak = db.Column(db.String(50), nullable=False)
     pradeshik = db.Column(db.String(50), nullable=False)
+    
     date = db.Column(DateTime)
 
 
