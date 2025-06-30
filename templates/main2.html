@@ -25,6 +25,7 @@
               Email <span class="text-red-500">*</span>
             </label>
             <input
+              id="email"
               type="email"
               name="email"
               required
@@ -46,11 +47,12 @@
               Ghatak <span class="text-red-500">*</span>
             </label>
             <select
+              id="ghatak"
               name="ghatak"
               required
               class="w-full border border-gray-300 p-2 rounded-md mb-2"
             >
-              <option value="">Select Ghatak</option>
+              <option value="" disabled selected>Select Ghatak</option>
               <option value="pune">Pune</option>
             </select>
           </div>
@@ -61,11 +63,12 @@
               Pradeshik <span class="text-red-500">*</span>
             </label>
             <select
+                    id="pradeshik"
               name="pradeshik"
               required
               class="w-full border border-gray-300 p-2 rounded-md mb-2"
             >
-              <option value="">Select Pradeshik</option>
+              <option value="" disabled selected>Select Pradeshik</option>
               <option value="mumbai">Mumbai</option>
             </select>
           </div>
@@ -207,6 +210,7 @@
               >Residential Address <span class="text-red-500">*</span></label
             >
             <input
+                   id = "address1"
               type="text"
               name="building"
               required
@@ -214,6 +218,7 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
+                   id = "address2"
               type="text"
               name="area"
               required
@@ -221,6 +226,7 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
+                   id = "address3"
               type="text"
               name="street"
               required
@@ -228,12 +234,14 @@
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
+                   id = "address4"
               type="text"
               name="landmark"
               placeholder="Landmark (optional)"
               class="w-full border p-2 rounded-md mb-2"
             />
             <input
+                   id = "address5"
               type="text"
               name="pincode"
               required
