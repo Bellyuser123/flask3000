@@ -45,45 +45,58 @@ class Family(db.Model):
 
 @app.route('/', methods=['POST', 'GET'])
 def welcome():
-  if 'user' in session and session['user'] == admin_user:
-    if request.method == 'POST':
-          name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
-          email = request.form.get('email')
-          ghatak = request.form.get('ghatak')
-          pradeshik = request.form.get('pradeshik')
-          kuldevi_name = request.form.get('Kuldevi_name')
-          kuldevi_village = request.form.get('kuldevi_village')
-          native_village = request.form.get('native_village')
-          gotra = request.form.get('gotra')
-          address1 = request.form.get('address1') + " | " + request.form.get('address2') + " | " + request.form.get('address3') + " | " + request.form.get('address4') + " | " + request.form.get('address5')
-          phone1 = int(request.form.get('res_phone'))
-          address2 = request.form.get('office1') + " | " + request.form.get('office2') + " | " + request.form.get('office3') + " | " + request.form.get('office3') + " | " + request.form.get('office5')
-          phone2 = int(request.form.get('office_phone'))
-          num_of_memb = int(request.form.get('family_members'))
-          date = datetime.now()
-          entry = Family(name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date, k_name=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra, res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb)
-          logger(entry)
-          db.session.add(entry)
-          db.session.commit()
-    return render_template('main2.html')
-  elif request.method == 'POST':
-    username = request.form.get('name')
-    password = request.form.get('pass')
-    if username == admin_user and password == admin_password:
-      session['user'] = username
-      return render_template('main2.html')
-  return render_template('index.html')
+    if 'user' in session and session['user'] == admin_user:
+        if request.method == 'POST':
+            try:
+                print("Processing form submission...")
+                # gather form data
+                name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
+                email = request.form.get('email')
+                ghatak = request.form.get('ghatak')
+                pradeshik = request.form.get('pradeshik')
+                kuldevi_name = request.form.get('Kuldevi_name')
+                kuldevi_village = request.form.get('kuldevi_village')
+                native_village = request.form.get('native_village')
+                gotra = request.form.get('gotra')
+                address1 = " | ".join([request.form.get(f'address{i}') for i in range(1, 6)])
+                phone1 = int(request.form.get('res_phone'))
+                address2 = " | ".join([request.form.get(f'office{i}') for i in range(1, 6)])
+                phone2 = int(request.form.get('office_phone'))
+                num_of_memb = int(request.form.get('family_members'))
+                date = datetime.now()
+
+                entry = Family(
+                    name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
+                    k_name=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra,
+                    res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
+                )
+                db.session.add(entry)
+                db.session.commit()
+                print("Data saved successfully.")
+            except Exception as e:
+                print("Error during form processing:", e)
+                flash("Error submitting form.")
+        return render_template('main2.html')
+    elif request.method == 'POST':
+        username = request.form.get('name')
+        password = request.form.get('pass')
+        if username == admin_user and password == admin_password:
+          session['user'] = username
+          return render_template('main2.html')
+    return render_template('index.html')
                          
                          
-@app.route('/admin_panel', methods=['POST', 'GET'])
+@app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel_main():
     if 'user' in session and session['user'] == admin_user:
-        data = []
-        if request.method == 'POST':
+        try:
             data = Family.query.all()
+            print(f"Retrieved {len(data)} entries.")
             return render_template('admin_panel.html', data=data)
-        data = Family.query.all()
-        return render_template('admin_panel.html', data=data)
+        except Exception as e:
+            print("Database query failed:", e)
+            flash("Failed to retrieve data.")
+    return redirect('/')
 
 
 @app.route("/logout")
