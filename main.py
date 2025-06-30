@@ -5,6 +5,7 @@ from datetime import datetime
 import os
 
 
+
 local_server = True
 
 app = Flask(__name__)
@@ -60,10 +61,11 @@ class Member(db.Model):
 
 
 @app.route('/', methods=['POST', 'GET'])
-def welcome():
+def form1():
     if 'user' in session and session['user'] == admin_user:
         if request.method == 'POST':
             try:
+                
                 print("Processing form submission...")
                 # gather form data
                 name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
@@ -90,6 +92,8 @@ def welcome():
                 db.session.add(entry)
                 db.session.commit()
                 print("Data saved successfully.")
+                if num_of_memb:
+                    return redirect(url_for('form2', mem=num_of_memb)
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
