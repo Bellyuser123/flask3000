@@ -12,16 +12,17 @@
 
       <!-- Repeat this block for each member -->
       <div class="border-t pt-6 mb-10">
-        <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member 1 Details</h2>
+        {% for i in range(mem) %}
+        <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member{{ i + 1}} Details</h2>
 
         <form method="POST" enctype="multipart/form-data" class="space-y-6">
           <!-- Name -->
           <div>
             <label class="block font-medium mb-1">Name <span class="text-red-500">*</span></label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="fn" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="mn" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="ln" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fn[]" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="mn[]" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="ln[]" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
             </div>
           </div>
 
@@ -29,9 +30,9 @@
           <div>
             <label class="block font-medium mb-1">Father's Name <span class="text-red-500">*</span></label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="ffn" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="fmn" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="fln" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="ffn[]" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fmn[]" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fln[]" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
             </div>
           </div>
 
@@ -40,11 +41,11 @@
             <label class="block font-medium mb-1">Gender <span class="text-red-500">*</span></label>
             <div class="flex space-x-4">
               <label class="flex items-center">
-                <input type="radio" name="gender" value="male" required />
+                <input type="radio" name="gender[]" value="male" required />
                 <span class="ml-2">Male</span>
               </label>
               <label class="flex items-center">
-                <input type="radio" name="gender" value="female" />
+                <input type="radio" name="gender[]" value="female" />
                 <span class="ml-2">Female</span>
               </label>
             </div>
@@ -53,7 +54,7 @@
           <!-- Relation with Family Head -->
           <div>
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
-            <select name="relation" required class="w-full border p-2 rounded-md">
+            <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select relation</option>
               <option value="self">Self</option>
               <option value="father">Father</option>
@@ -79,13 +80,13 @@
           <!-- Peer -->
           <div>
             <label class="block font-medium mb-1">Peear</label>
-            <input type="text" name="peear" placeholder="Peear" class="w-full border p-2 rounded-md" />
+            <input type="text" name="peear[]" placeholder="Peear" class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Marital Status -->
           <div>
             <label class="block font-medium mb-1">Marital Status <span class="text-red-500">*</span></label>
-            <select name="marriage" required class="w-full border p-2 rounded-md">
+            <select name="marriage[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select status</option>
               <option value="unmarried">Unmarried</option>
               <option value="married">Married</option>
@@ -97,43 +98,43 @@
           <!-- Date of Birth -->
           <div>
             <label class="block font-medium mb-1">Date of Birth <span class="text-red-500">*</span></label>
-            <input type="date" name="dob" required class="w-full border p-2 rounded-md" />
+            <input type="date" name="dob[]" required class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Photo -->
           <div>
             <label class="block font-medium mb-1">Upload Photo</label>
-            <input type="file" name="photo" accept="image/*" class="w-full" />
+            <input type="file" name="photo[]" accept="image/*" class="w-full" />
           </div>
 
           <!-- Education -->
           <div>
             <label class="block font-medium mb-1">Education <span class="text-red-500">*</span></label>
-            <input type="text" name="edu" required class="w-full border p-2 rounded-md" />
+            <input type="text" name="edu[]" required class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Occupation -->
           <div>
             <label class="block font-medium mb-1">Occupation <span class="text-red-500">*</span></label>
-            <input type="text" name="occu" required class="w-full border p-2 rounded-md" />
+            <input type="text" name="occu[]" required class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Mobile No. -->
           <div>
             <label class="block font-medium mb-1">Mobile No. <span class="text-red-500">*</span></label>
-            <input type="text" name="phone" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
+            <input type="text" name="phone[]" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Email -->
           <div>
             <label class="block font-medium mb-1">Email</label>
-            <input type="email" name="email" class="w-full border p-2 rounded-md" />
+            <input type="email" name="email[]" class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Blood Group -->
           <div>
             <label class="block font-medium mb-1">Blood Group <span class="text-red-500">*</span></label>
-            <select name="blood" required class="w-full border p-2 rounded-md">
+            <select name="blood[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select blood group</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
@@ -151,6 +152,7 @@
             <button type="submit" class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800">
               Save Member
             </button>
+            {% endfor %}
           </div>
         </form>
       </div>

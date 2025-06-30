@@ -103,41 +103,56 @@ def welcome():
     return render_template('index.html')
   
 
-@app.route('/form2/<mem>', methods=['GET', 'POST'])
+@app.route('/form2/<int:mem>', methods=['GET', 'POST'])
 def form2(mem):
-  for i in range(int(mem)):
-      if request.method == 'POST':
-            try:
-                print("Processing form submission...")
-                # gather form data
-                name = request.form.get('ln') + request.form.get('fn') + " Bhai" + request.form.get('mn') + " Bhai"
-                father = request.form.get('fln') + request.form.get('ffn') + " Bhai" + request.form.get('fmn') + " Bhai"
-                gender = request.form.get('gender')
-                relation = request.form.get('relation')
-                peear = request.form.get('peear')
-                marriage = request.form.get('marriage')
-                dob = request.form.get('dob')
-                photo = request.form.get('photo')
-                edu =  request.form.get('edu')
-                occu =  request.form.get('occu')
-                phone = int(request.form.get('phone'))
-                email = request.form.get('email')
-                blood = request.form.get('blood')
-                
+    if request.method == 'POST':
+        try:
+            ln_list = request.form.getlist('ln[]')
+            fn_list = request.form.getlist('fn[]')
+            mn_list = request.form.getlist('mn[]')
+            fln_list = request.form.getlist('fln[]')
+            ffn_list = request.form.getlist('ffn[]')
+            fmn_list = request.form.getlist('fmn[]')
+            gender_list = request.form.getlist('gender[]')
+            relation_list = request.form.getlist('relation[]')
+            peear_list = request.form.getlist('peear[]')
+            marriage_list = request.form.getlist('marriage[]')
+            dob_list = request.form.getlist('dob[]')
+            photo_list = request.form.getlist('photo[]')  # handle file uploads separately if needed
+            edu_list = request.form.getlist('edu[]')
+            occu_list = request.form.getlist('occu[]')
+            phone_list = request.form.getlist('phone[]')
+            email_list = request.form.getlist('email[]')
+            blood_list = request.form.getlist('blood[]')
+
+            for i in range(mem):
                 entry = Member(
-                    name=name, father=father, gender=gender, relation=relation,
-                    peear=peear, marriage=marriage, dob=dob, photo=photo,
-                    edu=edu, occu=occu, phone=phone, email=email, blood=blood
+                    name=f"{ln_list[i]} {fn_list[i]} Bhai {mn_list[i]} Bhai",
+                    father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
+                    gender=gender_list[i],
+                    relation=relation_list[i],
+                    peear=peear_list[i],
+                    marriage=marriage_list[i],
+                    dob=dob_list[i],
+                    photo=photo_list[i],  # if text, else handle files
+                    edu=edu_list[i],
+                    occu=occu_list[i],
+                    phone=int(phone_list[i]),
+                    email=email_list[i],
+                    blood=blood_list[i]
                 )
                 db.session.add(entry)
-                db.session.commit()
-                print("Data saved successfully.")
-            except Exception as e:
-                print("Error during form processing:", e)
-                flash("Error submitting form.")
-            return render_template('form2.html')
-      i += 1
-  return render_template('form2.html')
+            db.session.commit()
+            flash("All members saved successfully.")
+            return redirect(url_for('admin_panel2'))
+        except Exception as e:
+            print("Error:", e)
+            flash("Error submitting form.")
+            return render_template('form2.html', mem=mem)
+
+    return render_template('form2.html', mem=mem)
+
+  
                          
                          
 @app.route('/admin_panel', methods=['GET', 'POST'])
