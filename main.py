@@ -60,19 +60,30 @@ class Member(db.Model):
     blood = db.Column(db.String(50), nullable=False)
 
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/', methods=['GET', 'POST'])
 def form1():
-    if 'user' in session and session['user'] == admin_user:
-        if request.method == 'POST':
+    if request.method == 'POST':
+        # If this is a login form submission
+        if 'name' in request.form and 'pass' in request.form:
+            username = request.form.get('name')
+            password = request.form.get('pass')
+            if username == admin_user and password == admin_password:
+                session['user'] = username
+                return render_template('form1.html')
+            else:
+                flash('Invalid login')
+                return render_template('index.html')
+
+        # Otherwise, this is the actual family form
+        if 'user' in session and session['user'] == admin_user:
             try:
-                session['form1_data'] = request.form.to_dict()
                 print("Processing form submission...")
                 # gather form data
                 name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
                 email = request.form.get('email')
                 ghatak = request.form.get('ghatak')
                 pradeshik = request.form.get('pradeshik')
-                kuldevi_name = request.form.get('kuldevi[]')
+                kuldevi_name = request.form.getlist('kuldevi[]')
                 kuldevi_village = request.form.get('kuldevi_village')
                 native_village = request.form.get('native_village')
                 gotra = request.form.get('gotra')
@@ -86,25 +97,27 @@ def form1():
 
                 entry = Family(
                     name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
-                    k_name=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra,
+                    k_name=", ".join(kuldevi_name), k_village=kuldevi_village, village=native_village, gotra=gotra,
                     res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
                 )
                 db.session.add(entry)
                 db.session.commit()
                 print("Data saved successfully.")
-                if num_of_memb:
-                    return redirect(url_for('form2', mem=num_of_memb))
+
+                return redirect(url_for('form2', mem=num_of_memb))
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
                 return render_template('form1.html')
-    elif request.method == 'POST':
-        username = request.form.get('name')
-        password = request.form.get('pass')
-        if username == admin_user and password == admin_password:
-          session['user'] = username
-          return render_template('form1.html')
+        else:
+            flash("Please log in first.")
+            return redirect('/')
+
+    # GET request
+    if 'user' in session and session['user'] == admin_user:
+        return render_template('form1.html')
     return render_template('index.html')
+
   
 
 @app.route('/form2/<int:mem>', methods=['GET', 'POST'])
