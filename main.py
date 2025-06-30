@@ -99,7 +99,7 @@ def form1():
                 flash("Error submitting form.")
                 return render_template('form1.html')
     return render_template('form1.html')
-
+  
 
 @app.route('/form2/<int:mem>', methods=['GET', 'POST'])
 def form2(mem):
@@ -122,6 +122,14 @@ def form2(mem):
             phone_list = request.form.getlist('phone[]')
             email_list = request.form.getlist('email[]')
             blood_list = request.form.getlist('blood[]')
+            lists = [ln_list, fn_list, mn_list, fln_list, ffn_list, fmn_list,
+               gender_list, relation_list, peear_list, marriage_list,
+               dob_list, photo_list, edu_list, occu_list, phone_list,
+               email_list, blood_list]
+            if not all(len(lst) == mem for lst in lists):
+                print("Mismatch in submitted member data. Please fill all fields.")
+                return render_template('form2.html', mem=mem)
+
 
             for i in range(mem):
                 entry = Member(
@@ -140,7 +148,7 @@ def form2(mem):
                     blood=blood_list[i]
                 )
                 db.session.add(entry)
-            db.session.commit()
+                db.session.commit()
             flash("All members saved successfully.")
             return redirect(url_for('admin_panel2'))
         except Exception as e:
