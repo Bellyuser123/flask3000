@@ -42,23 +42,22 @@ class Family(db.Model):
     date = db.Column(DateTime)
     
     
-class member(db.Model):
+class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     father = db.Column(db.String(120), nullable=False)
     gender = db.Column(db.String(50), nullable=False)
-    pradeshik = db.Column(db.String(50), nullable=False)
-    k_name = db.Column(db.String(50), nullable=False)
-    k_village = db.Column(db.String(50), nullable=False)
-    village = db.Column(db.String(50), nullable=False)
-    gotra = db.Column(db.String(50), nullable=True)
-    res_add = db.Column(db.Text(50), nullable=False)
-    res_phone = db.Column(db.Integer, nullable=False)
-    off_add = db.Column(db.Text(50), nullable=True)
-    off_phone = db.Column(db.Integer, nullable=True)
-    mem_num = db.Column(db.Integer, nullable=False)
+    relation = db.Column(db.String(50), nullable=False)
+    peear = db.Column(db.String(50), nullable=True)
+    marrage = db.Column(db.String(50), nullable=False)
+    dob = db.Column(db.String(50), nullable=False)
+    photo = db.Column(db.String(50), nullable=True)
+    edu = db.Column(db.Text(50), nullable=False)
+    occupation = db.Column(db.Integer, nullable=False)
+    phone = db.Column(db.Text(50), nullable=False)
+    email = db.Column(db.Integer, nullable=True)
+    blood = db.Column(db.Integer, nullable=False)
     date = db.Column(DateTime)
-
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -105,8 +104,38 @@ def welcome():
     return render_template('index.html')
   
 
-@app.route('/form2', methods=['GET', 'POST'])
-def form2():
+@app.route('/form2/<mem_num>', methods=['GET', 'POST'])
+def form2(mem_num):
+  if request.method == 'POST':
+            try:
+                print("Processing form submission...")
+                # gather form data
+                name = request.form.get('ln') + request.form.get('fn') + " Bhai" + request.form.get('mn') + " Bhai"
+                father = request.form.get('fln') + request.form.get('ffn') + " Bhai" + request.form.get('fmn') + " Bhai"
+                gender = request.form.get('gender')
+                relation = request.form.get('relation')
+                peear = request.form.get('peear')
+                marriage = request.form.get('marriage')
+                dob = request.form.get('dob')
+                photo = request.form.get('photo')
+                edu =  request.form.get('photo')
+                occu =  request.form.get('photo')
+                phone = int(request.form.get('phone'))
+                email = request.form.get('email')
+                blood = int(request.form.get('blood'))
+
+                entry = Member(
+                    name=name, father=father, gender=gender, relation=relation, date=date,
+                    peear=peear, marraige=kuldevi_village, village=native_village, gotra=gotra,
+                    res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
+                )
+                db.session.add(entry)
+                db.session.commit()
+                print("Data saved successfully.")
+            except Exception as e:
+                print("Error during form processing:", e)
+                flash("Error submitting form.")
+        return render_template('form2.html')
   return render_template('form2.html')
                          
                          
