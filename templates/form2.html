@@ -19,9 +19,9 @@
           <div>
             <label class="block font-medium mb-1">Name <span class="text-red-500">*</span></label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="first_name" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="middle_name" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="last_name" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fn" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="mn" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="ln" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
             </div>
           </div>
 
@@ -29,9 +29,9 @@
           <div>
             <label class="block font-medium mb-1">Father's Name <span class="text-red-500">*</span></label>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="father_first_name" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="father_middle_name" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="father_last_name" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="ffn" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fmn" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input type="text" name="fln" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
             </div>
           </div>
 
@@ -55,13 +55,23 @@
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
             <select name="relation" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select relation</option>
+              <option value="self">Self</option>
+              <option value="father">Father</option>
+              <option value="mother">Mother</option>
               <option value="wife">Wife</option>
+              <option value="husband">Husband</option>
               <option value="son">Son</option>
               <option value="daughter">Daughter</option>
-              <option value="mother">Mother</option>
-              <option value="father">Father</option>
               <option value="brother">Brother</option>
               <option value="sister">Sister</option>
+              <option value="grandfather">Grandfather</option>
+              <option value="grandmother">Grandmother</option>
+              <option value="grandson">Grandson</option>
+              <option value="granddaughter">Granddaughter</option>
+              <option value="father-in Law">Father-in Law</option>
+              <option value="mother-in Law">Mother-in Law</option>
+              <option value="daughter-in Law">Daughter-in Law</option>
+              <option value="son-in Law">Son-in Law</option>
               <option value="other">Other</option>
             </select>
           </div>
@@ -77,7 +87,7 @@
             <label class="block font-medium mb-1">Marital Status <span class="text-red-500">*</span></label>
             <select name="marital_status" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select status</option>
-              <option value="single">Single</option>
+              <option value="unmarried">Unmarried</option>
               <option value="married">Married</option>
               <option value="widowed">Widowed</option>
               <option value="divorced">Divorced</option>
@@ -111,7 +121,7 @@
           <!-- Mobile No. -->
           <div>
             <label class="block font-medium mb-1">Mobile No. <span class="text-red-500">*</span></label>
-            <input type="number" name="mobile" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
+            <input type="text" name="mobile" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
           </div>
 
           <!-- Email -->
