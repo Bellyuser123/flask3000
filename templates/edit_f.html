@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>E Vastik Patark Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="bg-[#f5f5dc] text-gray-800">
+    <div
+      class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
+    >
+      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
+        E Vastik Patark Form
+      </h1>
+      <h2 class="text-2xl font-bold text-[#006459] mb-6 text-center">
+        For Mahasabha 25-26
+      </h2>
+      <form class="space-y-6 sm:space-y-8" method="POST" action="/">
+        <!-- Section 1: Contact Info -->
+        <section>
+          <h2 class="text-xl font-semibold text-[#006400] mb-4">
+            Contact Information
+          </h2>
+          <div>
+            <label for="email" class="block font-medium mb-1">
+              Email <span class="text-red-500">*</span>
+            </label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              required
+              placeholder="Enter your email"
+              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#006400]"
+            />
+          </div>
+        </section>
+
+        <!-- Section 2: Ghatak & Pradeshik -->
+        <section>
+          <h2 class="text-xl font-semibold text-[#006400] mb-4">
+            Ghatak and Pradeshik
+          </h2>
+
+          <!-- Ghatak -->
+          <div>
+            <label for="ghatak" class="block font-medium mb-1">
+              Ghatak <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="ghatak"
+              name="ghatak"
+              required
+              class="w-full border border-gray-300 p-2 rounded-md mb-2"
+            >
+              <option value="" disabled selected>Select Ghatak</option>
+              <option value="pune">Pune</option>
+            </select>
+          </div>
+
+          <!-- Pradeshik -->
+          <div>
+            <label for="pradeshik" class="block font-medium mb-1">
+              Pradeshik <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="pradeshik"
+              name="pradeshik"
+              required
+              class="w-full border border-gray-300 p-2 rounded-md mb-2"
+            >
+              <option value="" disabled selected>Select Pradeshik</option>
+              <option value="mumbai">Mumbai</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Section 3: Family Details -->
+        <section>
+          <h2 class="text-xl font-semibold text-[#006400] mb-4">
+            Family Details
+          </h2>
+
+          <!-- Full Name -->
+          <div>
+            <label class="block font-medium mb-1">
+              Full Name of Family Head <span class="text-red-500">*</span>
+            </label>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <input
+                type="text"
+                id="first_name"
+                name="first_name"
+                required
+                placeholder="First Name"
+                minlength="3"
+                maxlength="20"
+                class="border border-gray-300 p-2 rounded-md"
+              />
+              <input
+                type="text"
+                id="middle_name"
+                name="middle_name"
+                required
+                placeholder="Middle Name"
+                minlength="3"
+                maxlength="20"
+                class="border border-gray-300 p-2 rounded-md"
+              />
+              <input
+                type="text"
+                id="last_name"
+                name="last_name"
+                required
+                placeholder="Last Name"
+                minlength="3"
+                maxlength="20"
+                class="border border-gray-300 p-2 rounded-md"
+              />
+            </div>
+          </div>
+
+          <!-- Kuldevi -->
+          <div>
+            <label class="block font-medium mb-1">
+              Kuldevi Name <span class="text-red-500">*</span>
+            </label>
+            <div class="flex flex-wrap gap-4">
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Brahmani Maa" />
+                <span>Brahmani Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  name="kuldevi[]"
+                  value="Butbhavani Maa"
+                />
+                <span>Butbhavani Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Chamunda Maa" />
+                <span>Chamunda Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Chaval Maa" />
+                <span>Chaval Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Gatrad Maa" />
+                <span>Gatrad Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Kalika Maa" />
+                <span>Kalika Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Khodiar Maa" />
+                <span>Khodiar Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Momai Maa" />
+                <span>Momai Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Pithad Maa" />
+                <span>Pithad Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Saval Maa" />
+                <span>Saval Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Sikoter Maa" />
+                <span>Sikoter Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Vishal Maa" />
+                <span>Vishal Maa</span>
+              </label>
+              <label class="flex items-center space-x-2">
+                <input type="checkbox" name="kuldevi[]" value="Truthiad Maa" />
+                <span>Truthiad Maa</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Kuldevi Village -->
+          <div>
+            <label for="kuldevi_village" class="block font-medium mb-1">
+              Kuldevi Village <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="kuldevi_village"
+              name="kuldevi_village"
+              required
+              class="w-full border border-gray-300 p-2 rounded-md"
+            >
+              <option value="" disabled selected>Select village</option>
+              <option value="anjar">Anjar</option>
+              <option value="chandia">Chandia</option>
+              <option value="devaliya">Devaliya</option>
+              <option value="galpadar">Galpadar</option>
+              <option value="hajapar">Hajapar</option>
+              <option value="jambudi">Jambudi</option>
+              <option value="khambhra">Khambhra</option>
+              <option value="khedol">Khedol</option>
+              <option value="kumbharia">Kumbharia</option>
+              <option value="kukma">Kukma</option>
+              <option value="lovaria">Lovaria</option>
+              <option value="madhapar">Madhapar</option>
+              <option value="meghpar">Meghpar</option>
+              <option value="nagalpar">Nagalpar</option>
+              <option value="nagor">Nagor</option>
+              <option value="reha">Reha</option>
+              <option value="sinogara">Sinogara</option>
+              <option value="vidi">Vidi</option>
+            </select>
+          </div>
+
+          <!-- Native Village -->
+          <div>
+            <label for="native_village" class="block font-medium mb-1">
+              Native Village <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="native_village"
+              name="native_village"
+              required
+              class="w-full border border-gray-300 p-2 rounded-md"
+            >
+              <option value="" disabled selected>Select native village</option>
+              <option value="anjar">Anjar</option>
+              <option value="chandia">Chandia</option>
+              <option value="devaliya">Devaliya</option>
+              <option value="galpadar">Galpadar</option>
+              <option value="hajapar">Hajapar</option>
+              <option value="jambudi">Jambudi</option>
+              <option value="khambhra">Khambhra</option>
+              <option value="khedol">Khedol</option>
+              <option value="kumbharia">Kumbharia</option>
+              <option value="kukma">Kukma</option>
+              <option value="lovaria">Lovaria</option>
+              <option value="madhapar">Madhapar</option>
+              <option value="meghpar">Meghpar</option>
+              <option value="nagalpar">Nagalpar</option>
+              <option value="nagor">Nagor</option>
+              <option value="reha">Reha</option>
+              <option value="sinogara">Sinogara</option>
+              <option value="vidi">Vidi</option>
+            </select>
+          </div>
+
+          <!-- Gotra -->
+          <div>
+            <label for="gotra" class="block font-medium mb-1">Gotra</label>
+            <select
+              id="gotra"
+              name="gotra"
+              class="w-full border border-gray-300 p-2 rounded-md"
+            >
+              <option value="" disabled selected>Select Gotra</option>
+              <option value="ATREE">ATREE</option>
+              <option value="BHARDWAJ">BHARDWAJ</option>
+              <option value="GARG">GARG</option>
+              <option value="GAUTAM">GAUTAM</option>
+              <option value="KASHYAP">KASHYAP</option>
+              <option value="KAUDINYA">KAUDINYA</option>
+              <option value="SANKADI">SANKADI</option>
+              <option value="SHANDIL">SHANDIL</option>
+              <option value="SHAUNAK">SHAUNAK</option>
+              <option value="SONAL">SONAL</option>
+              <option value="VALMIK">VALMIK</option>
+              <option value="VARSHA">VARSHA</option>
+              <option value="VASHISHTHA">VASHISHTHA</option>
+              <option value="VATSA">VATSA</option>
+              <option value="VISHVAMITRA">VISHVAMITRA</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Section 4: Address & Contact -->
+        <section>
+          <h2 class="text-xl font-semibold text-[#006400] mb-4">
+            Address and Contact
+          </h2>
+
+          <!-- Residential Address -->
+          <div>
+            <label class="block font-medium mb-1"
+              >Residential Address <span class="text-red-500">*</span></label
+            >
+            <input
+              id="address1"
+              type="text"
+              name="building"
+              required
+              placeholder="Building Name"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="address2"
+              type="text"
+              name="area"
+              required
+              placeholder="Area"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="address3"
+              type="text"
+              name="street"
+              required
+              placeholder="Road/Street"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="address4"
+              type="text"
+              name="landmark"
+              placeholder="Landmark (optional)"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="address5"
+              type="text"
+              name="pincode"
+              required
+              placeholder="Pincode (6 digits)"
+              pattern="\d{6}"
+              maxlength="6"
+              minlength="6"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+          </div>
+
+          <!-- Residential Phone -->
+          <div>
+            <label for="res_phone" class="block font-medium mb-1">
+              Residential Phone Number <span class="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="res_phone"
+              name="res_phone"
+              required
+              minlength="10"
+              maxlength="10"
+              placeholder="Enter number"
+              class="w-full border border-gray-300 p-2 rounded-md"
+            />
+          </div>
+
+          <!-- Office Address -->
+          <div>
+            <label class="block font-medium mb-1"
+              >Office Address (optional)</label
+            >
+            <input
+              id="office1"
+              type="text"
+              name="office_building"
+              placeholder="Building Name"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="office2"
+              type="text"
+              name="office_area"
+              placeholder="Area"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="office3"
+              type="text"
+              name="office_street"
+              placeholder="Road/Street"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="office4"
+              type="text"
+              name="office_landmark"
+              placeholder="Landmark"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+            <input
+              id="office5"
+              type="text"
+              name="office_pincode"
+              placeholder="Pincode (6 digits)"
+              pattern="\d{6}"
+              maxlength="6"
+              minlength="6"
+              class="w-full border p-2 rounded-md mb-2"
+            />
+          </div>
+
+          <!-- Office Phone -->
+          <div>
+            <label for="office_phone" class="block font-medium mb-1">
+              Office Phone Number (optional)
+            </label>
+            <input
+              type="text"
+              id="office_phone"
+              name="office_phone"
+              placeholder="Enter number"
+              minlength="10"
+              maxlength="10"
+              class="w-full border border-gray-300 p-2 rounded-md"
+            />
+          </div>
+        </section>
+
+        <!-- Section 5: Family Members -->
+        <section>
+          <div>
+            <label for="family_members" class="block font-medium mb-1">
+              Number of Family Members <span class="text-red-500">*</span>
+            </label>
+            <select
+              id="family_members"
+              name="family_members"
+              required
+              class="w-full border border-gray-300 p-2 rounded-md"
+            >
+              <option value="" disabled selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="11">11</option>
+              <option value="12">12</option>
+              <option value="13">13</option>
+              <option value="14">14</option>
+              <option value="15">15+</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Submit -->
+        <div class="text-center mt-6 sm:mt-8">
+          <button
+            type="submit"
+            class="w-full sm:w-auto bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
+          >
+            Next
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

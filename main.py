@@ -180,7 +180,18 @@ def safe_get(lst, i, default="N/A"):
 @app.route('/summary/<int:family_id>')
 def summary(family_id):
     family = Family.query.get_or_404(family_id)
-    return render_template('summary.html', family=family)
+    return render_template('final.html', family=family)
+  
+  
+@app.route("/delete/<string:table_type>/<string:id>")
+def delete(id, table_type):
+        if table_type == 'projects':
+            post = Member.query.filter_by(id=id).first() if id != 'new' else None
+        db.session.delete(post)
+        db.session.commit()
+        return redirect('/dashboard')
+    else:
+        return render_template('404.html')
 
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
@@ -191,14 +202,14 @@ def admin_panel_main():
 
         if username == admin_user and password == admin_password:
             session['user'] = username
-            data = Family.query.all()
-            return render_template('admin_panel.html', data=data)
+            data = Member.query.all()
+            return render_template('admin_panel2.html', data=data)
         else:
             flash('Invalid login')
             return render_template('index.html')
     if 'user' in session and session['user'] == admin_user:
-        data = Family.query.all()
-        return render_template('admin_panel.html', data=data)
+        data = Member.query.all()
+        return render_template('admin_panel2.html', data=data)
 
     return render_template('index.html')
 
