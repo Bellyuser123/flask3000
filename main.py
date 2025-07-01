@@ -134,15 +134,15 @@ def form2(mem):
                     father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
                     gender=gender_list[i],
                     relation=relation_list[i],
-                    peear=peear_list[i] if i < len(peear_list) else "",
-                    marriage=marriage_list[i],
-                    dob=dob_list[i],
-                    photo=photo_list[i] if i < len(photo_list) else "",  # if text, else handle files
-                    edu=edu_list[i],
-                    occu=occu_list[i],
+                    peear=safe_get(peear_list, i),
+                    marriage=safe_get(marriage_list, i),
+                    dob=safe_get(dob_list, i),
+                    photo=safe_get(photo_list, i),
+                    edu=safe_get(edu_list, i),
+                    occu=safe_get(occu_list, i),
                     phone=int(phone_list[i]),
-                    email=email_list[i] if i < len(email_list) else "",
-                    blood=blood_list[i]
+                    email=safe_get(email_list, i),
+                    blood=safe_get(blood_list, i)
                 )
                 db.session.add(entry)
             db.session.commit()
@@ -154,6 +154,10 @@ def form2(mem):
             return render_template('form2.html', mem=mem)
 
     return render_template('form2.html', mem=mem)
+  
+
+def safe_get(lst, i, default="N/A"):
+    return lst[i] if i < len(lst) and lst[i] else default
 
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
