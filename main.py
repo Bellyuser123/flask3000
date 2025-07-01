@@ -165,7 +165,7 @@ def form2(mem):
                 db.session.add(entry)
             db.session.commit()
             flash("All members saved successfully.")
-            return render_template('/summary/{family_id})
+            return render_template(f'/summary/{family_id}')
         except Exception as e:
             print("Error:", e)
             flash("Error submitting form.")
