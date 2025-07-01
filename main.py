@@ -132,7 +132,7 @@ def form2(mem):
                     family_id=family_id,
                     name=f"{ln_list[i]} {fn_list[i]} Bhai {mn_list[i]} Bhai",
                     father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
-                    gender=gender_list[i],
+                    gender=safe_get(gender_list, i),
                     relation=relation_list[i],
                     peear=safe_get(peear_list, i),
                     marriage=safe_get(marriage_list, i),
@@ -144,6 +144,22 @@ def form2(mem):
                     email=safe_get(email_list, i),
                     blood=safe_get(blood_list, i)
                 )
+                print("Expected number of members (mem):", mem)
+                print("ln_list:", len(ln_list))
+                print("fn_list:", len(fn_list))
+                print("mn_list:", len(mn_list))
+                print("fln_list:", len(fln_list))
+                print("ffn_list:", len(ffn_list))
+                print("fmn_list:", len(fmn_list))
+                print("gender_list:", len(gender_list))
+                print("relation_list:", len(relation_list))
+                print("marriage_list:", len(marriage_list))
+                print("dob_list:", len(dob_list))
+                print("edu_list:", len(edu_list))
+                print("occu_list:", len(occu_list))
+                print("phone_list:", len(phone_list))
+                print("blood_list:", len(blood_list))
+
                 db.session.add(entry)
             db.session.commit()
             flash("All members saved successfully.")
