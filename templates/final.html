@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Family Summary</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="bg-[#f5f5dc] text-gray-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 mt-10 bg-white rounded-lg shadow-lg">
+      <h1 class="text-3xl font-bold text-[#006400] mb-4 text-center">Family Summary</h1>
+
+      <!-- FAMILY INFO -->
+      <div class="space-y-3">
+        <h2 class="text-xl font-semibold text-[#006400] mb-2">Family Details</h2>
+        <p><strong>Head Name:</strong> {{ family.name }}</p>
+        <p><strong>Email:</strong> {{ family.email }}</p>
+        <p><strong>Ghatak:</strong> {{ family.ghatak }} | <strong>Pradeshik:</strong> {{ family.pradeshik }}</p>
+        <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village }})</p>
+        <p><strong>Native Village:</strong> {{ family.village }}</p>
+        <p><strong>Gotra:</strong> {{ family.gotra }}</p>
+        <p><strong>Residential Address:</strong> {{ family.res_add }}</p>
+        <p><strong>Residential Phone:</strong> {{ family.res_phone }}</p>
+        {% if family.off_add %}
+        <p><strong>Office Address:</strong> {{ family.off_add }}</p>
+        {% endif %}
+        {% if family.off_phone %}
+        <p><strong>Office Phone:</strong> {{ family.off_phone }}</p>
+        {% endif %}
+        <p><strong>Number of Members:</strong> {{ family.mem_num }}</p>
+        <p><strong>Submitted On:</strong> {{ family.date.strftime("%d-%m-%Y %H:%M") }}</p>
+      </div>
+
+      <!-- EDIT FAMILY BUTTON -->
+      <div class="text-right mt-4">
+        <a href="/edit_family/{{ family.id }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Edit Family</a>
+      </div>
+
+      <!-- MEMBER TABLE -->
+      <div class="mt-10 overflow-x-auto">
+        <h2 class="text-xl font-semibold text-[#006400] mb-4">Family Members</h2>
+        <table class="min-w-full table-auto border border-gray-300 text-sm sm:text-base">
+          <thead class="bg-[#006400] text-white">
+            <tr>
+              <th class="p-2 border">Name</th>
+              <th class="p-2 border">Father</th>
+              <th class="p-2 border">Gender</th>
+              <th class="p-2 border">Relation</th>
+              <th class="p-2 border">DOB</th>
+              <th class="p-2 border">Education</th>
+              <th class="p-2 border">Occupation</th>
+              <th class="p-2 border">Phone</th>
+              <th class="p-2 border">Blood</th>
+              <th class="p-2 border">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for member in family.members %}
+            <tr class="bg-white border-t hover:bg-gray-100">
+              <td class="p-2 border break-words">{{ member.name }}</td>
+              <td class="p-2 border break-words">{{ member.father }}</td>
+              <td class="p-2 border">{{ member.gender }}</td>
+              <td class="p-2 border">{{ member.relation }}</td>
+              <td class="p-2 border">{{ member.dob }}</td>
+              <td class="p-2 border">{{ member.edu }}</td>
+              <td class="p-2 border">{{ member.occu }}</td>
+              <td class="p-2 border break-all">{{ member.phone }}</td>
+              <td class="p-2 border">{{ member.blood }}</td>
+              <td class="p-2 border text-center space-x-2">
+                <a href="/edit_member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
+                <a href="/delete_member/{{ member.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- ADD MEMBER BUTTON -->
+      <div class="text-center mt-6">
+        <a href="/add_member?family_id={{ family.id }}" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Add Member</a>
+      </div>
+    </div>
+  </body>
+</html>

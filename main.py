@@ -165,7 +165,7 @@ def form2(mem):
                 db.session.add(entry)
             db.session.commit()
             flash("All members saved successfully.")
-            return render_template('over.html')
+            return render_template('/summary/{family_id})
         except Exception as e:
             print("Error:", e)
             flash("Error submitting form.")
@@ -175,6 +175,12 @@ def form2(mem):
 
 def safe_get(lst, i, default="N/A"):
     return lst[i] if i < len(lst) and lst[i] else default
+  
+  
+@app.route('/summary/<int:family_id>')
+def summary(family_id):
+    family = Family.query.get_or_404(family_id)
+    return render_template('summary.html', family=family)
 
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
