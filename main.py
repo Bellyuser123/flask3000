@@ -163,7 +163,7 @@ def form2(mem):
                 db.session.add(entry)
             db.session.commit()
             flash("All members saved successfully.")
-            return redirect(url_for('admin_panel2'))
+            return redirect('/admin_panel2')
         except Exception as e:
             print("Error:", e)
             flash("Error submitting form.")
@@ -183,7 +183,7 @@ def admin_panel_main():
             password = request.form.get('pass')
             if username == admin_user and password == admin_password:
                 session['user'] = username
-                return render_template('admin_panel1.html')
+                return render_template('admin_panel.html')
             else:
                 flash('Invalid login')
                 return render_template('index.html')
