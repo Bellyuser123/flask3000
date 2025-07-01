@@ -183,15 +183,12 @@ def summary(family_id):
     return render_template('final.html', family=family)
   
   
-@app.route("/delete/<string:table_type>/<string:id>")
-def delete(id, table_type):
-        if table_type == 'projects':
-            post = Member.query.filter_by(id=id).first() if id != 'new' else None
-        db.session.delete(post)
-        db.session.commit()
-        return redirect('/dashboard')
-    else:
-        return render_template('404.html')
+@app.route("/delete/<string:id>")
+def delete(id):
+    post = Member.query.filter_by(id=id).first() if id != 'new' else None
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(f'/summary/{id}')
 
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
