@@ -178,17 +178,20 @@ def safe_get(lst, i, default="N/A"):
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel_main():
-    if 'name' in request.form and 'pass' in request.form:
-            username = request.form.get('name')
-            password = request.form.get('pass')
-            if username == admin_user and password == admin_password:
-                session['user'] = username
-                return render_template('admin_panel.html')
-            else:
-                flash('Invalid login')
-                return render_template('index.html')
-    else:
-        return render_template('index.html')        
+    if 'user' in session and session['user'] == admin_user:
+        data = []
+        if request.method == 'POST':
+            data = Member.query.all()
+            return render_template('admin_panel2.html', data=data)
+    elif request.method == 'POST':
+        username = request.form.get('name')
+        password = request.form.get('pass')
+        data = []
+        if username == admin_user and password == admin_password:
+            session['user'] = username
+            data = Member.query.all()
+            return render_template('admin_panel2.html', data=data)
+    return render_template('index.html')
     
     
 @app.route('/admin_panel1', methods=['GET', 'POST'])
