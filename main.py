@@ -95,7 +95,7 @@ def form1():
                 print("Data saved successfully.")
                 mem = str(num_of_memb)
                 if mem:
-                    return redirect(f'/form2/ + {mem}?family_id={entry.id}')
+                    return redirect(f'/form2/{mem}?family_id={entry.id}')
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
@@ -105,6 +105,7 @@ def form1():
 
 @app.route('/form2/<int:mem>', methods=['GET', 'POST'])
 def form2(mem):
+    family_id = request.args.get('family_id', type=int)
     if request.method == 'POST':
         try:
             ln_list = request.form.getlist('ln[]')
@@ -128,6 +129,7 @@ def form2(mem):
 
             for i in range(mem):
                 entry = Member(
+                    family_id=family_id,
                     name=f"{ln_list[i]} {fn_list[i]} Bhai {mn_list[i]} Bhai",
                     father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
                     gender=gender_list[i],

@@ -8,12 +8,16 @@
   </head>
   <body>
     <div class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">Family Member Form</h1>
+      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">E-Vastik Patark Form</h1>
 
       <!-- Repeat this block for each member -->
       <div class="border-t pt-6 mb-10">
         {% for i in range(mem) %}
-        <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member{{ i + 1}} Details</h2>
+        {% if (i+1) == 1 %}
+          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Family Head's Details</h2>
+        {% else %}
+          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member {{ i + 1}} Details</h2>
+        {% endif %}
 
         <form method="POST" enctype="multipart/form-data" class="space-y-6">
           <!-- Name -->
@@ -52,7 +56,33 @@
           </div>
 
           <!-- Relation with Family Head -->
-          <div>
+          {% if (i+1) == 1 %}
+            <div>
+            <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
+            <select name="relation[]" required class="w-full border p-2 rounded-md">
+              <option value="" disabled >Select relation</option>
+              <option value="self" selected >Self</option>
+              <option value="father">Father</option>
+              <option value="mother">Mother</option>
+              <option value="wife">Wife</option>
+              <option value="husband">Husband</option>
+              <option value="son">Son</option>
+              <option value="daughter">Daughter</option>
+              <option value="brother">Brother</option>
+              <option value="sister">Sister</option>
+              <option value="grandfather">Grandfather</option>
+              <option value="grandmother">Grandmother</option>
+              <option value="grandson">Grandson</option>
+              <option value="granddaughter">Granddaughter</option>
+              <option value="father-in Law">Father-in Law</option>
+              <option value="mother-in Law">Mother-in Law</option>
+              <option value="daughter-in Law">Daughter-in Law</option>
+              <option value="son-in Law">Son-in Law</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          {% else %}
+            <div>
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
             <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select relation</option>
@@ -76,6 +106,7 @@
               <option value="other">Other</option>
             </select>
           </div>
+          {% endif %}
 
           <!-- Peer -->
           <div>

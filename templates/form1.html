@@ -128,11 +128,7 @@
             </label>
             <div class="flex flex-wrap gap-4">
               <label class="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="kuldevi[]"
-                  value="Brahmani Maa"
-                />
+                <input type="checkbox" name="kuldevi[]" value="Brahmani Maa" />
                 <span>Brahmani Maa</span>
               </label>
               <label class="flex items-center space-x-2">
@@ -350,6 +346,8 @@
               id="res_phone"
               name="res_phone"
               required
+              minlength="10"
+              maxlength="10"
               placeholder="Enter number"
               class="w-full border border-gray-300 p-2 rounded-md"
             />
@@ -410,6 +408,8 @@
               id="office_phone"
               name="office_phone"
               placeholder="Enter number"
+              minlength="10"
+              maxlength="10"
               class="w-full border border-gray-300 p-2 rounded-md"
             />
           </div>
@@ -452,7 +452,8 @@
           <button
             type="submit"
             class="w-full sm:w-auto bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
-          >Next
+          >
+            Next
           </button>
         </div>
       </form>
