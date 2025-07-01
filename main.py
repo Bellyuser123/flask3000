@@ -35,9 +35,9 @@ class Family(db.Model):
     k_village = db.Column(db.String(50), nullable=False)
     village = db.Column(db.String(50), nullable=False)
     gotra = db.Column(db.String(50), nullable=True)
-    res_add = db.Column(db.Text(50), nullable=False)
+    res_add = db.Column(db.Text, nullable=False)
     res_phone = db.Column(db.Integer, nullable=False)
-    off_add = db.Column(db.Text(50), nullable=True)
+    off_add = db.Column(db.Text, nullable=True)
     off_phone = db.Column(db.Integer, nullable=True)
     mem_num = db.Column(db.Integer, nullable=False)
     date = db.Column(DateTime)
@@ -90,7 +90,7 @@ def form1():
                     k_name=", ".join(kuldevi_name), k_village=kuldevi_village, village=native_village, gotra=gotra,
                     res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
                 )
-                print(entry)
+                print(f"Saved Family with ID: {entry.id}")
                 db.session.add(entry)
                 db.session.commit()
                 print("Data saved successfully.")
