@@ -90,6 +90,7 @@ def form1():
                     k_name=", ".join(kuldevi_name), k_village=kuldevi_village, village=native_village, gotra=gotra,
                     res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
                 )
+                print(entry)
                 db.session.add(entry)
                 db.session.commit()
                 print("Data saved successfully.")
@@ -99,6 +100,7 @@ def form1():
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
+                return render_template('form1.html')
     return render_template('form1.html')
   
 
@@ -183,13 +185,13 @@ def admin_panel_main():
         if username == admin_user and password == admin_password:
             session['user'] = username
             data = Member.query.all()
-            return render_template('admin_panel2.html', data=data)
+            return render_template('admin_panel.html', data=data)
         else:
             flash('Invalid login')
             return render_template('index.html')
     if 'user' in session and session['user'] == admin_user:
         data = Member.query.all()
-        return render_template('admin_panel2.html', data=data)
+        return render_template('admin_panel.html', data=data)
 
     return render_template('index.html')
 
