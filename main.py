@@ -99,7 +99,6 @@ def form1():
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
-                return render_template('form1.html')
     return render_template('form1.html')
   
 
@@ -163,12 +162,11 @@ def form2(mem):
                 db.session.add(entry)
             db.session.commit()
             flash("All members saved successfully.")
-            return redirect('/admin_panel2')
+            return render_template('over.html')
         except Exception as e:
             print("Error:", e)
             flash("Error submitting form.")
             return render_template('form2.html', mem=mem)
-
     return render_template('form2.html', mem=mem)
   
 
@@ -178,20 +176,23 @@ def safe_get(lst, i, default="N/A"):
   
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel_main():
-    if 'user' in session and session['user'] == admin_user:
-        data = []
-        if request.method == 'POST':
-            data = Member.query.all()
-            return render_template('admin_panel2.html', data=data)
-    elif request.method == 'POST':
+    if request.method == 'POST':
         username = request.form.get('name')
         password = request.form.get('pass')
-        data = []
+
         if username == admin_user and password == admin_password:
             session['user'] = username
             data = Member.query.all()
             return render_template('admin_panel2.html', data=data)
+        else:
+            flash('Invalid login')
+            return render_template('index.html')
+    if 'user' in session and session['user'] == admin_user:
+        data = Member.query.all()
+        return render_template('admin_panel2.html', data=data)
+
     return render_template('index.html')
+
     
     
 @app.route('/admin_panel1', methods=['GET', 'POST'])
