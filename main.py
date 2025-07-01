@@ -45,6 +45,7 @@ class Family(db.Model):
     
 class Member(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    family_id = db.Column(db.Integer, db.ForeignKey('family.id'), nullable=False)
     name = db.Column(db.String(80), nullable=False)
     father = db.Column(db.String(120), nullable=False)
     gender = db.Column(db.String(50), nullable=False)
@@ -58,6 +59,7 @@ class Member(db.Model):
     phone = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=True)
     blood = db.Column(db.String(50), nullable=False)
+    family = db.relationship('Family', backref=db.backref('members', lazy=True))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -93,7 +95,7 @@ def form1():
                 print("Data saved successfully.")
                 mem = str(num_of_memb)
                 if mem:
-                    return redirect('/form2/' + mem)
+                    return redirect(f'/form2/ + {mem}?family_id={entry.id}')
             except Exception as e:
                 print("Error during form processing:", e)
                 flash("Error submitting form.")
