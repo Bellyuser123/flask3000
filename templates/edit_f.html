@@ -301,7 +301,7 @@
               id="address1"
               type="text"
               name="building"
-                   value="{{ fam.name.split(' | ')[0] }}"
+                   value="{{ fam.res_add.split(' | ')[0] }}"
               required
               placeholder="Building Name"
               class="w-full border p-2 rounded-md mb-2"
@@ -310,7 +310,7 @@
               id="address2"
               type="text"
               name="area"
-                   value="{{ fam.name.split(' | ')[1] }}"
+                   value="{{ fam.res_add.split(' | ')[1] }}"
               required
               placeholder="Area"
               class="w-full border p-2 rounded-md mb-2"
@@ -319,7 +319,7 @@
               id="address3"
               type="text"
               name="street"
-                   value="{{ fam.name.split(' | ')[2] }}"
+                   value="{{ fam.res_add.split(' | ')[2] }}"
               required
               placeholder="Road/Street"
               class="w-full border p-2 rounded-md mb-2"
@@ -328,6 +328,7 @@
               id="address4"
               type="text"
               name="landmark"
+                   value="{{ fam.res_add.split(' | ')[3] }}"
               placeholder="Landmark (optional)"
               class="w-full border p-2 rounded-md mb-2"
             />
@@ -335,6 +336,7 @@
               id="address5"
               type="text"
               name="pincode"
+                   value="{{ fam.res_add.split(' | ')[4] }}"
               required
               placeholder="Pincode (6 digits)"
               pattern="\d{6}"
@@ -353,6 +355,7 @@
               type="text"
               id="res_phone"
               name="res_phone"
+                   value="{{ fam.res_phone }}"
               required
               minlength="10"
               maxlength="10"
@@ -370,6 +373,7 @@
               id="office1"
               type="text"
               name="office_building"
+                   value="{{ fam.off_add.split(' | ')[0] }}"
               placeholder="Building Name"
               class="w-full border p-2 rounded-md mb-2"
             />
@@ -377,6 +381,7 @@
               id="office2"
               type="text"
               name="office_area"
+                   value="{{ fam.off_add.split(' | ')[0] }}"
               placeholder="Area"
               class="w-full border p-2 rounded-md mb-2"
             />
