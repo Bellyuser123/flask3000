@@ -68,7 +68,7 @@ def form1():
     if request.method == 'POST':
             try:
                 print("Processing form submission...")
-                name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai" + " " + request.form.get('middle_name') + " Bhai"
+                name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai " + request.form.get('middle_name') + " Bhai"
                 email = request.form.get('email')
                 ghatak = request.form.get('ghatak')
                 pradeshik = request.form.get('pradeshik')
@@ -179,6 +179,9 @@ def safe_get(lst, i, default="N/A"):
 def summary(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('final.html', family=family)
+  
+  
+  
 
 
 @app.route("/delete/<string:id>/<int:family_id>")
