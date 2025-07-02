@@ -187,9 +187,18 @@ def editing_sec(id, type):
             fam = Family.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
               email = request.form.get('email')
-              slug = request.form.get('slug')
-              image = request.form.get('image')
-              date_str = request.form.get('date')
+              ghatak = request.form.get('ghatak')
+              pradeshik = request.form.get('pradeshik')
+              kuldevi_name = request.form.getlist('kuldevi[]')
+              kuldevi_village = request.form.get('kuldevi_village')
+              native_village = request.form.get('native_village')
+              gotra = request.form.get('gotra')
+              address1 = request.form.get('building') + " | " + request.form.get('area') + " | " + request.form.get('street') + " | " + request.form.get('landmark') + " | " + request.form.get('pincode')
+              address2 = request.form.get('office_building') + " | " + request.form.get('office_area') + " | " + request.form.get('office_street') + " | " + request.form.get('office_landmark') + " | " + request.form.get('office_pincode')
+              phone1 = int(request.form.get('res_phone'))
+              phone2_raw = request.form.get('office_phone')
+              phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
+              num_of_memb = int(request.form.get('family_members'))
             return render_template('edit_f.html', id=id)
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
