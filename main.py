@@ -186,7 +186,7 @@ def editing_sec(id, type):
         if type == 'family':
             fam = Family.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
-              title = request.form.get('title')
+              email = request.form.get('email')
               slug = request.form.get('slug')
               image = request.form.get('image')
               date_str = request.form.get('date')
