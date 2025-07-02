@@ -128,7 +128,7 @@ def form2(mem):
             email_list = request.form.getlist('email[]')
             blood_list = request.form.getlist('blood[]')
 
-
+            
             for i in range(mem):
                 entry = Member(
                     family_id=family_id,
@@ -171,26 +171,26 @@ def form2(mem):
             flash("Error submitting form.")
             return render_template('form2.html', mem=mem)
     return render_template('form2.html', mem=mem)
-  
+
 
 def safe_get(lst, i, default="N/A"):
     return lst[i] if i < len(lst) and lst[i] else default
-  
-  
+
+
 @app.route('/summary/<int:family_id>')
 def summary(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('final.html', family=family)
-  
-  
-@app.route("/delete/<string:id>")
-def delete(id):
+
+
+@app.route("/delete/<string:id>/<int:family_id>")
+def delete(id, family_id):
     post = Member.query.filter_by(id=id).first() if id != 'new' else None
     db.session.delete(post)
     db.session.commit()
-    return redirect(f'/summary/{id}')
+    return redirect(f'/summary/{family_id}')
 
-  
+
 @app.route('/admin_panel', methods=['GET', 'POST'])
 def admin_panel_main():
     if request.method == 'POST':

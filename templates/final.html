@@ -68,7 +68,7 @@
               <td class="p-2 border">{{ member.blood }}</td>
               <td class="p-2 border text-center space-x-2">
                 <a href="/edit_member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
-                <a href="/delete/{{ member.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>
+                <a href="/delete/{{ member.id }}/{{ family.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>
               </td>
             </tr>
             {% endfor %}
