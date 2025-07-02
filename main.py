@@ -181,10 +181,16 @@ def summary(family_id):
     return render_template('final.html', family=family)
   
 
-@app.route("/edit/<string:type>/<string:family_id>", methods=['GET', 'POST'])
-def editing_sec(family_id, type):
-        if type == 'projects':
-            post = Projects.query.filter_by(id=id).first() if id != 'new' else None
+@app.route("/edit/<string:type>/<string:id>", methods=['GET', 'POST'])
+def editing_sec(id, type):
+        if type == 'family':
+            fam = Family.query.filter_by(id=id).first() if id != 'new' else None
+            if request.method == 'POST':
+              title = request.form.get('title')
+              slug = request.form.get('slug')
+              image = request.form.get('image')
+              date_str = request.form.get('date')
+            return render_template('edit_f.html', id=id)
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
         else:
@@ -221,12 +227,8 @@ def editing_sec(family_id, type):
                     post.content = content
 
                     db.session.commit()
-                    return redirect('/edit/' + type + '/' + id)
+                    return redirect('/summary/' + type + '/' + id)
             return render_template('editing.html', id=id, type=type)
-        if type == 'projects':
-            post = Projects.query.filter_by(id=id).first()
-        elif type == 'posts':
-            post = Posts.query.filter_by(id=id).first()
         return render_template('editing.html', id=id, type=type, post=post)
 
 

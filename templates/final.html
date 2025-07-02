@@ -33,7 +33,7 @@
 
       <!-- EDIT FAMILY BUTTON -->
       <div class="text-right mt-4">
-        <a href="/edit_family/{{ family.id }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Edit Family</a>
+        <a href="/edit/family/{{ family.id }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Edit Family</a>
       </div>
 
       <!-- MEMBER TABLE -->
@@ -67,7 +67,7 @@
               <td class="p-2 border break-all">{{ member.phone }}</td>
               <td class="p-2 border">{{ member.blood }}</td>
               <td class="p-2 border text-center space-x-2">
-                <a href="/edit_member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
+                <a href="/edit/member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
                 <a href="/delete/{{ member.id }}/{{ family.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>
               </td>
             </tr>
@@ -78,7 +78,7 @@
 
       <!-- ADD MEMBER BUTTON -->
       <div class="text-center mt-6">
-        <a href="/add_member?family_id={{ family.id }}" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Add Member</a>
+        <a href="/edit/member/new" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Add Member</a>
       </div>
     </div>
   </body>
