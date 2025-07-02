@@ -66,11 +66,9 @@ class Member(db.Model):
 @app.route('/', methods=['GET', 'POST'])
 def form1():
     if request.method == 'POST':
-        # If this is a login form submission
             try:
                 print("Processing form submission...")
-                # gather form data
-                name = request.form.get('last_name') + request.form.get('first_name') + " Bhai" + request.form.get('middle_name') + " Bhai"
+                name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai" + " " + request.form.get('middle_name') + " Bhai"
                 email = request.form.get('email')
                 ghatak = request.form.get('ghatak')
                 pradeshik = request.form.get('pradeshik')
@@ -121,7 +119,7 @@ def form2(mem):
             peear_list = request.form.getlist('peear[]')
             marriage_list = request.form.getlist('marriage[]')
             dob_list = request.form.getlist('dob[]')
-            photo_list = request.form.getlist('photo[]')  # handle file uploads separately if needed
+            photo_list = request.form.getlist('photo[]') 
             edu_list = request.form.getlist('edu[]')
             occu_list = request.form.getlist('occu[]')
             phone_list = request.form.getlist('phone[]')
