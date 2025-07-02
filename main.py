@@ -186,6 +186,7 @@ def editing_sec(id, type):
         if type == 'family':
             fam = Family.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
+              
               email = request.form.get('email')
               ghatak = request.form.get('ghatak')
               pradeshik = request.form.get('pradeshik')
@@ -199,7 +200,27 @@ def editing_sec(id, type):
               phone2_raw = request.form.get('office_phone')
               phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
               num_of_memb = int(request.form.get('family_members'))
-            return render_template('edit_f.html', id=id)
+              
+              fam = Family.query.filter_by(id=id).first()
+              if fam:
+                  fam.email = email
+                  fam.ghatak = ghatak
+                  fam.pradeshik = pradeshik
+                  fam.k_name = kuldevi_name
+                  fam.k_village = kuldevi_village
+                  fam.village = native_village
+                  fam.gotra = gotra
+                  fam.res_add = address1
+                  fam.res_phone = phone1
+                  fam.off_add = address2
+                    fam.off_phone = phone2
+                    fam.mem_num = num_of_memb
+              
+                db.session.add(fam)
+                db.session.commit()
+                return redirect('/summary/' + id)
+            return render_template('edit_f.html', id=id, fam=fam)
+          
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
         else:
