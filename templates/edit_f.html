@@ -55,8 +55,8 @@
               required
               class="w-full border border-gray-300 p-2 rounded-md mb-2"
             >
-              <option value="" disabled selected>Select Ghatak</option>
-              <option value="pune">Pune</option>
+              <option value="" disabled>Select Ghatak</option>
+              <option value="pune" {% if fam.ghatak == "pune" %}selected{% endif %}>Pune</option>
             </select>
           </div>
 
@@ -72,7 +72,7 @@
               class="w-full border border-gray-300 p-2 rounded-md mb-2"
             >
               <option value="" disabled selected>Select Pradeshik</option>
-              <option value="mumbai">Mumbai</option>
+              <option value="mumbai" {% if fam.pradeshik == "mumbai" %}selected{% endif %}>Mumbai</option>
             </select>
           </div>
         </section>
@@ -93,6 +93,7 @@
                 type="text"
                 id="first_name"
                 name="first_name"
+                value="{{ fam.res_add.split(' ')[0] }}"
                 required
                 placeholder="First Name"
                 minlength="3"
@@ -103,6 +104,7 @@
                 type="text"
                 id="middle_name"
                 name="middle_name"
+                value="mn"
                 required
                 placeholder="Middle Name"
                 minlength="3"
@@ -113,6 +115,7 @@
                 type="text"
                 id="last_name"
                 name="last_name"
+                value="ln"
                 required
                 placeholder="Last Name"
                 minlength="3"

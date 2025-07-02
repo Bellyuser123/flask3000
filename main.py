@@ -186,33 +186,34 @@ def editing_sec(id, type):
         if type == 'family':
             fam = Family.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
+                name = name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai " + request.form.get('middle_name') + " Bhai"
+                email = request.form.get('email')
+                ghatak = request.form.get('ghatak')
+                pradeshik = request.form.get('pradeshik')
+                kuldevi_name = request.form.getlist('kuldevi[]')
+                kuldevi_village = request.form.get('kuldevi_village')
+                native_village = request.form.get('native_village')
+                gotra = request.form.get('gotra')
+                address1 = request.form.get('building') + " | " + request.form.get('area') + " | " + request.form.get('street') + " | " + request.form.get('landmark') + " | " + request.form.get('pincode')
+                address2 = request.form.get('office_building') + " | " + request.form.get('office_area') + " | " + request.form.get('office_street') + " | " + request.form.get('office_landmark') + " | " + request.form.get('office_pincode')
+                phone1 = int(request.form.get('res_phone'))
+                phone2_raw = request.form.get('office_phone')
+                phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
+                num_of_memb = int(request.form.get('family_members'))
               
-              email = request.form.get('email')
-              ghatak = request.form.get('ghatak')
-              pradeshik = request.form.get('pradeshik')
-              kuldevi_name = request.form.getlist('kuldevi[]')
-              kuldevi_village = request.form.get('kuldevi_village')
-              native_village = request.form.get('native_village')
-              gotra = request.form.get('gotra')
-              address1 = request.form.get('building') + " | " + request.form.get('area') + " | " + request.form.get('street') + " | " + request.form.get('landmark') + " | " + request.form.get('pincode')
-              address2 = request.form.get('office_building') + " | " + request.form.get('office_area') + " | " + request.form.get('office_street') + " | " + request.form.get('office_landmark') + " | " + request.form.get('office_pincode')
-              phone1 = int(request.form.get('res_phone'))
-              phone2_raw = request.form.get('office_phone')
-              phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
-              num_of_memb = int(request.form.get('family_members'))
-              
-              fam = Family.query.filter_by(id=id).first()
-              if fam:
-                  fam.email = email
-                  fam.ghatak = ghatak
-                  fam.pradeshik = pradeshik
-                  fam.k_name = kuldevi_name
-                  fam.k_village = kuldevi_village
-                  fam.village = native_village
-                  fam.gotra = gotra
-                  fam.res_add = address1
-                  fam.res_phone = phone1
-                  fam.off_add = address2
+                fam = Family.query.filter_by(id=id).first()
+                if fam:
+                    fam.name = name
+                    fam.email = email
+                    fam.ghatak = ghatak
+                    fam.pradeshik = pradeshik
+                    fam.k_name = kuldevi_name
+                    fam.k_village = kuldevi_village
+                    fam.village = native_village
+                    fam.gotra = gotra
+                    fam.res_add = address1
+                    fam.res_phone = phone1
+                    fam.off_add = address2
                     fam.off_phone = phone2
                     fam.mem_num = num_of_memb
               
