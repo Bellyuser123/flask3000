@@ -140,51 +140,52 @@
                   type="checkbox"
                   name="kuldevi[]"
                   value="Butbhavani Maa"
+                       {% if 'Butbhavani Maa' in fam.k_name %}checked{% endif %}
                 />
                 <span>Butbhavani Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Chamunda Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Chamunda Maa" {% if 'Chamunda Maa' in fam.k_name %}checked{% endif %}/>
                 <span>Chamunda Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Chaval Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Chaval Maa" {% if 'Chaval Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Chaval Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Gatrad Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Gatrad Maa" {% if 'Gatrad Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Gatrad Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Kalika Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Kalika Maa" {% if 'Kalika Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Kalika Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Khodiar Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Khodiar Maa" {% if 'Khodiar Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Khodiar Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Momai Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Momai Maa" {% if 'Momai Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Momai Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Pithad Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Pithad Maa" {% if 'Pithad Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Pithad Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Saval Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Saval Maa" {% if 'Saval Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Saval Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Sikoter Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Sikoter Maa" {% if 'Sikoter Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Sikoter Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Vishal Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Vishal Maa" {% if 'Vishal Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Vishal Maa</span>
               </label>
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Truthiad Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Truthiad Maa" {% if 'Truthiad Maa' in fam.k_name %}checked{% endif %}/>/>
                 <span>Truthiad Maa</span>
               </label>
             </div>
@@ -201,25 +202,25 @@
               required
               class="w-full border border-gray-300 p-2 rounded-md"
             >
-              <option value="" disabled selected>Select village</option>
-              <option value="anjar">Anjar</option>
-              <option value="chandia">Chandia</option>
-              <option value="devaliya">Devaliya</option>
-              <option value="galpadar">Galpadar</option>
-              <option value="hajapar">Hajapar</option>
-              <option value="jambudi">Jambudi</option>
-              <option value="khambhra">Khambhra</option>
-              <option value="khedol">Khedol</option>
-              <option value="kumbharia">Kumbharia</option>
-              <option value="kukma">Kukma</option>
-              <option value="lovaria">Lovaria</option>
-              <option value="madhapar">Madhapar</option>
-              <option value="meghpar">Meghpar</option>
-              <option value="nagalpar">Nagalpar</option>
-              <option value="nagor">Nagor</option>
-              <option value="reha">Reha</option>
-              <option value="sinogara">Sinogara</option>
-              <option value="vidi">Vidi</option>
+              <option value="" disabled>Select village</option>
+              <option value="anjar" {% if fam.k_village == "anjar" %}selected{% endif %}>Anjar</option>
+              <option value="chandia" {% if fam.k_village == "chandia" %}selected{% endif %}>Chandia</option>
+              <option value="devaliya" {% if fam.k_village == "devaliya" %}selected{% endif %}>Devaliya</option>
+              <option value="galpadar" {% if fam.k_village == "galpadar" %}selected{% endif %}>Galpadar</option>
+              <option value="hajapar" {% if fam.k_village == "hajapar" %}selected{% endif %}>Hajapar</option>
+              <option value="jambudi" {% if fam.k_village == "jambudi" %}selected{% endif %}>Jambudi</option>
+              <option value="khambhra" {% if fam.k_village == "khambhra" %}selected{% endif %}>Khambhra</option>
+              <option value="khedol" {% if fam.k_village == "khedol" %}selected{% endif %}>Khedol</option>
+              <option value="kumbharia" {% if fam.k_village == "kumbharia" %}selected{% endif %}>Kumbharia</option>
+              <option value="kukma" {% if fam.k_village == "kukma" %}selected{% endif %}>Kukma</option>
+              <option value="lovaria" {% if fam.k_village == "lovaria" %}selected{% endif %}>Lovaria</option>
+              <option value="madhapar" {% if fam.k_village == "madhapar" %}selected{% endif %}>Madhapar</option>
+              <option value="meghpar" {% if fam.k_village == "meghpar" %}selected{% endif %}>Meghpar</option>
+              <option value="nagalpar" {% if fam.k_village == "nagalpar" %}selected{% endif %}>Nagalpar</option>
+              <option value="nagor" {% if fam.k_village == "nagor" %}selected{% endif %}>Nagor</option>
+              <option value="reha" {% if fam.k_village == "reha" %}selected{% endif %}>Reha</option>
+              <option value="sinogara" {% if fam.k_village == "sinogara" %}selected{% endif %}>Sinogara</option>
+              <option value="vidi" {% if fam.k_village == "vidi" %}selected{% endif %}>Vidi</option>
             </select>
           </div>
 
@@ -234,25 +235,25 @@
               required
               class="w-full border border-gray-300 p-2 rounded-md"
             >
-              <option value="" disabled selected>Select native village</option>
-              <option value="anjar">Anjar</option>
-              <option value="chandia">Chandia</option>
-              <option value="devaliya">Devaliya</option>
-              <option value="galpadar">Galpadar</option>
-              <option value="hajapar">Hajapar</option>
-              <option value="jambudi">Jambudi</option>
-              <option value="khambhra">Khambhra</option>
-              <option value="khedol">Khedol</option>
-              <option value="kumbharia">Kumbharia</option>
-              <option value="kukma">Kukma</option>
-              <option value="lovaria">Lovaria</option>
-              <option value="madhapar">Madhapar</option>
-              <option value="meghpar">Meghpar</option>
-              <option value="nagalpar">Nagalpar</option>
-              <option value="nagor">Nagor</option>
-              <option value="reha">Reha</option>
-              <option value="sinogara">Sinogara</option>
-              <option value="vidi">Vidi</option>
+              <option value="" disabled>Select village</option>
+              <option value="anjar" {% if fam.k_village == "anjar" %}selected{% endif %}>Anjar</option>
+              <option value="chandia" {% if fam.k_village == "chandia" %}selected{% endif %}>Chandia</option>
+              <option value="devaliya" {% if fam.k_village == "devaliya" %}selected{% endif %}>Devaliya</option>
+              <option value="galpadar" {% if fam.k_village == "galpadar" %}selected{% endif %}>Galpadar</option>
+              <option value="hajapar" {% if fam.k_village == "hajapar" %}selected{% endif %}>Hajapar</option>
+              <option value="jambudi" {% if fam.k_village == "jambudi" %}selected{% endif %}>Jambudi</option>
+              <option value="khambhra" {% if fam.k_village == "khambhra" %}selected{% endif %}>Khambhra</option>
+              <option value="khedol" {% if fam.k_village == "khedol" %}selected{% endif %}>Khedol</option>
+              <option value="kumbharia" {% if fam.k_village == "kumbharia" %}selected{% endif %}>Kumbharia</option>
+              <option value="kukma" {% if fam.k_village == "kukma" %}selected{% endif %}>Kukma</option>
+              <option value="lovaria" {% if fam.k_village == "lovaria" %}selected{% endif %}>Lovaria</option>
+              <option value="madhapar" {% if fam.k_village == "madhapar" %}selected{% endif %}>Madhapar</option>
+              <option value="meghpar" {% if fam.k_village == "meghpar" %}selected{% endif %}>Meghpar</option>
+              <option value="nagalpar" {% if fam.k_village == "nagalpar" %}selected{% endif %}>Nagalpar</option>
+              <option value="nagor" {% if fam.k_village == "nagor" %}selected{% endif %}>Nagor</option>
+              <option value="reha" {% if fam.k_village == "reha" %}selected{% endif %}>Reha</option>
+              <option value="sinogara" {% if fam.k_village == "sinogara" %}selected{% endif %}>Sinogara</option>
+              <option value="vidi" {% if fam.k_village == "vidi" %}selected{% endif %}>Vidi</option>
             </select>
           </div>
 
@@ -265,22 +266,22 @@
               class="w-full border border-gray-300 p-2 rounded-md"
             >
               <option value="" disabled selected>Select Gotra</option>
-              <option value="ATREE">ATREE</option>
-              <option value="BHARDWAJ">BHARDWAJ</option>
-              <option value="GARG">GARG</option>
-              <option value="GAUTAM">GAUTAM</option>
-              <option value="KASHYAP">KASHYAP</option>
-              <option value="KAUDINYA">KAUDINYA</option>
-              <option value="SANKADI">SANKADI</option>
-              <option value="SHANDIL">SHANDIL</option>
-              <option value="SHAUNAK">SHAUNAK</option>
-              <option value="SONAL">SONAL</option>
-              <option value="VALMIK">VALMIK</option>
-              <option value="VARSHA">VARSHA</option>
-              <option value="VASHISHTHA">VASHISHTHA</option>
-              <option value="VATSA">VATSA</option>
-              <option value="VISHVAMITRA">VISHVAMITRA</option>
-              <option value="OTHER">OTHER</option>
+              <option value="ATREE" {% if fam.k_village == "ATREE" %}selected{% endif %}>ATREE</option>
+              <option value="BHARDWAJ" {% if fam.k_village == "BHARDWAJ" %}selected{% endif %}>BHARDWAJ</option>
+              <option value="GARG" {% if fam.k_village == "GARG" %}selected{% endif %}>GARG</option>
+              <option value="GAUTAM" {% if fam.k_village == "GAUTAM" %}selected{% endif %}>GAUTAM</option>
+              <option value="KASHYAP" {% if fam.k_village == "KASHYAP" %}selected{% endif %}>KASHYAP</option>
+              <option value="KAUDINYA" {% if fam.k_village == "KAUDINYA" %}selected{% endif %}>KAUDINYA</option>
+              <option value="SANKADI" {% if fam.k_village == "SANKADI" %}selected{% endif %}>SANKADI</option>
+              <option value="SHANDIL" {% if fam.k_village == "SHANDIL" %}selected{% endif %}>SHANDIL</option>
+              <option value="SHAUNAK" {% if fam.k_village == "SHAUNAK" %}selected{% endif %}>SHAUNAK</option>
+              <option value="SONAL" {% if fam.k_village == "SONAL" %}selected{% endif %}>SONAL</option>
+              <option value="VALMIK" {% if fam.k_village == "VALMIK" %}selected{% endif %}>VALMIK</option>
+              <option value="VARSHA" {% if fam.k_village == "VARSHA" %}selected{% endif %}>VARSHA</option>
+              <option value="VASHISHTHA" {% if fam.k_village == "VASHISHTHA" %}selected{% endif %}>VASHISHTHA</option>
+              <option value="VATSA" {% if fam.k_village == "VATSA" %}selected{% endif %}>VATSA</option>
+              <option value="VISHVAMITRA" {% if fam.k_village == "VISHVAMITRA" %}selected{% endif %}>VISHVAMITRA</option>
+              <option value="OTHER" {% if fam.k_village == "OTHER" %}selected{% endif %}>OTHER</option>
             </select>
           </div>
         </section>
@@ -300,6 +301,7 @@
               id="address1"
               type="text"
               name="building"
+                   value="{{ fam.name.split(' | ')[0] }}"
               required
               placeholder="Building Name"
               class="w-full border p-2 rounded-md mb-2"
@@ -308,6 +310,7 @@
               id="address2"
               type="text"
               name="area"
+                   value="{{ fam.name.split(' | ')[1] }}"
               required
               placeholder="Area"
               class="w-full border p-2 rounded-md mb-2"
@@ -316,6 +319,7 @@
               id="address3"
               type="text"
               name="street"
+                   value="{{ fam.name.split(' | ')[2] }}"
               required
               placeholder="Road/Street"
               class="w-full border p-2 rounded-md mb-2"
