@@ -186,7 +186,7 @@ def summary(family_id):
 @app.route("/delete/<string:id>/<int:family_id>")
 def delete(id, family_id):
     post = Member.query.filter_by(id=id).first() if id != 'new' else None
-    fam = Family.query.filter_by(id=id).first()
+    fam = Family.query.filter_by(id=family_id).first()
     fam.mem_num -= 1
     db.session.delete(post)
     db.session.commit()
