@@ -93,7 +93,7 @@
                 type="text"
                 id="first_name"
                 name="first_name"
-                value="{{ fam.res_add.split(' ')[0] }}"
+                value="{{ fam.name.split(' ')[0] }}"
                 required
                 placeholder="First Name"
                 minlength="3"
@@ -104,7 +104,7 @@
                 type="text"
                 id="middle_name"
                 name="middle_name"
-                value="mn"
+                value="{{ fam.name.split(' ')[1] }}"
                 required
                 placeholder="Middle Name"
                 minlength="3"
@@ -115,7 +115,7 @@
                 type="text"
                 id="last_name"
                 name="last_name"
-                value="ln"
+                value="{{ fam.name.split(' ')[2] }}"
                 required
                 placeholder="Last Name"
                 minlength="3"
@@ -132,7 +132,7 @@
             </label>
             <div class="flex flex-wrap gap-4">
               <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Brahmani Maa" />
+                <input type="checkbox" name="kuldevi[]" value="Brahmani Maa" {% if 'Brahmani Maa' in fam.k_name %}checked{% endif %}/>
                 <span>Brahmani Maa</span>
               </label>
               <label class="flex items-center space-x-2">
