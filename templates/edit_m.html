@@ -12,11 +12,11 @@
 
       <!-- Repeat this block for each member -->
       <div class="border-t pt-6 mb-10">
-        {% for i in range(mem) %}
-        {% if (i+1) == 1 %}
-          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Family Head's Details</h2>
+        
+        {% if mem.relation == "self" %}
+          <h2 class="text-2xl font-semibold text-[#006459] mb-4"> Edit Family Head's Details</h2>
         {% else %}
-          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Member {{ i + 1}} Details</h2>
+          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Edit Member Details</h2>
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data" class="space-y-6">
@@ -51,7 +51,7 @@
           </div>
 
           <!-- Relation with Family Head -->
-          {% if (i+1) == 1 %}
+          {% if mem.relation == "self" %}
             <div>
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
             <select name="relation[]" required class="w-full border p-2 rounded-md">

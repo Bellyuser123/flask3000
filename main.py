@@ -221,8 +221,13 @@ def editing_sec(id, type):
                 db.session.commit()
                 return redirect('/summary/' + id)
             return render_template('edit_f.html', id=id, fam=fam, type=type)
-        elif type='member':
-            pass
+        elif type == 'member':
+            mem = Member.query.filter_by(id=id).first() if id != 'new' else None
+            if request.method == 'POST':
+                pass
+            return render_template('edit_m.html', id=id, mem=mem, type=type)
+          
+          
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
         else:
