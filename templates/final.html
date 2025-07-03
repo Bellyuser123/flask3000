@@ -13,7 +13,7 @@
       <!-- FAMILY INFO -->
       <div class="space-y-3">
         <h2 class="text-xl font-semibold text-[#006400] mb-2">Family Details</h2>
-        <p><strong>Head Name:</strong> {{ family.name }}</p>
+        <p><strong>Head Name:</strong> {{ (" Bhai ").join(family.name.split(' ')) }}</p>
         <p><strong>Email:</strong> {{ family.email }}</p>
         <p><strong>Ghatak:</strong> {{ family.ghatak }} | <strong>Pradeshik:</strong> {{ family.pradeshik }}</p>
         <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village }})</p>

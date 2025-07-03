@@ -68,7 +68,7 @@ def form1():
     if request.method == 'POST':
             try:
                 print("Processing form submission...")
-                name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai " + request.form.get('middle_name') + " Bhai"
+                name = request.form.get('last_name') + " " + request.form.get('first_name') + " " + request.form.get('middle_name') 
                 email = request.form.get('email')
                 ghatak = request.form.get('ghatak')
                 pradeshik = request.form.get('pradeshik')
@@ -130,8 +130,8 @@ def form2(mem):
             for i in range(mem):
                 entry = Member(
                     family_id=family_id,
-                    name=f"{ln_list[i]} {fn_list[i]} Bhai {mn_list[i]} Bhai",
-                    father=f"{fln_list[i]} {ffn_list[i]} Bhai {fmn_list[i]} Bhai",
+                    name=f"{ln_list[i]} {fn_list[i]} {mn_list[i]}",
+                    father=f"{fln_list[i]} {ffn_list[i]} {fmn_list[i]}",
                     gender=safe_get(gender_list, i),
                     relation=relation_list[i],
                     peear=safe_get(peear_list, i),
@@ -186,7 +186,7 @@ def editing_sec(id, type):
         if type == 'family':
             fam = Family.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
-                name = name = request.form.get('last_name') + " " + request.form.get('first_name') + " Bhai " + request.form.get('middle_name') + " Bhai"
+                name = name = request.form.get('last_name') +" "+ request.form.get('first_name') + " " + request.form.get('middle_name') 
                 email = request.form.get('email')
                 ghatak = request.form.get('ghatak')
                 pradeshik = request.form.get('pradeshik')
@@ -220,7 +220,7 @@ def editing_sec(id, type):
                 db.session.add(fam)
                 db.session.commit()
                 return redirect('/summary/' + id)
-            return render_template('edit_f.html', id=id, fam=fam)
+            return render_template('edit_f.html', id=id, fam=fam, type=type)
           
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
