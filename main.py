@@ -221,7 +221,8 @@ def editing_sec(id, type):
                 db.session.commit()
                 return redirect('/summary/' + id)
             return render_template('edit_f.html', id=id, fam=fam, type=type)
-          
+        elif type='member':
+            pass
         elif type == 'posts':
             post = Posts.query.filter_by(id=id).first() if id != 'new' else None
         else:
@@ -281,14 +282,14 @@ def admin_panel_main():
 
         if username == admin_user and password == admin_password:
             session['user'] = username
-            data = Member.query.all()
-            return render_template('admin_panel2.html', data=data)
+            data = Family.query.all()
+            return render_template('admin_panel.html', data=data)
         else:
             flash('Invalid login')
             return render_template('index.html')
     if 'user' in session and session['user'] == admin_user:
-        data = Member.query.all()
-        return render_template('admin_panel2.html', data=data)
+        data = Family.query.all()
+        return render_template('admin_panel.html', data=data)
 
     return render_template('index.html')
 

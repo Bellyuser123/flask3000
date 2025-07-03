@@ -357,6 +357,7 @@
               name="res_phone"
                    value="{{ fam.res_phone }}"
               required
+                   pattern="\d{10}"
               minlength="10"
               maxlength="10"
               placeholder="Enter number"
@@ -425,6 +426,7 @@
               name="office_phone"
               placeholder="Enter number"
                    value="{{ fam.off_phone }}"
+                   pattern="\d{10}"
               minlength="10"
               maxlength="10"
               class="w-full border border-gray-300 p-2 rounded-md"

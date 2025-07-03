@@ -13,17 +13,18 @@
       <!-- FAMILY INFO -->
       <div class="space-y-3">
         <h2 class="text-xl font-semibold text-[#006400] mb-2">Family Details</h2>
-        <p><strong>Head Name:</strong> {{ (" Bhai ").join(family.name.split(' ')) }}</p>
+        {% set name_parts = family.name.split(' ') %}
+        <p><strong>Head Name:</strong> {{ name_parts[0] | capitalize }} {{ name_parts[1] | capitalize }} Bhai {{ name_parts[2] | capitalize }} Bhai</p>
         <p><strong>Email:</strong> {{ family.email }}</p>
-        <p><strong>Ghatak:</strong> {{ family.ghatak }} | <strong>Pradeshik:</strong> {{ family.pradeshik }}</p>
-        <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village }})</p>
-        <p><strong>Native Village:</strong> {{ family.village }}</p>
+        <p><strong>Ghatak:</strong> {{ family.ghatak | capitalize}} | <strong>Pradeshik:</strong> {{ family.pradeshik | capitalize}}</p>
+        <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village | capitalize}})</p>
+        <p><strong>Native Village:</strong> {{ family.village | capitalize}}</p>
         <p><strong>Gotra:</strong> {{ family.gotra }}</p>
         <p><strong>Residential Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
         <p><strong>Residential Phone:</strong> {{ family.res_phone }}</p>
-        {% if family.off_add == " | | | |" %}
+        {% if family.off_add == "| | | |	" %}
         {% else %}
-        <p><strong>Office Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
+        <p><strong>Office Address:</strong> {{ (", ").join(family.off_add.split(' | ')) }}</p>
         {% endif %}
         {% if family.off_phone %}
         <p><strong>Office Phone:</strong> {{ family.off_phone }}</p>
