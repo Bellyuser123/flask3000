@@ -19,10 +19,11 @@
         <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village }})</p>
         <p><strong>Native Village:</strong> {{ family.village }}</p>
         <p><strong>Gotra:</strong> {{ family.gotra }}</p>
-        <p><strong>Residential Address:</strong> {{ family.res_add }}</p>
+        <p><strong>Residential Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
         <p><strong>Residential Phone:</strong> {{ family.res_phone }}</p>
-        {% if family.off_add %}
-        <p><strong>Office Address:</strong> {{ family.off_add }}</p>
+        {% if family.off_add == " | | | |" %}
+        {% else %}
+        <p><strong>Office Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
         {% endif %}
         {% if family.off_phone %}
         <p><strong>Office Phone:</strong> {{ family.off_phone }}</p>
