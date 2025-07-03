@@ -207,7 +207,7 @@ def editing_sec(id, type):
                     fam.email = email
                     fam.ghatak = ghatak
                     fam.pradeshik = pradeshik
-                    fam.k_name = kuldevi_name
+                    fam.k_name = ", ".join(kuldevi_name)
                     fam.k_village = kuldevi_village
                     fam.village = native_village
                     fam.gotra = gotra
