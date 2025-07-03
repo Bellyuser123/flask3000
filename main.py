@@ -175,7 +175,7 @@ def safe_get(lst, i, default="N/A"):
     return lst[i] if i < len(lst) and lst[i] else default
 
 
-@app.route('/summary/<int:family_id>')
+@app.route('/summary/<int:family_id>', methods=['GET', 'POST'])
 def summary(family_id):
     family = Family.query.get_or_404(family_id)
     return render_template('final.html', family=family)
