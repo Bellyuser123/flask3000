@@ -425,8 +425,10 @@
               id="office_phone"
               name="office_phone"
               placeholder="Enter number"
-                   value="{{ fam.off_phone }}"
-                   pattern="\d{10}"
+              {% if fam.off_phone %}
+                  value="{{ fam.off_phone }}"
+              {% endif %}
+              pattern="\d{10}"
               minlength="10"
               maxlength="10"
               class="w-full border border-gray-300 p-2 rounded-md"
