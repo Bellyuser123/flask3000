@@ -168,7 +168,7 @@ def form2(mem):
             print("Error:", e)
             flash("Error submitting form.")
             return render_template('form2.html', mem=mem)
-    return render_template('form2.html', mem=mem)
+    return render_template('form2.html', mem=mem, family_id=family_id)
 
 
 def safe_get(lst, i, default="N/A"):
