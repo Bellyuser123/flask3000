@@ -7,43 +7,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">E-Vastik Patark Form</h1>
+    <div
+      class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
+    >
+      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
+        E-Vastik Patark Form
+      </h1>
 
       <!-- Repeat this block for each member -->
       <div class="border-t pt-6 mb-10">
-        
         {% if mem.relation == "self" %}
-          <h2 class="text-2xl font-semibold text-[#006459] mb-4"> Edit Family Head's Details</h2>
+        <h2 class="text-2xl font-semibold text-[#006459] mb-4">
+          Edit Family Head's Details
+        </h2>
+        {% elif id.split("?")[0] == "new" %}
+        <h2 class="text-2xl font-semibold text-[#006459] mb-4">
+          Add Member Details
+        </h2>
         {% else %}
-          <h2 class="text-2xl font-semibold text-[#006459] mb-4">Edit Member Details</h2>
+        <h2 class="text-2xl font-semibold text-[#006459] mb-4">
+          Edit Member Details
+        </h2>
         {% endif %}
 
         <form method="POST" enctype="multipart/form-data" class="space-y-6">
           <!-- Name -->
           <div>
-            <label class="block font-medium mb-1">Name <span class="text-red-500">*</span></label>
+            <label class="block font-medium mb-1"
+              >Name <span class="text-red-500">*</span></label
+            >
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="fn[]" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="mn[]" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="ln[]" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input
+                type="text"
+                name="fn"
+                placeholder="First Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
+              <input
+                type="text"
+                name="mn"
+                placeholder="Middle Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
+              <input
+                type="text"
+                name="ln"
+                placeholder="Last Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
             </div>
           </div>
 
           <!-- Father's Name -->
           <div>
-            <label class="block font-medium mb-1">Father's Name <span class="text-red-500">*</span></label>
+            <label class="block font-medium mb-1"
+              >Father's Name <span class="text-red-500">*</span></label
+            >
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input type="text" name="ffn[]" placeholder="First Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="fmn[]" placeholder="Middle Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
-              <input type="text" name="fln[]" placeholder="Last Name" required minlength="3" maxlength="25" class="border p-2 rounded-md w-full" />
+              <input
+                type="text"
+                name="ffn"
+                placeholder="First Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
+              <input
+                type="text"
+                name="fmn"
+                placeholder="Middle Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
+              <input
+                type="text"
+                name="fln"
+                placeholder="Last Name"
+                required
+                minlength="3"
+                maxlength="25"
+                class="border p-2 rounded-md w-full"
+              />
             </div>
           </div>
 
           <!-- Gender -->
           <div>
-            <label class="block font-medium mb-1">Gender <span class="text-red-500">*</span></label>
-            <select name="gender[]" required class="w-full border p-2 rounded-md">
+            <label class="block font-medium mb-1"
+              >Gender <span class="text-red-500">*</span></label
+            >
+            <select
+              name="gender"
+              required
+              class="w-full border p-2 rounded-md"
+            >
               <option value="" disabled selected>Select</option>
               <option value="M">Male</option>
               <option value="F">Female</option>
@@ -52,11 +121,18 @@
 
           <!-- Relation with Family Head -->
           {% if mem.relation == "self" %}
-            <div>
-            <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
-            <select name="relation[]" required class="w-full border p-2 rounded-md">
-              <option value="" disabled >Select relation</option>
-              <option value="self" selected >Self</option>
+          <div>
+            <label class="block font-medium mb-1"
+              >Relation with Family Head
+              <span class="text-red-500">*</span></label
+            >
+            <select
+              name="relation"
+              required
+              class="w-full border p-2 rounded-md"
+            >
+              <option value="" disabled>Select relation</option>
+              <option value="self" selected>Self</option>
               <option value="father" disabled>Father</option>
               <option value="mother" disabled>Mother</option>
               <option value="wife" disabled>Wife</option>
@@ -76,10 +152,49 @@
               <option value="other" disabled>Other</option>
             </select>
           </div>
+          {% elif id.split("?")[0] == "new" %}
+          <div>
+            <label class="block font-medium mb-1"
+              >Relation with Family Head
+              <span class="text-red-500">*</span></label
+            >
+            <select
+              name="relation"
+              required
+              class="w-full border p-2 rounded-md"
+            >
+              <option value="" disabled selected>Select relation</option>
+              <option value="self" disabled>Self</option>
+              <option value="father">Father</option>
+              <option value="mother">Mother</option>
+              <option value="wife">Wife</option>
+              <option value="husband">Husband</option>
+              <option value="son">Son</option>
+              <option value="daughter">Daughter</option>
+              <option value="brother">Brother</option>
+              <option value="sister">Sister</option>
+              <option value="grandfather">Grandfather</option>
+              <option value="grandmother">Grandmother</option>
+              <option value="grandson">Grandson</option>
+              <option value="granddaughter">Granddaughter</option>
+              <option value="father-in Law">Father-in Law</option>
+              <option value="mother-in Law">Mother-in Law</option>
+              <option value="daughter-in Law">Daughter-in Law</option>
+              <option value="son-in Law">Son-in Law</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
           {% else %}
-            <div>
-            <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
-            <select name="relation[]" required class="w-full border p-2 rounded-md">
+          <div>
+            <label class="block font-medium mb-1"
+              >Relation with Family Head
+              <span class="text-red-500">*</span></label
+            >
+            <select
+              name="relation"
+              required
+              class="w-full border p-2 rounded-md"
+            >
               <option value="" disabled selected>Select relation</option>
               <option value="self" disabled>Self</option>
               <option value="father">Father</option>
@@ -106,13 +221,24 @@
           <!-- Peer -->
           <div>
             <label class="block font-medium mb-1">Peear</label>
-            <input type="text" name="peear[]" placeholder="Peear" class="w-full border p-2 rounded-md" />
+            <input
+              type="text"
+              name="peear"
+              placeholder="Peear"
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Marital Status -->
           <div>
-            <label class="block font-medium mb-1">Marital Status <span class="text-red-500">*</span></label>
-            <select name="marriage[]" required class="w-full border p-2 rounded-md">
+            <label class="block font-medium mb-1"
+              >Marital Status <span class="text-red-500">*</span></label
+            >
+            <select
+              name="marriage"
+              required
+              class="w-full border p-2 rounded-md"
+            >
               <option value="" disabled selected>Select status</option>
               <option value="unmarried">Unmarried</option>
               <option value="married">Married</option>
@@ -123,44 +249,84 @@
 
           <!-- Date of Birth -->
           <div>
-            <label class="block font-medium mb-1">Date of Birth <span class="text-red-500">*</span></label>
-            <input type="date" name="dob[]" required class="w-full border p-2 rounded-md" />
+            <label class="block font-medium mb-1"
+              >Date of Birth <span class="text-red-500">*</span></label
+            >
+            <input
+              type="date"
+              name="dob"
+              required
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Photo -->
           <div>
             <label class="block font-medium mb-1">Upload Photo</label>
-            <input type="file" name="photo[]" accept="image/*" class="w-full" />
+            <input type="file" name="photo" accept="image/*" class="w-full" />
           </div>
 
           <!-- Education -->
           <div>
-            <label class="block font-medium mb-1">Education <span class="text-red-500">*</span></label>
-            <input type="text" name="edu[]" required class="w-full border p-2 rounded-md" />
+            <label class="block font-medium mb-1"
+              >Education <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              name="edu"
+              required
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Occupation -->
           <div>
-            <label class="block font-medium mb-1">Occupation <span class="text-red-500">*</span></label>
-            <input type="text" name="occu[]" required class="w-full border p-2 rounded-md" />
+            <label class="block font-medium mb-1"
+              >Occupation <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              name="occu"
+              required
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Mobile No. -->
           <div>
-            <label class="block font-medium mb-1">Mobile No. <span class="text-red-500">*</span></label>
-            <input type="text" name="phone[]" minlength="10" maxlength="11" required class="w-full border p-2 rounded-md" />
+            <label class="block font-medium mb-1"
+              >Mobile No. <span class="text-red-500">*</span></label
+            >
+            <input
+              type="text"
+              name="phone"
+              minlength="10"
+              maxlength="11"
+              required
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Email -->
           <div>
             <label class="block font-medium mb-1">Email</label>
-            <input type="email" name="email[]" class="w-full border p-2 rounded-md" />
+            <input
+              type="email"
+              name="email"
+              class="w-full border p-2 rounded-md"
+            />
           </div>
 
           <!-- Blood Group -->
           <div>
-            <label class="block font-medium mb-1">Blood Group <span class="text-red-500">*</span></label>
-            <select name="blood[]" required class="w-full border p-2 rounded-md">
+            <label class="block font-medium mb-1"
+              >Blood Group <span class="text-red-500">*</span></label
+            >
+            <select
+              name="blood"
+              required
+              class="w-full border p-2 rounded-md"
+            >
               <option value="" disabled selected>Select blood group</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
@@ -175,7 +341,10 @@
 
           <!-- Submit Button (optional if only one member) -->
           <div class="text-center mt-6 sm:mt-8">
-            <button type="submit" class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800">
+            <button
+              type="submit"
+              class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
+            >
               Save Member
             </button>
           </div>
