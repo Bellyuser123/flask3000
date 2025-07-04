@@ -241,14 +241,15 @@ def editing_sec(id, type):
                 phone = request.form.get('phone')
                 email = request.form.get('email')
                 blood = request.form.get('blood')
-                if not id or id == 'new':
-                    if type == 'projects':
-                        post = Projects(id=None, title=title, slug=slug, image=image, date=date, content=content)
-                    elif type == 'posts':
-                        post = Posts(id=None, title=title, slug=slug, image=image, date=date, content=content)
-                db.session.add(post)
-                db.session.commit()
-                return redirect('/edit/' + type + '/' + id)
+                
+                id_list = id.split("?")
+                family_id = id_list[1]
+                
+                if not id_list[0] or id_list[0] == 'new':
+                    post = Member(id=None, family_id=family_id, name=f"{ln} {fn} {mn}", father=f"{fln} {ffn} {fmn}", gender=gender, relation=relation, dob=dob, photo=photo, peear=peear, marriage=marriage, edu=edu, occu=occu, email=email, phone=phone, blood=blood)
+                    db.session.add(post)
+                    db.session.commit()
+                    return redirect('/summary/' + id)
             return render_template('edit_m.html', id=id, mem=mem, type=type)
           
           
