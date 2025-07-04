@@ -224,8 +224,35 @@ def editing_sec(id, type):
         elif type == 'member':
             mem = Member.query.filter_by(id=id).first() if id != 'new' else None
             if request.method == 'POST':
-                pass
+                ln = request.form.get('ln')
+                fn = request.form.get('fn')
+                mn = request.form.get('mn')
+                fln = request.form.get('fln')
+                ffn = request.form.get('ffn')
+                fmn = request.form.get('fmn')
+                gender = request.form.get('gender')
+                relation = request.form.get('relation')
+                peear = request.form.get('peear')
+                marriage = request.form.get('marriage')
+                dob = request.form.get('dob')
+                photo = request.form.get('photo') 
+                edu = request.form.get('edu')
+                occu = request.form.get('occu')
+                phone = request.form.get('phone')
+                email = request.form.get('email')
+                blood = request.form.get('blood')
+                if not id or id == 'new':
+                    if type == 'projects':
+                        post = Projects(id=None, title=title, slug=slug, image=image, date=date, content=content)
+                    elif type == 'posts':
+                        post = Posts(id=None, title=title, slug=slug, image=image, date=date, content=content)
+                db.session.add(post)
+                db.session.commit()
+                return redirect('/edit/' + type + '/' + id)
             return render_template('edit_m.html', id=id, mem=mem, type=type)
+          
+          
+          
           
           
         elif type == 'posts':
