@@ -243,8 +243,8 @@ def editing_sec(id, type):
                 blood = request.form.get('blood')
                 
                 id_list = id.split("?")
-                print(id,id_list)
-                family_id = id_list[1]
+                family_id = request.args.get('family_id', type=int)
+                print(family_id)
                 
                 if not id_list[0] or id_list[0] == 'new':
                     mem = Member(id=None, family_id=family_id, name=f"{ln} {fn} {mn}", father=f"{fln} {ffn} {fmn}", gender=gender, relation=relation, dob=dob, photo=photo, peear=peear, marriage=marriage, edu=edu, occu=occu, email=email, phone=phone, blood=blood)
