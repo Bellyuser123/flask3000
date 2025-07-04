@@ -252,7 +252,24 @@ def editing_sec(id, type):
                     fam.mem_num += 1
                     db.session.add(mem)
                     db.session.commit()
-                    return redirect('/summary/' + family_id)
+                    return redirect('/summary/' + str(family_id))
+                else:
+                    mem = Member.query.filter_by(id=id).first() if id != 'new' else None
+                    if mem:
+                        mem.name = name
+                        mem.father = email
+                        mem.ghatak = ghatak
+                        mem.pradeshik = pradeshik
+                        mem.k_name = ", ".join(kuldevi_name)
+                        mem.k_village = kuldevi_village
+                        mem.village = native_village
+                        mem.gotra = gotra
+                        mem.res_add = address1
+                        mem.res_phone = phone1
+                        mem.off_add = address2
+                        mem.off_phone = phone2
+                        mem.mem_num = num_of_memb
+                    pass
             return render_template('edit_m.html', id=id, mem=mem, type=type)
             
           
