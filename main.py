@@ -173,6 +173,19 @@ def form2(mem):
 
 def safe_get(lst, i, default="N/A"):
     return lst[i] if i < len(lst) and lst[i] else default
+  
+
+@app.template_filter('format_date_for_input')
+def format_date_for_input(date_str):
+    if not date_str:
+        return ''
+    for fmt in ("%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d", "%Y-%m-%d"):
+        try:
+            return datetime.strptime(date_str, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return ''  # fallback if no format matches
+
 
 
 @app.route('/summary/<int:family_id>', methods=['GET', 'POST'])
@@ -273,50 +286,6 @@ def editing_sec(id, type):
                         db.session.commit()
                         return redirect('/summary/' + str(family_id))
             return render_template('edit_m.html', id=id, mem=mem, type=type)
-            
-          
-          
-          
-          
-        elif type == 'posts':
-            post = Posts.query.filter_by(id=id).first() if id != 'new' else None
-        else:
-            post = None
-        if request.method == 'POST':
-            title = request.form.get('title')
-            slug = request.form.get('slug')
-            image = request.form.get('image')
-            date_str = request.form.get('date')
-            try:
-                date = datetime.strptime(date_str, '%Y-%m-%d %H:%M')
-            except ValueError:
-                date = datetime.now().replace(second=0, microsecond=0)
-            content = request.form.get('content')
-            if not id or id == 'new':
-                if type == 'projects':
-                    post = Projects(id=None, title=title, slug=slug, image=image, date=date, content=content)
-                elif type == 'posts':
-                    post = Posts(id=None, title=title, slug=slug, image=image, date=date, content=content)
-                db.session.add(post)
-                db.session.commit()
-                return redirect('/edit/' + type + '/' + id)
-            else:
-                if type == 'projects':
-                    post = Projects.query.filter_by(id=id).first()
-                elif type == 'posts':
-                    post = Posts.query.filter_by(id=id).first()
-
-                if post:
-                    post.title = title
-                    post.slug = slug
-                    post.image = image
-                    post.date = date
-                    post.content = content
-
-                    db.session.commit()
-                    return redirect('/summary/' + type + '/' + id)
-            return render_template('editing.html', id=id, type=type)
-        return render_template('editing.html', id=id, type=type, post=post)
 
 
 @app.route("/delete/<string:id>/<int:family_id>")
