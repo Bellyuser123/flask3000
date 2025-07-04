@@ -9,6 +9,7 @@
   <body class="bg-[#f5f5dc] text-gray-800">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 mt-10 bg-white rounded-lg shadow-lg">
       <h1 class="text-3xl font-bold text-[#006400] mb-4 text-center">Family Summary</h1>
+      <h2 class="text-2xl font-bold text-[#f7b340] mb-4 text-center">Confirm Details</h2>
 
       <!-- FAMILY INFO -->
       <div class="space-y-3">
@@ -81,7 +82,7 @@
       <!-- ADD MEMBER BUTTON -->
       <div class="text-center mt-6">
         <a href="/edit/member/new?family_id={{family.id}}" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Add Member</a>
-        <a href="/edit/member/new?family_id={{family.id}}" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Submit Form</a>
+        <a href="/submit" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800" onclick="return confirm('Are you sure you want to submit form?\nYou won't be able to change the details afterwards.)">Submit Form</a>
       </div>
     </div>
   </body>
