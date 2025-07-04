@@ -298,6 +298,13 @@ def delete(id, family_id):
     db.session.delete(post)
     db.session.commit()
     return redirect(f'/summary/{family_id}')
+  
+  
+@app.route("/submit")
+def submit():
+    return render_template('end.html')
+  
+  
 
 
 @app.route('/admin_panel', methods=['GET', 'POST'])

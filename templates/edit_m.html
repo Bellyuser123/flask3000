@@ -40,12 +40,13 @@
             <label class="block font-medium mb-1"
               >Name <span class="text-red-500">*</span></label
             >
+            {% if id.split("?")[0] != "new" %}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <input
                 type="text"
                 name="fn"
                 placeholder="First Name"
-                value="{{ mem.name.split(" ")[1] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.name.split(" ")[1] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -55,7 +56,7 @@
                 type="text"
                 name="mn"
                 placeholder="Middle Name"
-                value="{{ mem.name.split(" ")[2] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.name.split(" ")[2] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -65,7 +66,7 @@
                 type="text"
                 name="ln"
                 placeholder="Last Name"
-                value="{{ mem.name.split(" ")[0] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.name.split(" ")[0] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -84,7 +85,7 @@
                 type="text"
                 name="ffn"
                 placeholder="First Name"
-                value="{{ mem.father.split(" ")[1] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.father.split(" ")[1] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -94,7 +95,7 @@
                 type="text"
                 name="fmn"
                 placeholder="Middle Name"
-                value="{{ mem.father.split(" ")[2] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.father.split(" ")[2] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -104,7 +105,7 @@
                 type="text"
                 name="fln"
                 placeholder="Last Name"
-                value="{{ mem.father.split(" ")[0] }}"
+                {% if id.split("?")[0] != "new" %}value="{{ mem.father.split(" ")[0] }}"{% endif %}
                 required
                 minlength="3"
                 maxlength="25"
@@ -231,7 +232,7 @@
               type="text"
               name="peear"
               placeholder="Peear"
-              value="{{ mem.peear }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.peear }}"{% endif %}
               class="w-full border p-2 rounded-md"
             />
           </div>
@@ -262,7 +263,7 @@
             <input
               type="date"
               name="dob"
-              value="{{ mem.dob | format_date_for_input }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.dob | format_date_for_input }}"{% endif %}
               required
               class="w-full border p-2 rounded-md"
             />
