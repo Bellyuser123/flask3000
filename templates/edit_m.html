@@ -262,7 +262,7 @@
             <input
               type="date"
               name="dob"
-              value= "{{ mem.dob.strftime('%Y-%m-%d') if mem and mem.dob else '' }}"
+              value="{{ mem.dob | format_date_for_input }}"
               required
               class="w-full border p-2 rounded-md"
             />
