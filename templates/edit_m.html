@@ -57,23 +57,23 @@
             <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled >Select relation</option>
               <option value="self" selected >Self</option>
-              <option value="father">Father</option>
-              <option value="mother">Mother</option>
-              <option value="wife">Wife</option>
-              <option value="husband">Husband</option>
-              <option value="son">Son</option>
-              <option value="daughter">Daughter</option>
-              <option value="brother">Brother</option>
-              <option value="sister">Sister</option>
-              <option value="grandfather">Grandfather</option>
-              <option value="grandmother">Grandmother</option>
-              <option value="grandson">Grandson</option>
-              <option value="granddaughter">Granddaughter</option>
-              <option value="father-in Law">Father-in Law</option>
-              <option value="mother-in Law">Mother-in Law</option>
-              <option value="daughter-in Law">Daughter-in Law</option>
-              <option value="son-in Law">Son-in Law</option>
-              <option value="other">Other</option>
+              <option value="father" disabled>Father</option>
+              <option value="mother" disabled>Mother</option>
+              <option value="wife" disabled>Wife</option>
+              <option value="husband" disabled>Husband</option>
+              <option value="son" disabled>Son</option>
+              <option value="daughter" disabled>Daughter</option>
+              <option value="brother" disabled>Brother</option>
+              <option value="sister" disabled>Sister</option>
+              <option value="grandfather" disabled>Grandfather</option>
+              <option value="grandmother" disabled>Grandmother</option>
+              <option value="grandson" disabled>Grandson</option>
+              <option value="granddaughter" disabled>Granddaughter</option>
+              <option value="father-in Law" disabled>Father-in Law</option>
+              <option value="mother-in Law" disabled>Mother-in Law</option>
+              <option value="daughter-in Law" disabled>Daughter-in Law</option>
+              <option value="son-in Law" disabled>Son-in Law</option>
+              <option value="other" disabled>Other</option>
             </select>
           </div>
           {% else %}
@@ -81,7 +81,7 @@
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
             <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select relation</option>
-              <option value="self">Self</option>
+              <option value="self" disabled>Self</option>
               <option value="father">Father</option>
               <option value="mother">Mother</option>
               <option value="wife">Wife</option>
@@ -172,7 +172,6 @@
               <option value="AB-">AB-</option>
             </select>
           </div>
-          {% endfor %}
 
           <!-- Submit Button (optional if only one member) -->
           <div class="text-center mt-6 sm:mt-8">
