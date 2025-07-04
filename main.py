@@ -302,6 +302,7 @@ def delete(id, family_id):
   
 @app.route("/submit")
 def submit():
+    
     return render_template('end.html')
   
   

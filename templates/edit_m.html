@@ -40,7 +40,6 @@
             <label class="block font-medium mb-1"
               >Name <span class="text-red-500">*</span></label
             >
-            {% if id.split("?")[0] != "new" %}
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <input
                 type="text"
@@ -277,7 +276,7 @@
               name="photo"
               accept="image/*"
               class="w-full"
-              value="{{ mem.photo }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.photo }}"{% endif %}
             />
           </div>
 
@@ -289,7 +288,7 @@
             <input
               type="text"
               name="edu"
-              value="{{ mem.edu }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.edu }}"{% endif %}
               required
               class="w-full border p-2 rounded-md"
             />
@@ -303,7 +302,7 @@
             <input
               type="text"
               name="occu"
-              value="{{ mem.occu }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.occu }}"{% endif %}
               required
               class="w-full border p-2 rounded-md"
             />
@@ -319,7 +318,7 @@
               name="phone"
               minlength="10"
               maxlength="11"
-              value="{{ mem.phone }}"
+              {% if id.split("?")[0] != "new" %}value="{{ mem.phone }}"{% endif %}
               required
               class="w-full border p-2 rounded-md"
             />
