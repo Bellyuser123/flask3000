@@ -30,7 +30,11 @@
         </h2>
         {% endif %}
 
-        <form method="POST" enctype="/edit/{{ type }}/{{ id }}" class="space-y-6">
+        <form
+          method="POST"
+          enctype="/edit/{{ type }}/{{ id }}"
+          class="space-y-6"
+        >
           <!-- Name -->
           <div>
             <label class="block font-medium mb-1"
@@ -41,7 +45,7 @@
                 type="text"
                 name="fn"
                 placeholder="First Name"
-                     value="{{ mem.fn }}"
+                value="{{ mem.name.split(" ")[1] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -51,7 +55,7 @@
                 type="text"
                 name="mn"
                 placeholder="Middle Name"
-                     value="{{ mem.mn }}"
+                value="{{ mem.name.split(" ")[2] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -61,7 +65,7 @@
                 type="text"
                 name="ln"
                 placeholder="Last Name"
-                     value="{{ mem.ln }}"
+                value="{{ mem.name.split(" ")[0] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -80,6 +84,7 @@
                 type="text"
                 name="ffn"
                 placeholder="First Name"
+                value="{{ mem.father.split(" ")[1] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -89,6 +94,7 @@
                 type="text"
                 name="fmn"
                 placeholder="Middle Name"
+                value="{{ mem.father.split(" ")[2] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -98,6 +104,7 @@
                 type="text"
                 name="fln"
                 placeholder="Last Name"
+                value="{{ mem.father.split(" ")[0] }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -111,14 +118,10 @@
             <label class="block font-medium mb-1"
               >Gender <span class="text-red-500">*</span></label
             >
-            <select
-              name="gender"
-              required
-              class="w-full border p-2 rounded-md"
-            >
+            <select name="gender" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select</option>
-              <option value="M">Male</option>
-              <option value="F">Female</option>
+              <option value="M" {% if mem.gender == "M" %}selected{% endif %}>Male</option>
+              <option value="F" {% if mem.gender == "F" %}selected{% endif %}>Female</option>
             </select>
           </div>
 
@@ -200,23 +203,23 @@
             >
               <option value="" disabled selected>Select relation</option>
               <option value="self" disabled>Self</option>
-              <option value="father">Father</option>
-              <option value="mother">Mother</option>
-              <option value="wife">Wife</option>
-              <option value="husband">Husband</option>
-              <option value="son">Son</option>
-              <option value="daughter">Daughter</option>
-              <option value="brother">Brother</option>
-              <option value="sister">Sister</option>
-              <option value="grandfather">Grandfather</option>
-              <option value="grandmother">Grandmother</option>
-              <option value="grandson">Grandson</option>
-              <option value="granddaughter">Granddaughter</option>
-              <option value="father-in Law">Father-in Law</option>
-              <option value="mother-in Law">Mother-in Law</option>
-              <option value="daughter-in Law">Daughter-in Law</option>
-              <option value="son-in Law">Son-in Law</option>
-              <option value="other">Other</option>
+              <option value="father" {% if mem.relation == "father" %}selected{% endif %}>Father</option>
+              <option value="mother" {% if mem.relation == "mother" %}selected{% endif %}>Mother</option>
+              <option value="wife" {% if mem.relation == "wife" %}selected{% endif %}>Wife</option>
+              <option value="husband" {% if mem.relation == "husband" %}selected{% endif %}>Husband</option>
+              <option value="son" {% if mem.relation == "son" %}selected{% endif %}>Son</option>
+              <option value="daughter" {% if mem.relation == "daughter" %}selected{% endif %}>Daughter</option>
+              <option value="brother" {% if mem.relation == "brother" %}selected{% endif %}>Brother</option>
+              <option value="sister" {% if mem.relation == "sister" %}selected{% endif %}>Sister</option>
+              <option value="grandfather" {% if mem.relation == "grandfather" %}selected{% endif %}>Grandfather</option>
+              <option value="grandmother" {% if mem.relation == "grandmother" %}selected{% endif %}>Grandmother</option>
+              <option value="grandson" {% if mem.relation == "grandson" %}selected{% endif %}>Grandson</option>
+              <option value="granddaughter" {% if mem.relation == "granddaughter" %}selected{% endif %}>Granddaughter</option>
+              <option value="father-in Law" {% if mem.relation == "father-in Law" %}selected{% endif %}>Father-in Law</option>
+              <option value="mother-in Law" {% if mem.relation == "mother-in Law" %}selected{% endif %}>Mother-in Law</option>
+              <option value="daughter-in Law" {% if mem.relation == "daughter-in Law" %}selected{% endif %}>Daughter-in Law</option>
+              <option value="son-in Law" {% if mem.relation == "son-in Law" %}selected{% endif %}>Son-in Law</option>
+              <option value="other" {% if mem.relation == "other" %}selected{% endif %}>Other</option>
             </select>
           </div>
           {% endif %}
@@ -228,7 +231,7 @@
               type="text"
               name="peear"
               placeholder="Peear"
-                   value="{{ mem.peear }}"
+              value="{{ mem.peear }}"
               class="w-full border p-2 rounded-md"
             />
           </div>
@@ -244,10 +247,10 @@
               class="w-full border p-2 rounded-md"
             >
               <option value="" disabled selected>Select status</option>
-              <option value="unmarried">Unmarried</option>
-              <option value="married">Married</option>
-              <option value="widowed">Widowed</option>
-              <option value="divorced">Divorced</option>
+              <option value="unmarried" {% if mem.marriage == "unmarried" %}selected{% endif %}>Unmarried</option>
+              <option value="married" {% if mem.marriage == "married" %}selected{% endif %}>Married</option>
+              <option value="widowed" {% if mem.marriage == "widowed" %}selected{% endif %}>Widowed</option>
+              <option value="divorced" {% if mem.marriage == "divorced" %}selected{% endif %}>Divorced</option>
             </select>
           </div>
 
@@ -259,7 +262,7 @@
             <input
               type="date"
               name="dob"
-                   value="{{ mem.date }}"
+              value="{{ mem.date }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -268,7 +271,13 @@
           <!-- Photo -->
           <div>
             <label class="block font-medium mb-1">Upload Photo</label>
-            <input type="file" name="photo" accept="image/*" class="w-full" value="{{ mem.photo }}"/>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              class="w-full"
+              value="{{ mem.photo }}"
+            />
           </div>
 
           <!-- Education -->
@@ -279,7 +288,7 @@
             <input
               type="text"
               name="edu"
-                   value="{{ mem.edu }}"
+              value="{{ mem.edu }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -293,7 +302,7 @@
             <input
               type="text"
               name="occu"
-                   value="{{ mem.occu }}"
+              value="{{ mem.occu }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -309,7 +318,7 @@
               name="phone"
               minlength="10"
               maxlength="11"
-                   value="{{ mem.phone }}"
+              value="{{ mem.phone }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -321,7 +330,9 @@
             <input
               type="email"
               name="email"
-                   value="{{ mem.email }}"
+              {% if mem.email != "N/A" %}
+              value="{{ mem.email }}"
+              {% endif %}
               class="w-full border p-2 rounded-md"
             />
           </div>
@@ -331,11 +342,7 @@
             <label class="block font-medium mb-1"
               >Blood Group <span class="text-red-500">*</span></label
             >
-            <select
-              name="blood"
-              required
-              class="w-full border p-2 rounded-md"
-            >
+            <select name="blood" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select blood group</option>
               <option value="A+">A+</option>
               <option value="A-">A-</option>
