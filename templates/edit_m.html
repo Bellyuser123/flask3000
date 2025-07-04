@@ -41,6 +41,7 @@
                 type="text"
                 name="fn"
                 placeholder="First Name"
+                     value="{{ mem.fn }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -50,6 +51,7 @@
                 type="text"
                 name="mn"
                 placeholder="Middle Name"
+                     value="{{ mem.mn }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -59,6 +61,7 @@
                 type="text"
                 name="ln"
                 placeholder="Last Name"
+                     value="{{ mem.ln }}"
                 required
                 minlength="3"
                 maxlength="25"
@@ -225,6 +228,7 @@
               type="text"
               name="peear"
               placeholder="Peear"
+                   value="{{ mem.peear }}"
               class="w-full border p-2 rounded-md"
             />
           </div>
@@ -255,6 +259,7 @@
             <input
               type="date"
               name="dob"
+                   value="{{ mem.date }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -263,7 +268,7 @@
           <!-- Photo -->
           <div>
             <label class="block font-medium mb-1">Upload Photo</label>
-            <input type="file" name="photo" accept="image/*" class="w-full" />
+            <input type="file" name="photo" accept="image/*" class="w-full" value="{{ mem.photo }}"/>
           </div>
 
           <!-- Education -->
@@ -274,6 +279,7 @@
             <input
               type="text"
               name="edu"
+                   value="{{ mem.edu }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -287,6 +293,7 @@
             <input
               type="text"
               name="occu"
+                   value="{{ mem.occu }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -302,6 +309,7 @@
               name="phone"
               minlength="10"
               maxlength="11"
+                   value="{{ mem.phone }}"
               required
               class="w-full border p-2 rounded-md"
             />
@@ -313,6 +321,7 @@
             <input
               type="email"
               name="email"
+                   value="{{ mem.email }}"
               class="w-full border p-2 rounded-md"
             />
           </div>
