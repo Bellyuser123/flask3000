@@ -344,14 +344,14 @@
             >
             <select name="blood" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select blood group</option>
-              <option value="A+">A+</option>
-              <option value="A-">A-</option>
-              <option value="B+">B+</option>
-              <option value="B-">B-</option>
-              <option value="O+">O+</option>
-              <option value="O-">O-</option>
-              <option value="AB+">AB+</option>
-              <option value="AB-">AB-</option>
+              <option value="A+" {% if mem.blood == "A+" %}selected{% endif %}>A+</option>
+              <option value="A-" {% if mem.blood == "A-" %}selected{% endif %}>A-</option>
+              <option value="B+" {% if mem.blood == "A+" %}selected{% endif %}>B+</option>
+              <option value="B-" {% if mem.blood == "A+" %}selected{% endif %}>B-</option>
+              <option value="O+" {% if mem.blood == "A+" %}selected{% endif %}>O+</option>
+              <option value="O-" {% if mem.blood == "A+" %}selected{% endif %}>O-</option>
+              <option value="AB+" {% if mem.blood == "A+" %}selected{% endif %}>AB+</option>
+              <option value="AB-" {% if mem.blood == "A+" %}selected{% endif %}>AB-</option>
             </select>
           </div>
 
