@@ -302,7 +302,8 @@ def delete(id, family_id):
   
 @app.route("/submit")
 def submit():
-    
+    family_id = request.args.get('family_id', type=int)
+    print(family_id)
     return render_template('end.html')
   
   
