@@ -5,7 +5,6 @@ from datetime import datetime
 import os
 
 
-
 local_server = True
 
 app = Flask(__name__)
