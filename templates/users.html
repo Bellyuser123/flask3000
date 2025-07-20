@@ -1,0 +1,112 @@
+{% extends "admin.html" %}
+{% block body %}
+
+<!-- Sidebar -->
+<aside id="sidebar" class="bg-white w-full md:w-64 shadow-lg p-6 hidden md:block md:min-h-screen">
+    <h2 class="text-2xl font-bold text-[#006400] mb-8">Admin Panel</h2>
+    <nav class="space-y-4">
+        <a href="/admin/dashboard" class="block px-4 py-2 rounded hover:bg-green-100">Dashboard</a>
+        <a href="/admin/user" class="block px-4 py-2 rounded hover:bg-green-100 text-[#006400] font-semibold">Users</a>
+        <a href="/admin/report" class="block px-4 py-2 rounded hover:bg-green-100">Reports</a>
+        <a href="/admin/something" class="block px-4 py-2 rounded hover:bg-green-100">Coming Soon</a>
+        <a href="/logout" class="block px-4 py-2 rounded hover:bg-green-100 text-red-600">Logout</a>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 p-6 space-y-8">
+
+    <!-- Top View Switcher -->
+    <section class="bg-white p-4 rounded shadow flex flex-wrap items-center justify-between gap-4">
+        <div class="flex gap-2">
+            <a href="?view=quick" class="px-4 py-2 rounded border text-sm font-medium hover:bg-green-100 transition
+        {% if view == 'quick' %} bg-[#006400] text-white {% else %} text-[#006400] border-[#006400] {% endif %}">Quick
+                View</a>
+            <a href="?view=joined" class="px-4 py-2 rounded border text-sm font-medium hover:bg-green-100 transition
+        {% if view == 'joined' %} bg-[#006400] text-white {% else %} text-[#006400] border-[#006400] {% endif %}">
+                Joined View
+            </a>
+            <a href="?view=families" class="px-4 py-2 rounded border text-sm font-medium hover:bg-green-100 transition
+        {% if view == 'families' %} bg-[#006400] text-white {% else %} text-[#006400] border-[#006400] {% endif %}">
+                Family View
+            </a>
+            <a href="?view=members" class="px-4 py-2 rounded border text-sm font-medium hover:bg-green-100 transition
+        {% if view == 'members' %} bg-[#006400] text-white {% else %} text-[#006400] border-[#006400] {% endif %}">
+                Member View
+            </a>
+        </div>
+
+        <!-- Shared Search Bar -->
+        <form method="GET" action="/admin/users" class="flex gap-2 items-center">
+            <input type="hidden" name="view" value="{{ view }}">
+            <input type="text" name="search" placeholder="Search families or members..."
+                   class="border px-3 py-2 rounded w-64 focus:ring-2 focus:ring-green-600"/>
+            <button type="submit"
+                    class="bg-[#006400] text-white px-4 py-2 rounded hover:bg-green-800 text-sm">Search
+            </button>
+        </form>
+    </section>
+
+    <!-- Dynamic Content Area -->
+    <section class="bg-white p-6 rounded shadow min-h-[300px]">
+        {% if view == 'quick' %}
+        <table class="min-w-full table-auto bg-white rounded shadow">
+  <thead class="bg-green-100 text-sm uppercase text-gray-600">
+    <tr>
+      <th class="px-4 py-2 text-left">Head</th>
+      <th class="px-4 py-2">Village</th>
+      <th class="px-4 py-2">Phone</th>
+      <th class="px-4 py-2">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for family in families %}
+  <tr class="border-t">
+    <td class="px-4 py-2 font-bold text-[#006400]">{{ family.name }}</td>
+    <td class="px-4 py-2 text-center">{{ family.village }}</td>
+    <td class="px-4 py-2 text-center">{{ family.res_phone }}</td>
+    <td class="px-4 py-2 text-center">
+      <a href="#"
+         hx-get="/admin/family/{{ family.id }}/members"
+         hx-target="#members-row-{{ family.id }}"
+         hx-swap="outerHTML"
+         class="text-blue-600 underline">
+         View
+      </a>
+    </td>
+  </tr>
+  <tr id="members-row-{{ family.id }}"></tr>
+  {% endfor %}
+</tbody>
+
+</table>
+
+        <!-- Modal Overlay (hidden by default) -->
+        <div
+                id="member-modal"
+                class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+                hx-target="this"
+                hx-swap="innerHTML">
+        </div>
+
+
+        {% elif view == 'families' %}
+        <!-- Family list view will be rendered here -->
+        <p class="text-gray-500 italic">Loading family list...</p>
+
+        {% elif view == 'members' %}
+        <!-- Member list view will be rendered here -->
+        <p class="text-gray-500 italic">Loading members...</p>
+
+        {% elif view == 'joined' %}
+        <!-- Joined view will be rendered here -->
+        <p class="text-gray-500 italic">Loading combined data...</p>
+
+        {% else %}
+        <p class="text-red-600">Invalid view selected.</p>
+        {% endif %}
+    </section>
+
+</main>
+
+{% endblock %}

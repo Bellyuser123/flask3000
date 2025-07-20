@@ -1,0 +1,24 @@
+<tr id="members-row-{{ family.id }}">
+  <td colspan="4">
+    <div class="bg-gray-100 p-4 rounded shadow">
+      {% if family.members %}
+        {% for m in family.members %}
+          <div class="flex justify-between items-center border-b py-2">
+            <div>
+              <p class="font-semibold">{{ m.name }}</p>
+              <p class="text-sm text-gray-600">Relation: {{ m.relation }}</p>
+            </div>
+            <a href="#"
+               hx-get="/admin/member/{{ m.id }}/partial"
+               hx-target="#member-modal"
+               hx-swap="innerHTML"
+               onclick="document.getElementById('member-modal').classList.remove('hidden')"
+               class="text-blue-600 text-sm underline">View</a>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-gray-500">No members found.</p>
+      {% endif %}
+    </div>
+  </td>
+</tr>

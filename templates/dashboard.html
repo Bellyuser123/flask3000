@@ -1,0 +1,119 @@
+
+{% extends "admin.html" %}
+{% block body %}
+
+<!-- Sidebar -->
+<aside id="sidebar" class="bg-white w-full md:w-64 shadow-lg p-6 hidden md:block md:min-h-screen">
+    <h2 class="text-2xl font-bold text-[#006400] mb-8">Admin Panel</h2>
+    <nav class="space-y-4">
+        <a href="/admin/dashboard" class="block px-4 py-2 rounded hover:bg-green-100 text-[#006400] font-semibold">Dashboard</a>
+        <a href="/admin/user" class="block px-4 py-2 rounded hover:bg-green-100">Users</a>
+        <a href="/admin/report" class="block px-4 py-2 rounded hover:bg-green-100">Reports</a>
+        <a href="/admin/something" class="block px-4 py-2 rounded hover:bg-green-100">Coming Soon</a>
+        <a href="/logout" class="block px-4 py-2 rounded hover:bg-green-100 text-red-600">Logout</a>
+    </nav>
+</aside>
+
+<!-- Main Content -->
+<main class="flex-1 p-6 space-y-12">
+  <!-- Header -->
+  <header class="hidden md:flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-[#006400]">Welcome, Admin</h1>
+    <a href="/logout" class="bg-[#006400] text-white px-4 py-2 rounded hover:bg-green-800">Logout</a>
+  </header>
+
+  <!-- Dashboard Widgets -->
+  <section>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white p-6 rounded-lg shadow text-center">
+        <h2 class="text-sm font-medium text-gray-500">Total Families</h2>
+        <p class="text-4xl font-bold text-[#006400] mt-1">{{ total_families }}</p>
+      </div>
+      <div class="bg-white p-6 rounded-lg shadow text-center">
+        <h2 class="text-sm font-medium text-gray-500">Total Members</h2>
+        <p class="text-4xl font-bold text-[#006400] mt-1">{{ total_members }}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Export & Report -->
+  <section>
+    <div class="bg-white p-6 rounded-lg shadow space-y-4">
+      <h2 class="text-xl font-semibold text-[#006400]">📁 Export & Reports</h2>
+      <div class="flex flex-wrap gap-4">
+        <a href="/export_csv" class="bg-gray-100 px-4 py-2 rounded hover:bg-gray-200 border">Export CSV</a>
+        <a href="/generate_report" class="bg-[#006400] text-white px-4 py-2 rounded hover:bg-green-800">Generate PDF Report</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Upcoming Birthdays -->
+  <section>
+    <div class="bg-white p-6 rounded-lg shadow space-y-4">
+      <h2 class="text-xl font-semibold text-[#006400]">🎂 Upcoming Birthdays</h2>
+      <div class="space-y-2">
+        <!-- {% for member in upcoming_birthdays %} -->
+        <div class="flex justify-between border-b pb-2">
+          <span>{{ member.name }} ({{ member.dob }})</span>
+          <span class="text-sm text-gray-500">{{ member.phone }}</span>
+        </div>
+        <!-- {% else %} -->
+        <p class="text-gray-500">No upcoming birthdays.</p>
+        <!-- {% endfor %} -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Search / Filter -->
+  <section>
+    <div class="bg-white p-6 rounded-lg shadow space-y-4">
+      <h2 class="text-xl font-semibold text-[#006400]">🔍 Search / Filter Families</h2>
+      <form method="GET" action="/search" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <input type="text" name="name" placeholder="Name" class="border px-3 py-2 rounded w-full"/>
+        <input type="text" name="village" placeholder="Village" class="border px-3 py-2 rounded w-full"/>
+        <input type="text" name="gotra" placeholder="Gotra" class="border px-3 py-2 rounded w-full"/>
+        <input type="text" name="ghatak" placeholder="Ghatak" class="border px-3 py-2 rounded w-full"/>
+        <button type="submit"
+                class="col-span-1 md:col-span-4 bg-[#006400] text-white px-4 py-2 rounded hover:bg-green-800 w-full">
+          Search
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Recently Added Families -->
+  <section>
+    <div class="bg-white p-6 rounded-lg shadow space-y-4">
+      <h2 class="text-xl font-semibold text-[#006400]">📝 Recently Added Families</h2>
+      <!--  for family in recent_families[:3] %} -->
+      <div class="border-b pb-2 mb-2">
+        <p class="font-semibold"> family.name }}</p>
+        <p class="text-sm text-gray-500"> family.village }} —  family.date.strftime('%d %b %Y') }}</p>
+      </div>
+      <!--  else %} -->
+      <p class="text-gray-500">No recent families.</p>
+      <!--  endfor %} -->
+    </div>
+  </section>
+
+  <!-- Recent Activity -->
+  <section>
+    <div class="bg-white p-6 rounded-lg shadow space-y-2">
+      <h2 class="text-xl font-semibold text-[#006400]">🧾 Recent Activity</h2>
+      <div class="flex justify-between border-b pb-2">
+        <span>Admin logged in</span>
+        <span class="text-sm text-gray-500">10 mins ago</span>
+      </div>
+      <div class="flex justify-between border-b pb-2">
+        <span>New user registered</span>
+        <span class="text-sm text-gray-500">30 mins ago</span>
+      </div>
+      <div class="flex justify-between">
+        <span>Monthly report generated</span>
+        <span class="text-sm text-gray-500">1 hour ago</span>
+      </div>
+    </div>
+  </section>
+</main>
+
+{% endblock %}

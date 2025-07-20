@@ -1,0 +1,39 @@
+<!-- Modal Content -->
+<div class="bg-white rounded-lg shadow-lg max-w-xl w-full p-6 relative">
+  <button
+    onclick="document.getElementById('member-modal').classList.add('hidden')"
+    class="absolute top-2 right-2 text-gray-500 hover:text-red-500 text-xl font-bold">
+    &times;
+  </button>
+  <h2 class="text-2xl font-bold text-[#006400] mb-4">{{ member.name }}</h2>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+    <div>
+      <p class="text-gray-500">Relation</p>
+      <p>{{ member.relation }}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Gender</p>
+      <p>{{ member.gender }}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">DOB</p>
+      <p>{{ member.dob }}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Phone</p>
+      <p>{{ member.phone }}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Education</p>
+      <p>{{ member.edu }}</p>
+    </div>
+    <div>
+      <p class="text-gray-500">Occupation</p>
+      <p>{{ member.occu }}</p>
+    </div>
+    <div class="col-span-2">
+      <p class="text-gray-500">Family</p>
+      <p>{{ member.family.name }} – {{ member.family.village }}</p>
+    </div>
+  </div>
+</div>
