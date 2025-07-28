@@ -14,7 +14,8 @@
 </aside>
 
 <!-- Main Content -->
-<main class="flex-1 p-6 space-y-8">
+<main class="flex-1 p-6 space-y-8 overflow-hidden max-w-full">
+
 
     <!-- Top View Switcher -->
     <section class="bg-white p-4 rounded shadow flex flex-wrap items-center justify-between gap-4">
@@ -49,37 +50,47 @@
 
     <!-- Dynamic Content Area -->
     <section class="bg-white p-6 rounded shadow min-h-[300px]">
-        {% if view == 'quick' %}
-        <table class="min-w-full table-auto bg-white rounded shadow">
-  <thead class="bg-green-100 text-sm uppercase text-gray-600">
-    <tr>
-      <th class="px-4 py-2 text-left">Head</th>
-      <th class="px-4 py-2">Village</th>
-      <th class="px-4 py-2">Phone</th>
-      <th class="px-4 py-2">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for family in families %}
-  <tr class="border-t">
-    <td class="px-4 py-2 font-bold text-[#006400]">{{ family.name }}</td>
-    <td class="px-4 py-2 text-center">{{ family.village }}</td>
-    <td class="px-4 py-2 text-center">{{ family.res_phone }}</td>
-    <td class="px-4 py-2 text-center">
-      <a href="#"
-         hx-get="/admin/family/{{ family.id }}/members"
-         hx-target="#members-row-{{ family.id }}"
-         hx-swap="outerHTML"
-         class="text-blue-600 underline">
-         View
-      </a>
-    </td>
-  </tr>
-  <tr id="members-row-{{ family.id }}"></tr>
-  {% endfor %}
-</tbody>
 
-</table>
+        {% if view == 'quick' %}
+        <h2 class="text-xl font-semibold text-[#006400] mb-4">Quick View</h2>
+        <div class="w-full overflow-hidden">
+            <div class="overflow-x-auto border rounded shadow">
+                <div class="min-w-[700px]">
+                    <table class="table-auto w-full bg-white text-sm whitespace-nowrap border-collapse">
+                        <thead class="bg-green-100 text-sm uppercase text-gray-600">
+                        <tr>
+                            <th class="px-4 py-2 text-left">Head</th>
+                            <th class="px-4 py-2 text-center">Village</th>
+                            <th class="px-4 py-2 text-center">Phone</th>
+                            <th class="px-4 py-2 text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for family in families %}
+                        <tr class="border-t">
+                            <td class="px-4 py-2 font-bold text-[#006400]">{{ family.name }}</td>
+                            <td class="px-4 py-2 text-center">{{ family.village }}</td>
+                            <td class="px-4 py-2 text-center">{{ family.res_phone }}</td>
+                            <td class="px-4 py-2 text-center">
+                                <a href="#"
+                                   hx-get="/admin/family/{{ family.id }}/members"
+                                   hx-target="#members-row-{{ family.id }}"
+                                   hx-swap="outerHTML"
+                                   class="text-blue-600 underline">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Member row container (will be hydrated by HTMX) -->
+                        <tr id="members-row-{{ family.id }}"></tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         <!-- Modal Overlay (hidden by default) -->
         <div
@@ -91,16 +102,145 @@
 
 
         {% elif view == 'families' %}
-        <!-- Family list view will be rendered here -->
-        <p class="text-gray-500 italic">Loading family list...</p>
+        <h2 class="text-xl font-semibold text-[#006400] mb-4">Families</h2>
+        <div class="w-full overflow-hidden">
+            <div class="w-full overflow-x-auto border rounded shadow">
+                <div class="min-w-[1100px]">
+                    <table class="table-auto whitespace-nowrap text-sm border-collapse w-full">
+                        <thead class="bg-[#006400] text-white sticky top-0 z-10">
+                        <tr>
+                            <th class="p-3 border">Name</th>
+                            <th class="p-3 border">Email</th>
+                            <th class="p-3 border">Ghatak</th>
+                            <th class="p-3 border">Pradeshik</th>
+                            <th class="p-3 border">Kshetra Name</th>
+                            <th class="p-3 border">Kshetra Village</th>
+                            <th class="p-3 border">Village</th>
+                            <th class="p-3 border">Gotra</th>
+                            <th class="p-3 border">Res. Phone</th>
+                            <th class="p-3 border text-center">Members</th>
+                            <th class="p-3 border">Created</th>
+                            <th class="p-3 border text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for family in families %}
+                        <tr class="hover:bg-gray-50 border-t">
+                            <td class="p-3 border">{{ family.name }}</td>
+                            <td class="p-3 border">{{ family.email }}</td>
+                            <td class="p-3 border">{{ family.ghatak }}</td>
+                            <td class="p-3 border">{{ family.pradeshik }}</td>
+                            <td class="p-3 border">{{ family.k_name }}</td>
+                            <td class="p-3 border">{{ family.k_village }}</td>
+                            <td class="p-3 border">{{ family.village }}</td>
+                            <td class="p-3 border">{{ family.gotra or '-' }}</td>
+                            <td class="p-3 border">{{ family.res_phone }}</td>
+                            <td class="p-3 border text-center">{{ family.mem_num }}</td>
+                            <td class="p-3 border">{{ family.date.strftime('%Y-%m-%d') if family.date else '-' }}</td>
+                            <td class="p-3 border text-center">
+                                <a href="/delete/family/{{ family.id }}" class="text-red-600 hover:underline"
+                                   onclick="return confirm('Delete this family?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         {% elif view == 'members' %}
-        <!-- Member list view will be rendered here -->
-        <p class="text-gray-500 italic">Loading members...</p>
+        <h2 class="text-xl font-semibold text-[#006400] mb-4">Members </h2>
+        <div class="w-full overflow-hidden">
+            <div class="w-full overflow-x-auto border rounded shadow">
+                <div class="min-w-[1100px]">
+                    <table class="table-auto whitespace-nowrap text-sm border-collapse w-full">
+                        <thead class="bg-[#006400] text-white sticky top-0 z-10">
+                        <tr>
+                            <th class="p-2 border">Name</th>
+                            <th class="p-2 border">Father</th>
+                            <th class="p-2 border">Gender</th>
+                            <th class="p-2 border">Relation</th>
+                            <th class="p-2 border">DOB</th>
+                            <th class="p-2 border">Education</th>
+                            <th class="p-2 border">Occupation</th>
+                            <th class="p-2 border">Phone</th>
+                            <th class="p-2 border">Blood</th>
+                            <th class="p-2 border">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for member in members %}
+                        <tr class="bg-white border-t hover:bg-gray-100">
+                            <td class="p-2 border break-words">{{ member.name }}</td>
+                            <td class="p-2 border break-words">{{ member.father }}</td>
+                            <td class="p-2 border">{{ member.gender }}</td>
+                            <td class="p-2 border">{{ member.relation }}</td>
+                            <td class="p-2 border">{{ member.dob }}</td>
+                            <td class="p-2 border">{{ member.edu }}</td>
+                            <td class="p-2 border">{{ member.occu }}</td>
+                            <td class="p-2 border break-all">{{ member.phone }}</td>
+                            <td class="p-2 border">{{ member.blood }}</td>
+                            <td class="p-2 border text-center space-x-2">
+                                <a href="/delete/{{ member.id }}" class="text-red-600 hover:underline"
+                                   onclick="return confirm('Delete this member?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
         {% elif view == 'joined' %}
-        <!-- Joined view will be rendered here -->
-        <p class="text-gray-500 italic">Loading combined data...</p>
+        <h2 class="text-xl font-semibold text-[#006400] mb-4">Joined View — Members with Family Info</h2>
+        <div class="w-full overflow-hidden">
+            <div class="overflow-x-auto border rounded shadow">
+                <div class="min-w-[1400px]">
+                    <table class="table-auto w-full text-sm border-collapse whitespace-nowrap">
+                        <thead class="bg-[#006400] text-white sticky top-0 z-10">
+                        <tr>
+                            <th class="p-3 border">Member Name</th>
+                            <th class="p-3 border">Relation</th>
+                            <th class="p-3 border">Gender</th>
+                            <th class="p-3 border">DOB</th>
+                            <th class="p-3 border">Education</th>
+                            <th class="p-3 border">Occupation</th>
+                            <th class="p-3 border">Phone</th>
+                            <th class="p-3 border">Blood</th>
+                            <th class="p-3 border">Family Head</th>
+                            <th class="p-3 border">Village</th>
+                            <th class="p-3 border">Res. Phone</th>
+                            <th class="p-3 border text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for member in members %}
+                        <tr class="hover:bg-gray-50 border-t">
+                            <td class="p-3 border">{{ member.name }}</td>
+                            <td class="p-3 border">{{ member.relation }}</td>
+                            <td class="p-3 border">{{ member.gender }}</td>
+                            <td class="p-3 border">{{ member.dob }}</td>
+                            <td class="p-3 border">{{ member.edu }}</td>
+                            <td class="p-3 border">{{ member.occu }}</td>
+                            <td class="p-3 border break-all">{{ member.phone }}</td>
+                            <td class="p-3 border">{{ member.blood }}</td>
+                            <td class="p-3 border font-bold text-[#006400]">{{ member.family.name }}</td>
+                            <td class="p-3 border">{{ member.family.village }}</td>
+                            <td class="p-3 border">{{ member.family.res_phone }}</td>
+                            <td class="p-3 border text-center">
+                                <a href="/delete/{{ member.id }}" class="text-red-600 hover:underline"
+                                   onclick="return confirm('Delete this member?')">Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
 
         {% else %}
         <p class="text-red-600">Invalid view selected.</p>

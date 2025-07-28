@@ -98,8 +98,16 @@ def users():
     if 'user' in session and session['user'] == admin_user:
         search = request.args.get('search', '')
         view = request.args.get("view", "quick")
-        families = Family.query.all()
-        members = Member.query.all()
+        families = []
+        members = []
+        if view == "joined":
+            members = db.session.query(Member).join(Family).all()
+        elif view == "quick":
+            families = Family.query.all()
+        elif view == "families":
+            families = Family.query.all()
+        elif view == "members":
+            members = Member.query.all()
         return render_template('users.html', view=view, search=search, families=families, members=members)
     else:
         return redirect("/admin")
