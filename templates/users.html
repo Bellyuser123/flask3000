@@ -60,8 +60,9 @@
                         <thead class="bg-green-100 text-sm uppercase text-gray-600">
                         <tr>
                             <th class="px-4 py-2 text-left">Head</th>
-                            <th class="px-4 py-2 text-center">Village</th>
+                            <th class="px-4 py-2 text-center">Native Village</th>
                             <th class="px-4 py-2 text-center">Phone</th>
+                            <th class="px-4 py-2 text-center">Members</th>
                             <th class="px-4 py-2 text-center">Actions</th>
                         </tr>
                         </thead>
@@ -69,8 +70,9 @@
                         {% for family in families %}
                         <tr class="border-t">
                             <td class="px-4 py-2 font-bold text-[#006400]">{{ family.name }}</td>
-                            <td class="px-4 py-2 text-center">{{ family.village }}</td>
+                            <td class="px-4 py-2 text-center">{{ family.village_rel.name }}</td>
                             <td class="px-4 py-2 text-center">{{ family.res_phone }}</td>
+                            <td class="px-4 py-2 text-center">{{ family.mem_num }}</td>
                             <td class="px-4 py-2 text-center">
                                 <a href="#"
                                    hx-get="/admin/family/{{ family.id }}/members"
@@ -91,7 +93,6 @@
                 </div>
             </div>
         </div>
-
         <!-- Modal Overlay (hidden by default) -->
         <div
                 id="member-modal"
@@ -113,13 +114,16 @@
                             <th class="p-3 border">Email</th>
                             <th class="p-3 border">Ghatak</th>
                             <th class="p-3 border">Pradeshik</th>
-                            <th class="p-3 border">Kshetra Name</th>
-                            <th class="p-3 border">Kshetra Village</th>
+                            <th class="p-3 border">kuldevi Name</th>
+                            <th class="p-3 border">kuldevi Village</th>
                             <th class="p-3 border">Village</th>
                             <th class="p-3 border">Gotra</th>
+                            <th class="p-3 border">Res. Address</th>
                             <th class="p-3 border">Res. Phone</th>
+                            <th class="p-3 border">Off. Address</th>
+                            <th class="p-3 border">Off. Phone</th>
                             <th class="p-3 border text-center">Members</th>
-                            <th class="p-3 border">Created</th>
+                            <th class="p-3 border">Submitted on</th>
                             <th class="p-3 border text-center">Actions</th>
                         </tr>
                         </thead>
@@ -130,15 +134,18 @@
                             <td class="p-3 border">{{ family.email }}</td>
                             <td class="p-3 border">{{ family.ghatak }}</td>
                             <td class="p-3 border">{{ family.pradeshik }}</td>
-                            <td class="p-3 border">{{ family.k_name }}</td>
-                            <td class="p-3 border">{{ family.k_village }}</td>
-                            <td class="p-3 border">{{ family.village }}</td>
-                            <td class="p-3 border">{{ family.gotra or '-' }}</td>
+                            <td class="p-3 border">{% for k in family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {% endfor %}</td>
+                            <td class="p-3 border">{{ family.k_village_rel.name }}</td>
+                            <td class="p-3 border">{{ family.village_rel.name }}</td>
+                            <td class="p-3 border">{{ family.gotra_rel.name or '-' }}</td>
+                            <td class="p-3 border">{{ family.res_add }}</td>
                             <td class="p-3 border">{{ family.res_phone }}</td>
+                            <td class="p-3 border">{{ family.off_add }}</td>
+                            <td class="p-3 border">{{ family.off_phone }}</td>
                             <td class="p-3 border text-center">{{ family.mem_num }}</td>
                             <td class="p-3 border">{{ family.date.strftime('%Y-%m-%d') if family.date else '-' }}</td>
                             <td class="p-3 border text-center">
-                                <a href="/delete/family/{{ family.id }}" class="text-red-600 hover:underline"
+                                <a href="/admin/delete_fam/{{ family.id }}" class="text-red-600 hover:underline"
                                    onclick="return confirm('Delete this family?')">Delete</a>
                             </td>
                         </tr>
@@ -149,6 +156,7 @@
             </div>
         </div>
 
+
         {% elif view == 'members' %}
         <h2 class="text-xl font-semibold text-[#006400] mb-4">Members </h2>
         <div class="w-full overflow-hidden">
@@ -157,13 +165,17 @@
                     <table class="table-auto whitespace-nowrap text-sm border-collapse w-full">
                         <thead class="bg-[#006400] text-white sticky top-0 z-10">
                         <tr>
+                            <th class="p-2 border">family number</th>
                             <th class="p-2 border">Name</th>
                             <th class="p-2 border">Father</th>
                             <th class="p-2 border">Gender</th>
                             <th class="p-2 border">Relation</th>
                             <th class="p-2 border">DOB</th>
+                            <th class="p-2 border">Marriage</th>
                             <th class="p-2 border">Education</th>
+                            <th class="p-2 border">Photo</th>
                             <th class="p-2 border">Occupation</th>
+                            <th class="p-2 border">Email</th>
                             <th class="p-2 border">Phone</th>
                             <th class="p-2 border">Blood</th>
                             <th class="p-2 border">Actions</th>
@@ -172,17 +184,21 @@
                         <tbody>
                         {% for member in members %}
                         <tr class="bg-white border-t hover:bg-gray-100">
+                            <td class="p-2 border break-words">{{ member.family_id }}</td>
                             <td class="p-2 border break-words">{{ member.name }}</td>
                             <td class="p-2 border break-words">{{ member.father }}</td>
                             <td class="p-2 border">{{ member.gender }}</td>
-                            <td class="p-2 border">{{ member.relation }}</td>
+                            <td class="p-2 border">{{ member.relation_rel.name }}</td>
                             <td class="p-2 border">{{ member.dob }}</td>
+                            <td class="p-2 border">{{ member.marriage_rel.name }}</td>
                             <td class="p-2 border">{{ member.edu }}</td>
+                            <td class="p-2 border">{{ member.photo }}</td>
                             <td class="p-2 border">{{ member.occu }}</td>
+                            <td class="p-2 border">{{ member.email }}</td>
                             <td class="p-2 border break-all">{{ member.phone }}</td>
-                            <td class="p-2 border">{{ member.blood }}</td>
+                            <td class="p-2 border">{{ member.blood_rel.name }}</td>
                             <td class="p-2 border text-center space-x-2">
-                                <a href="/delete/{{ member.id }}" class="text-red-600 hover:underline"
+                                <a href="/admin/delete_mem/{{member.id}}/{{ member.family_id }}" class="text-red-600 hover:underline"
                                    onclick="return confirm('Delete this member?')">Delete</a>
                             </td>
                         </tr>
@@ -193,6 +209,7 @@
             </div>
         </div>
 
+
         {% elif view == 'joined' %}
         <h2 class="text-xl font-semibold text-[#006400] mb-4">Joined View — Members with Family Info</h2>
         <div class="w-full overflow-hidden">
@@ -201,36 +218,44 @@
                     <table class="table-auto w-full text-sm border-collapse whitespace-nowrap">
                         <thead class="bg-[#006400] text-white sticky top-0 z-10">
                         <tr>
+                            <th class="p-3 border">Family Head</th>
                             <th class="p-3 border">Member Name</th>
                             <th class="p-3 border">Relation</th>
-                            <th class="p-3 border">Gender</th>
+                            <th class="p-3 border">Phone</th>
+                            <th class="p-3 border">Resi. Phone</th>
+                            <th class="p-3 border">Village</th>
+                            <th class="p-3 border">Kuldevi</th>
+                            <th class="p-3 border">Gotra</th>
+                            <th class="p-3 border">Marriage</th>
                             <th class="p-3 border">DOB</th>
+                            <th class="p-3 border">Address</th>
                             <th class="p-3 border">Education</th>
                             <th class="p-3 border">Occupation</th>
-                            <th class="p-3 border">Phone</th>
+                            <th class="p-3 border">Gender</th>
                             <th class="p-3 border">Blood</th>
-                            <th class="p-3 border">Family Head</th>
-                            <th class="p-3 border">Village</th>
-                            <th class="p-3 border">Res. Phone</th>
                             <th class="p-3 border text-center">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {% for member in members %}
                         <tr class="hover:bg-gray-50 border-t">
+                            <td class="p-3 border font-bold text-[#006400]">{{ member.family.name }}</td>
                             <td class="p-3 border">{{ member.name }}</td>
-                            <td class="p-3 border">{{ member.relation }}</td>
-                            <td class="p-3 border">{{ member.gender }}</td>
+                            <td class="p-3 border">{{ member.relation_rel.name }}</td>
+                            <td class="p-3 border break-all">{{ member.phone }}</td>
+                            <td class="p-3 border">{{ member.family.res_phone }}</td>
+                            <td class="p-3 border">{{ member.family.village_rel.name }}</td>
+                            <td class="p-3 border">{% for k in member.family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {% endfor %}</td>
+                            <td class="p-3 border">{{ member.family.gotra_rel.name or '-' }}</td>
+                            <td class="p-2 border">{{ member.marriage_rel.name }}</td>
                             <td class="p-3 border">{{ member.dob }}</td>
+                            <td class="p-3 border">{{ member.family.res_add }}</td>
                             <td class="p-3 border">{{ member.edu }}</td>
                             <td class="p-3 border">{{ member.occu }}</td>
-                            <td class="p-3 border break-all">{{ member.phone }}</td>
-                            <td class="p-3 border">{{ member.blood }}</td>
-                            <td class="p-3 border font-bold text-[#006400]">{{ member.family.name }}</td>
-                            <td class="p-3 border">{{ member.family.village }}</td>
-                            <td class="p-3 border">{{ member.family.res_phone }}</td>
+                            <td class="p-3 border">{{ member.gender }}</td>
+                            <td class="p-3 border">{{ member.blood_rel.name }}</td>
                             <td class="p-3 border text-center">
-                                <a href="/delete/{{ member.id }}" class="text-red-600 hover:underline"
+                                <a href="/admin/delete_mem/{{member.id}}/{{ member.family_id }}" class="text-red-600 hover:underline"
                                    onclick="return confirm('Delete this member?')">Delete</a>
                             </td>
                         </tr>

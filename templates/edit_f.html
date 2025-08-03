@@ -1,483 +1,561 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>E Vastik Patark Form</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body class="bg-[#f5f5dc] text-gray-800">
-    <div
-      class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
-    >
-      <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body class="bg-[#f5f5dc] text-gray-800">
+<div
+        class="max-w-4xl mx-auto px-4 sm:px-8 py-8 mt-10 bg-white rounded-lg shadow-lg"
+>
+    <h1 class="text-3xl font-bold text-[#006400] mb-6 text-center">
         E Vastik Patark Form
-      </h1>
-      <h2 class="text-2xl font-bold text-[#006459] mb-6 text-center">
+    </h1>
+    <h2 class="text-2xl font-bold text-[#006459] mb-6 text-center">
         For Mahasabha 25-26
-      </h2>
-      <form class="space-y-6 sm:space-y-8" method="POST" action="/edit/{{ type }}/{{ id }}">
+    </h2>
+    <form class="space-y-6 sm:space-y-8" method="POST" action="/edit/{{ type }}/{{ id }}">
         <!-- Section 1: Contact Info -->
         <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Contact Information
-          </h2>
-          <div>
-            <label for="email" class="block font-medium mb-1">
-              Email <span class="text-red-500">*</span>
-            </label>
-            <input
-              id="email"
-              type="email"
-              name="email"
-              value="{{ fam.email }}"
-              required
-              placeholder="Enter your email"
-              class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#006400]"
-            />
-          </div>
+            <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Contact Information
+            </h2>
+            <div>
+                <label for="email" class="block font-medium mb-1">
+                    Email <span class="text-red-500">*</span>
+                </label>
+                <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ fam.email }}"
+                        required
+                        placeholder="Enter your email"
+                        class="w-full border border-gray-300 rounded-md p-2 focus:ring-2 focus:ring-[#006400]"
+                />
+            </div>
         </section>
 
         <!-- Section 2: Ghatak & Pradeshik -->
         <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Ghatak and Pradeshik
-          </h2>
+            <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Ghatak and Pradeshik
+            </h2>
 
-          <!-- Ghatak -->
-          <div>
-            <label for="ghatak" class="block font-medium mb-1">
-              Ghatak <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="ghatak"
-              name="ghatak"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md mb-2"
-            >
-              <option value="" disabled>Select Ghatak</option>
-              <option value="pune" {% if fam.ghatak == "pune" %}selected{% endif %}>Pune</option>
-            </select>
-          </div>
+            <!-- Ghatak -->
+            <div>
+                <label for="ghatak" class="block font-medium mb-1">
+                    Ghatak <span class="text-red-500">*</span>
+                </label>
+                <select
+                        id="ghatak"
+                        name="ghatak"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md mb-2"
+                >
+                    <option value="" disabled>Select Ghatak</option>
+                    <option value="pune" {% if fam.ghatak==
+                    "pune" %}selected{% endif %} >Pune</option>
+                </select>
+            </div>
 
-          <!-- Pradeshik -->
-          <div>
-            <label for="pradeshik" class="block font-medium mb-1">
-              Pradeshik <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="pradeshik"
-              name="pradeshik"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md mb-2"
-            >
-              <option value="" disabled selected>Select Pradeshik</option>
-              <option value="mumbai" {% if fam.pradeshik == "mumbai" %}selected{% endif %}>Mumbai</option>
-            </select>
-          </div>
+            <!-- Pradeshik -->
+            <div>
+                <label for="pradeshik" class="block font-medium mb-1">
+                    Pradeshik <span class="text-red-500">*</span>
+                </label>
+                <select
+                        id="pradeshik"
+                        name="pradeshik"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md mb-2"
+                >
+                    <option value="" disabled selected>Select Pradeshik</option>
+                    <option value="mumbai" {% if fam.pradeshik==
+                    "mumbai" %}selected{% endif %}>Mumbai</option>
+                </select>
+            </div>
         </section>
 
         <!-- Section 3: Family Details -->
         <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Family Details
-          </h2>
+            <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Family Details
+            </h2>
 
-          <!-- Full Name -->
-          <div>
-            <label class="block font-medium mb-1">
-              Full Name of Family Head <span class="text-red-500">*</span>
-            </label>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <input
-                type="text"
-                id="first_name"
-                name="first_name"
-                value="{{ fam.name.split(' ')[1] }}"
-                required
-                placeholder="First Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
-              <input
-                type="text"
-                id="middle_name"
-                name="middle_name"
-                value="{{ fam.name.split(' ')[2] }}"
-                required
-                placeholder="Middle Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
-              <input
-                type="text"
-                id="last_name"
-                name="last_name"
-                value="{{ fam.name.split(' ')[0] }}"
-                required
-                placeholder="Last Name"
-                minlength="3"
-                maxlength="20"
-                class="border border-gray-300 p-2 rounded-md"
-              />
+            <!-- Full Name -->
+            <div>
+                <label class="block font-medium mb-1">
+                    Full Name of Family Head <span class="text-red-500">*</span>
+                </label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <input
+                            type="text"
+                            id="first_name"
+                            name="first_name"
+                            value="{{ fam.name.split(' ')[1] }}"
+                            required
+                            placeholder="First Name"
+                            minlength="3"
+                            maxlength="20"
+                            class="border border-gray-300 p-2 rounded-md"
+                    />
+                    <input
+                            type="text"
+                            id="middle_name"
+                            name="middle_name"
+                            value="{{ fam.name.split(' ')[2] }}"
+                            required
+                            placeholder="Middle Name"
+                            minlength="3"
+                            maxlength="20"
+                            class="border border-gray-300 p-2 rounded-md"
+                    />
+                    <input
+                            type="text"
+                            id="last_name"
+                            name="last_name"
+                            value="{{ fam.name.split(' ')[0] }}"
+                            required
+                            placeholder="Last Name"
+                            minlength="3"
+                            maxlength="20"
+                            class="border border-gray-300 p-2 rounded-md"
+                    />
+                </div>
             </div>
-          </div>
 
-          <!-- Kuldevi -->
-          <div>
-            <label class="block font-medium mb-1">
-              Kuldevi Name <span class="text-red-500">*</span>
-            </label>
-            <div class="flex flex-wrap gap-4">
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Brahmani Maa" {% if 'Brahmani Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Brahmani Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  name="kuldevi[]"
-                  value="Butbhavani Maa"
-                       {% if 'Butbhavani Maa' in fam.k_name %}checked{% endif %}
-                />
-                <span>Butbhavani Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Chamunda Maa" {% if 'Chamunda Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Chamunda Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Chaval Maa" {% if 'Chaval Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Chaval Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Gatrad Maa" {% if 'Gatrad Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Gatrad Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Kalika Maa" {% if 'Kalika Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Kalika Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Khodiar Maa" {% if 'Khodiar Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Khodiar Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Momai Maa" {% if 'Momai Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Momai Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Pithad Maa" {% if 'Pithad Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Pithad Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Saval Maa" {% if 'Saval Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Saval Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Sikoter Maa" {% if 'Sikoter Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Sikoter Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Vishal Maa" {% if 'Vishal Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Vishal Maa</span>
-              </label>
-              <label class="flex items-center space-x-2">
-                <input type="checkbox" name="kuldevi[]" value="Truthiad Maa" {% if 'Truthiad Maa' in fam.k_name %}checked{% endif %}/>
-                <span>Truthiad Maa</span>
-              </label>
+            <!-- Kuldevi -->
+            <div>
+                <label class="block font-medium mb-1">
+                    Kuldevi Name <span class="text-red-500">*</span>
+                </label>
+                <div class="flex flex-wrap gap-4">
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="1" {% if 1 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Brahmani Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="2" {% if 2 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Butbhavani Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="3" {% if 3 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Chamunda Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="4" {% if 4 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Chaval Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="5" {% if 5 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Gatrad Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="6" {% if 6 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Kalika Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="7" {% if 7 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Khodiar Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="8" {% if 8 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Momai Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="9" {% if 9 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Pithad Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="10" {% if 10 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Saval Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="11" {% if 11 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Sikoter Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="12" {% if 12 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Vishal Maa</span>
+                    </label>
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="kuldevi[]" value="13" {% if 13 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
+                        %}/>
+                        <span>Truthiad Maa</span>
+                    </label>
+                </div>
             </div>
-          </div>
 
-          <!-- Kuldevi Village -->
-          <div>
-            <label for="kuldevi_village" class="block font-medium mb-1">
-              Kuldevi Village <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="kuldevi_village"
-              name="kuldevi_village"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled>Select village</option>
-              <option value="anjar" {% if fam.k_village == "anjar" %}selected{% endif %}>Anjar</option>
-              <option value="chandia" {% if fam.k_village == "chandia" %}selected{% endif %}>Chandia</option>
-              <option value="devaliya" {% if fam.k_village == "devaliya" %}selected{% endif %}>Devaliya</option>
-              <option value="galpadar" {% if fam.k_village == "galpadar" %}selected{% endif %}>Galpadar</option>
-              <option value="hajapar" {% if fam.k_village == "hajapar" %}selected{% endif %}>Hajapar</option>
-              <option value="jambudi" {% if fam.k_village == "jambudi" %}selected{% endif %}>Jambudi</option>
-              <option value="khambhra" {% if fam.k_village == "khambhra" %}selected{% endif %}>Khambhra</option>
-              <option value="khedol" {% if fam.k_village == "khedol" %}selected{% endif %}>Khedol</option>
-              <option value="kumbharia" {% if fam.k_village == "kumbharia" %}selected{% endif %}>Kumbharia</option>
-              <option value="kukma" {% if fam.k_village == "kukma" %}selected{% endif %}>Kukma</option>
-              <option value="lovaria" {% if fam.k_village == "lovaria" %}selected{% endif %}>Lovaria</option>
-              <option value="madhapar" {% if fam.k_village == "madhapar" %}selected{% endif %}>Madhapar</option>
-              <option value="meghpar" {% if fam.k_village == "meghpar" %}selected{% endif %}>Meghpar</option>
-              <option value="nagalpar" {% if fam.k_village == "nagalpar" %}selected{% endif %}>Nagalpar</option>
-              <option value="nagor" {% if fam.k_village == "nagor" %}selected{% endif %}>Nagor</option>
-              <option value="reha" {% if fam.k_village == "reha" %}selected{% endif %}>Reha</option>
-              <option value="sinogara" {% if fam.k_village == "sinogara" %}selected{% endif %}>Sinogara</option>
-              <option value="vidi" {% if fam.k_village == "vidi" %}selected{% endif %}>Vidi</option>
-            </select>
-          </div>
+            <!-- Kuldevi Village -->
+            <div>
+                <label for="kuldevi_village" class="block font-medium mb-1">
+                    Kuldevi Village <span class="text-red-500">*</span>
+                </label>
+                <select
+                        id="kuldevi_village"
+                        name="kuldevi_village"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                    <option value="" disabled>Select village</option>
+                    <option value="anjar" {% if fam.k_village==
+                    "1" %}selected{% endif %}>Anjar</option>
+                    <option value="chandia" {% if fam.k_village==
+                    "2" %}selected{% endif %}>Chandia</option>
+                    <option value="devaliya" {% if fam.k_village==
+                    "3" %}selected{% endif %}>Devaliya</option>
+                    <option value="galpadar" {% if fam.k_village==
+                    "4" %}selected{% endif %}>Galpadar</option>
+                    <option value="hajapar" {% if fam.k_village==
+                    "5" %}selected{% endif %}>Hajapar</option>
+                    <option value="jambudi" {% if fam.k_village==
+                    "6" %}selected{% endif %}>Jambudi</option>
+                    <option value="khambhra" {% if fam.k_village==
+                    "7" %}selected{% endif %}>Khambhra</option>
+                    <option value="khedol" {% if fam.k_village==
+                    "8" %}selected{% endif %}>Khedol</option>
+                    <option value="kumbharia" {% if fam.k_village==
+                    "9" %}selected{% endif %}>Kumbharia</option>
+                    <option value="kukma" {% if fam.k_village==
+                    "10" %}selected{% endif %}>Kukma</option>
+                    <option value="lovaria" {% if fam.k_village==
+                    "11" %}selected{% endif %}>Lovaria</option>
+                    <option value="madhapar" {% if fam.k_village==
+                    "12" %}selected{% endif %}>Madhapar</option>
+                    <option value="meghpar" {% if fam.k_village==
+                    "13" %}selected{% endif %}>Meghpar</option>
+                    <option value="nagalpar" {% if fam.k_village==
+                    "14" %}selected{% endif %}>Nagalpar</option>
+                    <option value="nagor" {% if fam.k_village==
+                    "15" %}selected{% endif %}>Nagor</option>
+                    <option value="reha" {% if fam.k_village==
+                    "16" %}selected{% endif %}>Reha</option>
+                    <option value="sinogara" {% if fam.k_village==
+                    "17" %}selected{% endif %}>Sinogara</option>
+                    <option value="vidi" {% if fam.k_village==
+                    "18" %}selected{% endif %}>Vidi</option>
+                </select>
+            </div>
 
-          <!-- Native Village -->
-          <div>
-            <label for="native_village" class="block font-medium mb-1">
-              Native Village <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="native_village"
-              name="native_village"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled>Select village</option>
-              <option value="anjar" {% if fam.village == "anjar" %}selected{% endif %}>Anjar</option>
-              <option value="chandia" {% if fam.village == "chandia" %}selected{% endif %}>Chandia</option>
-              <option value="devaliya" {% if fam.village == "devaliya" %}selected{% endif %}>Devaliya</option>
-              <option value="galpadar" {% if fam.village == "galpadar" %}selected{% endif %}>Galpadar</option>
-              <option value="hajapar" {% if fam.village == "hajapar" %}selected{% endif %}>Hajapar</option>
-              <option value="jambudi" {% if fam.village == "jambudi" %}selected{% endif %}>Jambudi</option>
-              <option value="khambhra" {% if fam.village == "khambhra" %}selected{% endif %}>Khambhra</option>
-              <option value="khedol" {% if fam.village == "khedol" %}selected{% endif %}>Khedol</option>
-              <option value="kumbharia" {% if fam.village == "kumbharia" %}selected{% endif %}>Kumbharia</option>
-              <option value="kukma" {% if fam.village == "kukma" %}selected{% endif %}>Kukma</option>
-              <option value="lovaria" {% if fam.village == "lovaria" %}selected{% endif %}>Lovaria</option>
-              <option value="madhapar" {% if fam.village == "madhapar" %}selected{% endif %}>Madhapar</option>
-              <option value="meghpar" {% if fam.village == "meghpar" %}selected{% endif %}>Meghpar</option>
-              <option value="nagalpar" {% if fam.village == "nagalpar" %}selected{% endif %}>Nagalpar</option>
-              <option value="nagor" {% if fam.village == "nagor" %}selected{% endif %}>Nagor</option>
-              <option value="reha" {% if fam.village == "reha" %}selected{% endif %}>Reha</option>
-              <option value="sinogara" {% if fam.village == "sinogara" %}selected{% endif %}>Sinogara</option>
-              <option value="vidi" {% if fam.village == "vidi" %}selected{% endif %}>Vidi</option>
-            </select>
-          </div>
+            <!-- Native Village -->
+            <div>
+                <label for="native_village" class="block font-medium mb-1">
+                    Native Village <span class="text-red-500">*</span>
+                </label>
+                <select
+                        id="native_village"
+                        name="native_village"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                    <option value="" disabled>Select village</option>
+                    <option value="anjar" {% if fam.village==
+                    "1" %}selected{% endif %}>Anjar</option>
+                    <option value="chandia" {% if fam.village==
+                    "2" %}selected{% endif %}>Chandia</option>
+                    <option value="devaliya" {% if fam.village==
+                    "3" %}selected{% endif %}>Devaliya</option>
+                    <option value="galpadar" {% if fam.village==
+                    "4" %}selected{% endif %}>Galpadar</option>
+                    <option value="hajapar" {% if fam.village==
+                    "5" %}selected{% endif %}>Hajapar</option>
+                    <option value="jambudi" {% if fam.village==
+                    "6" %}selected{% endif %}>Jambudi</option>
+                    <option value="khambhra" {% if fam.village==
+                    "7" %}selected{% endif %}>Khambhra</option>
+                    <option value="khedol" {% if fam.village==
+                    "8" %}selected{% endif %}>Khedol</option>
+                    <option value="kumbharia" {% if fam.village==
+                    "9" %}selected{% endif %}>Kumbharia</option>
+                    <option value="kukma" {% if fam.village==
+                    "10" %}selected{% endif %}>Kukma</option>
+                    <option value="lovaria" {% if fam.village==
+                    "11" %}selected{% endif %}>Lovaria</option>
+                    <option value="madhapar" {% if fam.village==
+                    "12" %}selected{% endif %}>Madhapar</option>
+                    <option value="meghpar" {% if fam.village==
+                    "13" %}selected{% endif %}>Meghpar</option>
+                    <option value="nagalpar" {% if fam.village==
+                    "14" %}selected{% endif %}>Nagalpar</option>
+                    <option value="nagor" {% if fam.village==
+                    "15" %}selected{% endif %}>Nagor</option>
+                    <option value="reha" {% if fam.village==
+                    "16" %}selected{% endif %}>Reha</option>
+                    <option value="sinogara" {% if fam.village==
+                    "17" %}selected{% endif %}>Sinogara</option>
+                    <option value="vidi" {% if fam.village==
+                    "18" %}selected{% endif %}>Vidi</option>
+                </select>
+            </div>
 
-          <!-- Gotra -->
-          <div>
-            <label for="gotra" class="block font-medium mb-1">Gotra</label>
-            <select
-              id="gotra"
-              name="gotra"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled {% if fam.gotra == "" %}selected{% endif %}>Select Gotra</option>
-              <option value="ATREE" {% if fam.gotra == "ATREE" %}selected{% endif %}>ATREE</option>
-              <option value="BHARDWAJ" {% if fam.gotra == "BHARDWAJ" %}selected{% endif %}>BHARDWAJ</option>
-              <option value="GARG" {% if fam.gotra == "GARG" %}selected{% endif %}>GARG</option>
-              <option value="GAUTAM" {% if fam.gotra == "GAUTAM" %}selected{% endif %}>GAUTAM</option>
-              <option value="KASHYAP" {% if fam.gotra == "KASHYAP" %}selected{% endif %}>KASHYAP</option>
-              <option value="KAUDINYA" {% if fam.gotra == "KAUDINYA" %}selected{% endif %}>KAUDINYA</option>
-              <option value="SANKADI" {% if fam.gotra == "SANKADI" %}selected{% endif %}>SANKADI</option>
-              <option value="SHANDIL" {% if fam.gotra == "SHANDIL" %}selected{% endif %}>SHANDIL</option>
-              <option value="SHAUNAK" {% if fam.gotra == "SHAUNAK" %}selected{% endif %}>SHAUNAK</option>
-              <option value="SONAL" {% if fam.gotra == "SONAL" %}selected{% endif %}>SONAL</option>
-              <option value="VALMIK" {% if fam.gotra == "VALMIK" %}selected{% endif %}>VALMIK</option>
-              <option value="VARSHA" {% if fam.gotra == "VARSHA" %}selected{% endif %}>VARSHA</option>
-              <option value="VASHISHTHA" {% if fam.gotra == "VASHISHTHA" %}selected{% endif %}>VASHISHTHA</option>
-              <option value="VATSA" {% if fam.gotra == "VATSA" %}selected{% endif %}>VATSA</option>
-              <option value="VISHVAMITRA" {% if fam.gotra == "VISHVAMITRA" %}selected{% endif %}>VISHVAMITRA</option>
-              <option value="OTHER" {% if fam.gotra == "OTHER" %}selected{% endif %}>OTHER</option>
-            </select>
-          </div>
+            <!-- Gotra -->
+            <div>
+                <label for="gotra" class="block font-medium mb-1">Gotra</label>
+                <select
+                        id="gotra"
+                        name="gotra"
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                    <option value="" disabled {% if fam.gotra==
+                    "" %}selected{% endif %}>Select Gotra</option>
+                    <option value="ATREE" {% if fam.gotra==
+                    "1" %}selected{% endif %}>ATREE</option>
+                    <option value="BHARDWAJ" {% if fam.gotra==
+                    "2" %}selected{% endif %}>BHARDWAJ</option>
+                    <option value="GARG" {% if fam.gotra==
+                    "3" %}selected{% endif %}>GARG</option>
+                    <option value="GAUTAM" {% if fam.gotra==
+                    "4" %}selected{% endif %}>GAUTAM</option>
+                    <option value="KASHYAP" {% if fam.gotra==
+                    "5" %}selected{% endif %}>KASHYAP</option>
+                    <option value="KAUDINYA" {% if fam.gotra==
+                    "6" %}selected{% endif %}>KAUDINYA</option>
+                    <option value="SANKADI" {% if fam.gotra==
+                    "7" %}selected{% endif %}>SANKADI</option>
+                    <option value="SHANDIL" {% if fam.gotra==
+                    "8" %}selected{% endif %}>SHANDIL</option>
+                    <option value="SHAUNAK" {% if fam.gotra==
+                    "9" %}selected{% endif %}>SHAUNAK</option>
+                    <option value="SONAL" {% if fam.gotra==
+                    "10" %}selected{% endif %}>SONAL</option>
+                    <option value="VALMIK" {% if fam.gotra==
+                    "11" %}selected{% endif %}>VALMIK</option>
+                    <option value="VARSHA" {% if fam.gotra==
+                    "12" %}selected{% endif %}>VARSHA</option>
+                    <option value="VASHISHTHA" {% if fam.gotra==
+                    "13" %}selected{% endif %}>VASHISHTHA</option>
+                    <option value="VATSA" {% if fam.gotra==
+                    "14" %}selected{% endif %}>VATSA</option>
+                    <option value="VISHVAMITRA" {% if fam.gotra==
+                    "15" %}selected{% endif %}>VISHVAMITRA</option>
+                    <option value="OTHER" {% if fam.gotra==
+                    "16" %}selected{% endif %}>OTHER</option>
+                </select>
+            </div>
         </section>
 
         <!-- Section 4: Address & Contact -->
         <section>
-          <h2 class="text-xl font-semibold text-[#006400] mb-4">
-            Address and Contact
-          </h2>
+            <h2 class="text-xl font-semibold text-[#006400] mb-4">
+                Address and Contact
+            </h2>
 
-          <!-- Residential Address -->
-          <div>
-            <label class="block font-medium mb-1"
-              >Residential Address <span class="text-red-500">*</span></label
-            >
-            <input
-              id="address1"
-              type="text"
-              name="building"
-                   value="{{ fam.res_add.split(' | ')[0] }}"
-              required
-              placeholder="Building Name"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address2"
-              type="text"
-              name="area"
-                   value="{{ fam.res_add.split(' | ')[1] }}"
-              required
-              placeholder="Area"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address3"
-              type="text"
-              name="street"
-                   value="{{ fam.res_add.split(' | ')[2] }}"
-              required
-              placeholder="Road/Street"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address4"
-              type="text"
-              name="landmark"
-                   value="{{ fam.res_add.split(' | ')[3] }}"
-              placeholder="Landmark (optional)"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="address5"
-              type="text"
-              name="pincode"
-                   value="{{ fam.res_add.split(' | ')[4] }}"
-              required
-              placeholder="Pincode (6 digits)"
-              pattern="\d{6}"
-              maxlength="6"
-              minlength="6"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-          </div>
+            <!-- Residential Address -->
+            <div>
+                <label class="block font-medium mb-1"
+                >Residential Address <span class="text-red-500">*</span></label
+                >
+                <input
+                        id="address1"
+                        type="text"
+                        name="building"
+                        value="{{ fam.res_add.split(' | ')[0] }}"
+                        required
+                        placeholder="Building Name"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="address2"
+                        type="text"
+                        name="area"
+                        value="{{ fam.res_add.split(' | ')[1] }}"
+                        required
+                        placeholder="Area"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="address3"
+                        type="text"
+                        name="street"
+                        value="{{ fam.res_add.split(' | ')[2] }}"
+                        required
+                        placeholder="Road/Street"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="address4"
+                        type="text"
+                        name="landmark"
+                        value="{{ fam.res_add.split(' | ')[3] }}"
+                        placeholder="Landmark (optional)"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="address5"
+                        type="text"
+                        name="pincode"
+                        value="{{ fam.res_add.split(' | ')[4] }}"
+                        required
+                        placeholder="Pincode (6 digits)"
+                        pattern="\d{6}"
+                        maxlength="6"
+                        minlength="6"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+            </div>
 
-          <!-- Residential Phone -->
-          <div>
-            <label for="res_phone" class="block font-medium mb-1">
-              Residential Phone Number <span class="text-red-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="res_phone"
-              name="res_phone"
-                   value="{{ fam.res_phone }}"
-              required
-                   pattern="\d{10}"
-              minlength="10"
-              maxlength="10"
-              placeholder="Enter number"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            />
-          </div>
+            <!-- Residential Phone -->
+            <div>
+                <label for="res_phone" class="block font-medium mb-1">
+                    Residential Phone Number <span class="text-red-500">*</span>
+                </label>
+                <input
+                        type="text"
+                        id="res_phone"
+                        name="res_phone"
+                        value="{{ fam.res_phone }}"
+                        required
+                        pattern="\d{10}"
+                        minlength="10"
+                        maxlength="10"
+                        placeholder="Enter number"
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                />
+            </div>
 
-          <!-- Office Address -->
-          <div>
-            <label class="block font-medium mb-1"
-              >Office Address (optional)</label
-            >
-            <input
-              id="office1"
-              type="text"
-              name="office_building"
-                   value="{{ fam.off_add.split(' | ')[0] }}"
-              placeholder="Building Name"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office2"
-              type="text"
-              name="office_area"
-                   value="{{ fam.off_add.split(' | ')[1] }}"
-              placeholder="Area"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office3"
-              type="text"
-              name="office_street"
-                   value="{{ fam.off_add.split(' | ')[2] }}"
-              placeholder="Road/Street"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office4"
-              type="text"
-              name="office_landmark"
-                   value="{{ fam.off_add.split(' | ')[3] }}"
-              placeholder="Landmark"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-            <input
-              id="office5"
-              type="text"
-              name="office_pincode"
-                   value="{{ fam.off_add.split(' | ')[4] }}"
-              placeholder="Pincode (6 digits)"
-              pattern="\d{6}"
-              maxlength="6"
-              minlength="6"
-              class="w-full border p-2 rounded-md mb-2"
-            />
-          </div>
+            <!-- Office Address -->
+            <div>
+                <label class="block font-medium mb-1"
+                >Office Address (optional)</label
+                >
+                <input
+                        id="office1"
+                        type="text"
+                        name="office_building"
+                        value="{{ fam.off_add.split(' | ')[0] }}"
+                        placeholder="Building Name"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="office2"
+                        type="text"
+                        name="office_area"
+                        value="{{ fam.off_add.split(' | ')[1] }}"
+                        placeholder="Area"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="office3"
+                        type="text"
+                        name="office_street"
+                        value="{{ fam.off_add.split(' | ')[2] }}"
+                        placeholder="Road/Street"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="office4"
+                        type="text"
+                        name="office_landmark"
+                        value="{{ fam.off_add.split(' | ')[3] }}"
+                        placeholder="Landmark"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+                <input
+                        id="office5"
+                        type="text"
+                        name="office_pincode"
+                        value="{{ fam.off_add.split(' | ')[4] }}"
+                        placeholder="Pincode (6 digits)"
+                        pattern="\d{6}"
+                        maxlength="6"
+                        minlength="6"
+                        class="w-full border p-2 rounded-md mb-2"
+                />
+            </div>
 
-          <!-- Office Phone -->
-          <div>
-            <label for="office_phone" class="block font-medium mb-1">
-              Office Phone Number (optional)
-            </label>
-            <input
-              type="text"
-              id="office_phone"
-              name="office_phone"
-              placeholder="Enter number"
-              {% if fam.off_phone %}
-                  value="{{ fam.off_phone }}"
-              {% endif %}
-              pattern="\d{10}"
-              minlength="10"
-              maxlength="10"
-              class="w-full border border-gray-300 p-2 rounded-md"
-            />
-          </div>
+            <!-- Office Phone -->
+            <div>
+                <label for="office_phone" class="block font-medium mb-1">
+                    Office Phone Number (optional)
+                </label>
+                <input
+                        type="text"
+                        id="office_phone"
+                        name="office_phone"
+                        placeholder="Enter number"
+                        {% if fam.off_phone %}
+                        value="{{ fam.off_phone }}"
+                        {% endif %}
+                        pattern="\d{10}"
+                        minlength="10"
+                        maxlength="10"
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                />
+            </div>
         </section>
 
         <!-- Section 5: Family Members -->
         <section>
-          <div>
-            <label for="family_members" class="block font-medium mb-1">
-              Number of Family Members <span class="text-red-500">*</span>
-            </label>
-            <select
-              id="family_members"
-              name="family_members"
-              required
-              class="w-full border border-gray-300 p-2 rounded-md"
-            >
-              <option value="" disabled>Select</option>
-              <option value="1" {% if fam.mem_num == "1" %}selected{% endif %}>1</option>
-              <option value="2" {% if fam.mem_num == "2" %}selected{% endif %}>2</option>
-              <option value="3" {% if fam.mem_num == "3" %}selected{% endif %}>3</option>
-              <option value="4" {% if fam.mem_num == "4" %}selected{% endif %}>4</option>
-              <option value="5" {% if fam.mem_num == "5" %}selected{% endif %}>5</option>
-              <option value="6" {% if fam.mem_num == "6" %}selected{% endif %}>6</option>
-              <option value="7" {% if fam.mem_num == "7" %}selected{% endif %}>7</option>
-              <option value="8" {% if fam.mem_num == "8" %}selected{% endif %}>8</option>
-              <option value="9" {% if fam.mem_num == "9" %}selected{% endif %}>9</option>
-              <option value="10"{% if fam.mem_num == "10" %}selected{% endif %}>10</option>
-              <option value="11"{% if fam.mem_num == "11" %}selected{% endif %}>11</option>
-              <option value="12"{% if fam.mem_num == "12" %}selected{% endif %}>12</option>
-              <option value="13"{% if fam.mem_num == "13" %}selected{% endif %}>13</option>
-              <option value="14"{% if fam.mem_num == "14" %}selected{% endif %}>14</option>
-              <option value="15"{% if fam.mem_num == "15" %}selected{% endif %}>15</option>
-            </select>
-          </div>
+            <div>
+                <label for="family_members" class="block font-medium mb-1">
+                    Number of Family Members <span class="text-red-500">*</span>
+                </label>
+                <select
+                        id="family_members"
+                        name="family_members"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                    <option value="" disabled>Select</option>
+                    <option value="1" {% if fam.mem_num==
+                    "1" %}selected{% endif %}>1</option>
+                    <option value="2" {% if fam.mem_num==
+                    "2" %}selected{% endif %}>2</option>
+                    <option value="3" {% if fam.mem_num==
+                    "3" %}selected{% endif %}>3</option>
+                    <option value="4" {% if fam.mem_num==
+                    "4" %}selected{% endif %}>4</option>
+                    <option value="5" {% if fam.mem_num==
+                    "5" %}selected{% endif %}>5</option>
+                    <option value="6" {% if fam.mem_num==
+                    "6" %}selected{% endif %}>6</option>
+                    <option value="7" {% if fam.mem_num==
+                    "7" %}selected{% endif %}>7</option>
+                    <option value="8" {% if fam.mem_num==
+                    "8" %}selected{% endif %}>8</option>
+                    <option value="9" {% if fam.mem_num==
+                    "9" %}selected{% endif %}>9</option>
+                    <option value="10" {% if fam.mem_num==
+                    "10" %}selected{% endif %}>10</option>
+                    <option value="11" {% if fam.mem_num==
+                    "11" %}selected{% endif %}>11</option>
+                    <option value="12" {% if fam.mem_num==
+                    "12" %}selected{% endif %}>12</option>
+                    <option value="13" {% if fam.mem_num==
+                    "13" %}selected{% endif %}>13</option>
+                    <option value="14" {% if fam.mem_num==
+                    "14" %}selected{% endif %}>14</option>
+                    <option value="15" {% if fam.mem_num==
+                    "15" %}selected{% endif %}>15</option>
+                </select>
+            </div>
         </section>
 
         <!-- Submit -->
         <div class="text-center mt-6 sm:mt-8">
-          <button
-            type="submit"
-            class="w-full sm:w-auto bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
-          >
-            Next
-          </button>
+            <button
+                    type="submit"
+                    class="w-full sm:w-auto bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800"
+            >
+                Next
+            </button>
         </div>
-      </form>
-    </div>
-  </body>
+    </form>
+</div>
+</body>
 </html>

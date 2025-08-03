@@ -18,9 +18,9 @@
         <p><strong>Head Name:</strong> {{ name_parts[0] | capitalize }} {{ name_parts[1] | capitalize }} Bhai {{ name_parts[2] | capitalize }} Bhai</p>
         <p><strong>Email:</strong> {{ family.email }}</p>
         <p><strong>Ghatak:</strong> {{ family.ghatak | capitalize}} | <strong>Pradeshik:</strong> {{ family.pradeshik | capitalize}}</p>
-        <p><strong>Kuldevi:</strong> {{ family.k_name }} (Village: {{ family.k_village | capitalize}})</p>
-        <p><strong>Native Village:</strong> {{ family.village | capitalize}}</p>
-        <p><strong>Gotra:</strong> {{ family.gotra }}</p>
+        <p><strong>Kuldevi:</strong> {% for k in family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {% endfor %} <i>(Village: {{ family.k_village_rel.name | capitalize}})</i></p>
+        <p><strong>Native Village:</strong> {{ family.village_rel.name | capitalize}}</p>
+        <p><strong>Gotra:</strong> {{ family.gotra_rel.name }}</p>
         <p><strong>Residential Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
         <p><strong>Residential Phone:</strong> {{ family.res_phone }}</p>
         {% if family.off_add == "| | | |	" %}
@@ -63,12 +63,12 @@
               <td class="p-2 border break-words">{{ member.name }}</td>
               <td class="p-2 border break-words">{{ member.father }}</td>
               <td class="p-2 border">{{ member.gender }}</td>
-              <td class="p-2 border">{{ member.relation }}</td>
+              <td class="p-2 border">{{ member.relation_rel.name }}</td>
               <td class="p-2 border">{{ member.dob }}</td>
               <td class="p-2 border">{{ member.edu }}</td>
               <td class="p-2 border">{{ member.occu }}</td>
               <td class="p-2 border break-all">{{ member.phone }}</td>
-              <td class="p-2 border">{{ member.blood }}</td>
+              <td class="p-2 border">{{ member.blood_rel.name }}</td>
               <td class="p-2 border text-center space-x-2">
                 <a href="/edit/member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
                 <a href="/delete/{{ member.id }}/{{ family.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>

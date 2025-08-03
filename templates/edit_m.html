@@ -16,7 +16,7 @@
 
       <!-- Repeat this block for each member -->
       <div class="border-t pt-6 mb-10">
-        {% if mem.relation == "self" %}
+        {% if mem.relation == 1 %}
         <h2 class="text-2xl font-semibold text-[#006459] mb-4">
           Edit Family Head's Details
         </h2>
@@ -126,7 +126,7 @@
           </div>
 
           <!-- Relation with Family Head -->
-          {% if mem.relation == "self" %}
+          {% if mem.relation == 1 %}
           <div>
             <label class="block font-medium mb-1"
               >Relation with Family Head
@@ -138,24 +138,24 @@
               class="w-full border p-2 rounded-md"
             >
               <option value="" disabled>Select relation</option>
-              <option value="self" selected>Self</option>
-              <option value="father" disabled>Father</option>
-              <option value="mother" disabled>Mother</option>
-              <option value="wife" disabled>Wife</option>
-              <option value="husband" disabled>Husband</option>
-              <option value="son" disabled>Son</option>
-              <option value="daughter" disabled>Daughter</option>
-              <option value="brother" disabled>Brother</option>
-              <option value="sister" disabled>Sister</option>
-              <option value="grandfather" disabled>Grandfather</option>
-              <option value="grandmother" disabled>Grandmother</option>
-              <option value="grandson" disabled>Grandson</option>
-              <option value="granddaughter" disabled>Granddaughter</option>
-              <option value="father-in Law" disabled>Father-in Law</option>
-              <option value="mother-in Law" disabled>Mother-in Law</option>
-              <option value="daughter-in Law" disabled>Daughter-in Law</option>
-              <option value="son-in Law" disabled>Son-in Law</option>
-              <option value="other" disabled>Other</option>
+              <option value="1" selected>Self</option>
+              <option value="2" disabled>Father</option>
+              <option value="3" disabled>Mother</option>
+              <option value="4" disabled>Wife</option>
+              <option value="5" disabled>Husband</option>
+              <option value="6" disabled>Son</option>
+              <option value="7" disabled>Daughter</option>
+              <option value="8" disabled>Brother</option>
+              <option value="9" disabled>Sister</option>
+              <option value="10" disabled>Grandfather</option>
+              <option value="11" disabled>Grandmother</option>
+              <option value="12" disabled>Grandson</option>
+              <option value="13" disabled>Granddaughter</option>
+              <option value="14" disabled>Father-in Law</option>
+              <option value="15" disabled>Mother-in Law</option>
+              <option value="16" disabled>Daughter-in Law</option>
+              <option value="17" disabled>Son-in Law</option>
+              <option value="18" disabled>Other</option>
             </select>
           </div>
           {% elif id.split("?")[0] == "new" %}
@@ -170,24 +170,24 @@
               class="w-full border p-2 rounded-md"
             >
               <option value="" disabled selected>Select relation</option>
-              <option value="self" disabled>Self</option>
-              <option value="father">Father</option>
-              <option value="mother">Mother</option>
-              <option value="wife">Wife</option>
-              <option value="husband">Husband</option>
-              <option value="son">Son</option>
-              <option value="daughter">Daughter</option>
-              <option value="brother">Brother</option>
-              <option value="sister">Sister</option>
-              <option value="grandfather">Grandfather</option>
-              <option value="grandmother">Grandmother</option>
-              <option value="grandson">Grandson</option>
-              <option value="granddaughter">Granddaughter</option>
-              <option value="father-in Law">Father-in Law</option>
-              <option value="mother-in Law">Mother-in Law</option>
-              <option value="daughter-in Law">Daughter-in Law</option>
-              <option value="son-in Law">Son-in Law</option>
-              <option value="other">Other</option>
+              <option value="1" disabled>Self</option>
+              <option value="2">Father</option>
+              <option value="3">Mother</option>
+              <option value="4">Wife</option>
+              <option value="5">Husband</option>
+              <option value="6">Son</option>
+              <option value="7">Daughter</option>
+              <option value="8">Brother</option>
+              <option value="9">Sister</option>
+              <option value="10">Grandfather</option>
+              <option value="11">Grandmother</option>
+              <option value="12">Grandson</option>
+              <option value="13">Granddaughter</option>
+              <option value="14">Father-in Law</option>
+              <option value="15">Mother-in Law</option>
+              <option value="16">Daughter-in Law</option>
+              <option value="17">Son-in Law</option>
+              <option value="18">Other</option>
             </select>
           </div>
           {% else %}
@@ -202,24 +202,24 @@
               class="w-full border p-2 rounded-md"
             >
               <option value="" disabled selected>Select relation</option>
-              <option value="self" disabled>Self</option>
-              <option value="father" {% if mem.relation == "father" %}selected{% endif %}>Father</option>
-              <option value="mother" {% if mem.relation == "mother" %}selected{% endif %}>Mother</option>
-              <option value="wife" {% if mem.relation == "wife" %}selected{% endif %}>Wife</option>
-              <option value="husband" {% if mem.relation == "husband" %}selected{% endif %}>Husband</option>
-              <option value="son" {% if mem.relation == "son" %}selected{% endif %}>Son</option>
-              <option value="daughter" {% if mem.relation == "daughter" %}selected{% endif %}>Daughter</option>
-              <option value="brother" {% if mem.relation == "brother" %}selected{% endif %}>Brother</option>
-              <option value="sister" {% if mem.relation == "sister" %}selected{% endif %}>Sister</option>
-              <option value="grandfather" {% if mem.relation == "grandfather" %}selected{% endif %}>Grandfather</option>
-              <option value="grandmother" {% if mem.relation == "grandmother" %}selected{% endif %}>Grandmother</option>
-              <option value="grandson" {% if mem.relation == "grandson" %}selected{% endif %}>Grandson</option>
-              <option value="granddaughter" {% if mem.relation == "granddaughter" %}selected{% endif %}>Granddaughter</option>
-              <option value="father-in Law" {% if mem.relation == "father-in Law" %}selected{% endif %}>Father-in Law</option>
-              <option value="mother-in Law" {% if mem.relation == "mother-in Law" %}selected{% endif %}>Mother-in Law</option>
-              <option value="daughter-in Law" {% if mem.relation == "daughter-in Law" %}selected{% endif %}>Daughter-in Law</option>
-              <option value="son-in Law" {% if mem.relation == "son-in Law" %}selected{% endif %}>Son-in Law</option>
-              <option value="other" {% if mem.relation == "other" %}selected{% endif %}>Other</option>
+              <option value="1" disabled>Self</option>
+              <option value="2" {% if mem.relation == 2 %}selected{% endif %}>Father</option>
+              <option value="3" {% if mem.relation == 3 %}selected{% endif %}>Mother</option>
+              <option value="4" {% if mem.relation == 4 %}selected{% endif %}>Wife</option>
+              <option value="5" {% if mem.relation == 5 %}selected{% endif %}>Husband</option>
+              <option value="6" {% if mem.relation == 6 %}selected{% endif %}>Son</option>
+              <option value="7" {% if mem.relation == 7 %}selected{% endif %}>Daughter</option>
+              <option value="8" {% if mem.relation == 8 %}selected{% endif %}>Brother</option>
+              <option value="9" {% if mem.relation == 9 %}selected{% endif %}>Sister</option>
+              <option value="10" {% if mem.relation == 10 %}selected{% endif %}>Grandfather</option>
+              <option value="11" {% if mem.relation == 11 %}selected{% endif %}>Grandmother</option>
+              <option value="12" {% if mem.relation == 12 %}selected{% endif %}>Grandson</option>
+              <option value="13" {% if mem.relation == 13 %}selected{% endif %}>Granddaughter</option>
+              <option value="14" {% if mem.relation == 14 %}selected{% endif %}>Father-in Law</option>
+              <option value="15" {% if mem.relation == 15 %}selected{% endif %}>Mother-in Law</option>
+              <option value="16" {% if mem.relation == 16 %}selected{% endif %}>Daughter-in Law</option>
+              <option value="17" {% if mem.relation == 17 %}selected{% endif %}>Son-in Law</option>
+              <option value="18" {% if mem.relation == 18 %}selected{% endif %}>Other</option>
             </select>
           </div>
           {% endif %}
@@ -247,10 +247,10 @@
               class="w-full border p-2 rounded-md"
             >
               <option value="" disabled selected>Select status</option>
-              <option value="unmarried" {% if mem.marriage == "unmarried" %}selected{% endif %}>Unmarried</option>
-              <option value="married" {% if mem.marriage == "married" %}selected{% endif %}>Married</option>
-              <option value="widowed" {% if mem.marriage == "widowed" %}selected{% endif %}>Widowed</option>
-              <option value="divorced" {% if mem.marriage == "divorced" %}selected{% endif %}>Divorced</option>
+              <option value="2" {% if mem.marriage == 2 %}selected{% endif %}>Unmarried</option>
+              <option value="1" {% if mem.marriage == 1 %}selected{% endif %}>Married</option>
+              <option value="4" {% if mem.marriage == 4 %}selected{% endif %}>Widowed</option>
+              <option value="3" {% if mem.marriage == 3 %}selected{% endif %}>Divorced</option>
             </select>
           </div>
 
@@ -344,14 +344,14 @@
             >
             <select name="blood" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select blood group</option>
-              <option value="A+" {% if mem.blood == "A+" %}selected{% endif %}>A+</option>
-              <option value="A-" {% if mem.blood == "A-" %}selected{% endif %}>A-</option>
-              <option value="B+" {% if mem.blood == "B+" %}selected{% endif %}>B+</option>
-              <option value="B-" {% if mem.blood == "B-" %}selected{% endif %}>B-</option>
-              <option value="O+" {% if mem.blood == "O+" %}selected{% endif %}>O+</option>
-              <option value="O-" {% if mem.blood == "O-" %}selected{% endif %}>O-</option>
-              <option value="AB+" {% if mem.blood == "AB+" %}selected{% endif %}>AB+</option>
-              <option value="AB-" {% if mem.blood == "AB-" %}selected{% endif %}>AB-</option>
+              <option value="1" {% if mem.blood == 1 %}selected{% endif %}>A+</option>
+              <option value="2" {% if mem.blood == 2 %}selected{% endif %}>A-</option>
+              <option value="3" {% if mem.blood == 3 %}selected{% endif %}>B+</option>
+              <option value="4" {% if mem.blood == 4 %}selected{% endif %}>B-</option>
+              <option value="5" {% if mem.blood == 5 %}selected{% endif %}>O+</option>
+              <option value="6" {% if mem.blood == 6 %}selected{% endif %}>O-</option>
+              <option value="7" {% if mem.blood == 7 %}selected{% endif %}>AB+</option>
+              <option value="8" {% if mem.blood == 8 %}selected{% endif %}>AB-</option>
             </select>
           </div>
 

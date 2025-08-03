@@ -23,22 +23,62 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 
 
+class Kuldevi(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+
+
+class Village(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+
+
+class Gotra(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+
+
+class Blood(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+
+class Marriage(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+
+class Relation(db.Model):
+    id = db.Column(db.SmallInteger, primary_key=True)
+    name = db.Column(db.String(50), nullable=False)
+
+
+family_kuldevi = db.Table(
+    'family_kuldevi',
+    db.Column('family_id', db.SmallInteger, db.ForeignKey('family.id'), primary_key=True),
+    db.Column('kuldevi_id', db.SmallInteger, db.ForeignKey('kuldevi.id'), primary_key=True)
+)
+
+
 class Family(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), nullable=False)
     ghatak = db.Column(db.String(50), nullable=False)
     pradeshik = db.Column(db.String(50), nullable=False)
-    k_name = db.Column(db.String(50), nullable=False)
-    k_village = db.Column(db.String(50), nullable=False)
-    village = db.Column(db.String(50), nullable=False)
-    gotra = db.Column(db.String(50), nullable=True)
+    kuldevi = db.relationship('Kuldevi', secondary=family_kuldevi, backref='families')
+    k_village = db.Column(db.SmallInteger, db.ForeignKey('village.id'), nullable=False)
+    village = db.Column(db.SmallInteger, db.ForeignKey('village.id'), nullable=False)
+    gotra = db.Column(db.SmallInteger, db.ForeignKey('gotra.id'), nullable=False)
     res_add = db.Column(db.Text, nullable=False)
     res_phone = db.Column(db.Integer, nullable=False)
     off_add = db.Column(db.Text, nullable=True)
     off_phone = db.Column(db.Integer, nullable=True)
-    mem_num = db.Column(db.Integer, nullable=False)
+    mem_num = db.Column(db.SmallInteger, nullable=False)
     date = db.Column(DateTime)
+    gotra_rel = db.relationship('Gotra')
+    village_rel = db.relationship('Village', foreign_keys=[village])
+    k_village_rel = db.relationship('Village', foreign_keys=[k_village])
 
 
 class Member(db.Model):
@@ -47,17 +87,20 @@ class Member(db.Model):
     name = db.Column(db.String(80), nullable=False)
     father = db.Column(db.String(120), nullable=False)
     gender = db.Column(db.String(50), nullable=False)
-    relation = db.Column(db.String(50), nullable=False)
+    relation = db.Column(db.SmallInteger, db.ForeignKey('relation.id'), nullable=False)
     peear = db.Column(db.String(50), nullable=True)
-    marriage = db.Column(db.String(50), nullable=False)
+    marriage = db.Column(db.SmallInteger, db.ForeignKey('marriage.id'), nullable=False)
     dob = db.Column(db.String(50), nullable=False)
     photo = db.Column(db.String(50), nullable=True)
     edu = db.Column(db.String(50), nullable=False)
     occu = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=True)
-    blood = db.Column(db.String(50), nullable=False)
+    blood = db.Column(db.SmallInteger, db.ForeignKey('blood.id'), nullable=False)
     family = db.relationship('Family', backref=db.backref('members', lazy=True))
+    blood_rel = db.relationship('Blood')
+    relation_rel = db.relationship('Relation')
+    marriage_rel = db.relationship('Marriage')
 
 
 @app.route("/submit")
@@ -65,32 +108,6 @@ def submit():
     family_id = request.args.get('family_id', type=int)
     print(family_id)
     return render_template('end.html')
-
-
-@app.route('/admin', methods=['GET', 'POST'])
-def admin():
-    if request.method == 'POST':
-        username = request.form.get('name')
-        password = request.form.get('pass')
-
-        if username == admin_user and password == admin_password:
-            session['user'] = username
-            return redirect('admin/dashboard')
-        else:
-            flash('Invalid login')
-            return render_template('login.html')
-    if 'user' in session and session['user'] == admin_user:
-        return redirect('admin/dashboard')
-
-    return render_template('login.html')
-
-
-@app.route("/admin/dashboard")
-def dashboard():
-    if 'user' in session and session['user'] == admin_user:
-        return render_template('dashboard.html')
-    else:
-        return redirect("/admin")
 
 
 @app.route("/admin/user")
@@ -146,6 +163,34 @@ def something():
         return redirect("/admin")
 
 
+@app.route("/admin/dashboard")
+def dashboard():
+    if 'user' in session and session['user'] == admin_user:
+        total_families = Family.query.count()
+        total_members = Member.query.count()
+        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members)
+    else:
+        return redirect("/admin")
+
+
+@app.route('/admin', methods=['GET', 'POST'])
+def admin():
+    if request.method == 'POST':
+        username = request.form.get('name')
+        password = request.form.get('pass')
+
+        if username == admin_user and password == admin_password:
+            session['user'] = username
+            return redirect('admin/dashboard')
+        else:
+            flash('Invalid login')
+            return render_template('login.html')
+    if 'user' in session and session['user'] == admin_user:
+        return redirect('admin/dashboard')
+
+    return render_template('login.html')
+
+
 @app.route('/', methods=['GET', 'POST'])
 def form1():
     if request.method == 'POST':
@@ -157,6 +202,7 @@ def form1():
             ghatak = request.form.get('ghatak')
             pradeshik = request.form.get('pradeshik')
             kuldevi_name = request.form.getlist('kuldevi[]')
+            kuldevi_objs = Kuldevi.query.filter(Kuldevi.id.in_(kuldevi_name)).all()
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
@@ -173,7 +219,7 @@ def form1():
 
             entry = Family(
                 name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
-                k_name=", ".join(kuldevi_name), k_village=kuldevi_village, village=native_village, gotra=gotra,
+                kuldevi=kuldevi_objs, k_village=kuldevi_village, village=native_village, gotra=gotra,
                 res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
             )
             db.session.add(entry)
@@ -309,7 +355,7 @@ def editing_sec(id, type):
                 fam.email = email
                 fam.ghatak = ghatak
                 fam.pradeshik = pradeshik
-                fam.k_name = ", ".join(kuldevi_name)
+                fam.kuldevi = Kuldevi.query.filter(Kuldevi.id.in_(kuldevi_name)).all()
                 fam.k_village = kuldevi_village
                 fam.village = native_village
                 fam.gotra = gotra
@@ -391,13 +437,154 @@ def delete(id, family_id):
     return redirect(f'/summary/{family_id}')
 
 
+@app.route("/admin/delete_mem/<string:id>/<int:family_id>")
+def admin_delete_mem(id, family_id):
+    if 'user' in session and session['user'] == admin_user:
+        post = Member.query.filter_by(id=id).first() if id != 'new' else None
+        fam = Family.query.filter_by(id=family_id).first()
+        fam.mem_num -= 1
+        db.session.delete(post)
+        db.session.commit()
+        return redirect(f'/admin/user')
+
+
+@app.route("/admin/delete_fam/<int:family_id>")
+def admin_delete_fam(family_id):
+    if 'user' in session and session['user'] == admin_user:
+        post = Family.query.filter_by(id=family_id).first() if id != 'new' else None
+        members = Member.query.filter_by(family_id=family_id).all() if id != 'new' else None
+        if members:
+            for member in members:
+                db.session.delete(member)
+        db.session.delete(post)
+        db.session.commit()
+        return redirect(f'/admin/user?view=families')
+
+
 @app.route("/logout")
 def logout():
     session.pop('user')
     return redirect('/')
 
 
+def lookup_tables():
+    if not Kuldevi.query.first():
+        kuldevi_data = [
+            (1, "Brahmani Maa"),
+            (2, "Butbhavani Maa"),
+            (3, "Chamunda Maa"),
+            (4, "Chaval Maa"),
+            (5, "Gatrad Maa"),
+            (6, "Kalika Maa"),
+            (7, "Khodiar Maa"),
+            (8, "Momai Maa"),
+            (9, "Pithad Maa"),
+            (10, "Saval Maa"),
+            (11, "Sikoter Maa"),
+            (12, "Vishal Maa"),
+            (13, "Truthiad Maa"),
+        ]
+        for kid, name in kuldevi_data:
+            db.session.add(Kuldevi(id=kid, name=name))
+        db.session.commit()
+    if not Village.query.first():
+        village_data = [
+            (1, "Anjar"),
+            (2, "Chandia"),
+            (3, "Devaliya"),
+            (4, "Galpadar"),
+            (5, "Hajapar"),
+            (6, "Jambudi"),
+            (7, "Khambhra"),
+            (8, "Khedol"),
+            (9, "Kumbharia"),
+            (10, "Kukma"),
+            (11, "Lovaria"),
+            (12, "Madhapar"),
+            (13, "Meghpar"),
+            (14, "Nagalpar"),
+            (15, "Nagor"),
+            (16, "Reha"),
+            (17, "Sinogara"),
+            (18, "Vidi"),
+        ]
+        for vid, name in village_data:
+            db.session.add(Village(id=vid, name=name))
+        db.session.commit()
+    if not Gotra.query.first():
+        gotra_data = [
+            (1, "ATREE"),
+            (2, "BHARDWAJ"),
+            (3, "GARG"),
+            (4, "GAUTAM"),
+            (5, "KASHYAP"),
+            (6, "KAUDINYA"),
+            (7, "SANKADI"),
+            (8, "SHANDIL"),
+            (9, "SHAUNAK"),
+            (10, "SONAL"),
+            (11, "VALMIK"),
+            (12, "VARSHA"),
+            (13, "VASHISHTHA"),
+            (14, "VATSA"),
+            (15, "VISHVAMITRA"),
+            (16, "OTHER"),
+        ]
+        for gid, name in gotra_data:
+            db.session.add(Gotra(id=gid, name=name))
+        db.session.commit()
+    if not Blood.query.first():
+        blood_data = [
+            (1, "A+"),
+            (2, "A-"),
+            (3, "B+"),
+            (4, "B-"),
+            (7, "AB+"),
+            (8, "AB-"),
+            (5, "O+"),
+            (6, "O-"),
+        ]
+        for bid, name in blood_data:
+            db.session.add(Blood(id=bid, name=name))
+        db.session.commit()
+    if not Marriage.query.first():
+        marriage_data = [
+            (1, "Married"),
+            (2, "Unmarried"),
+            (3, "Divorced"),
+            (4, "Widowed"),
+        ]
+        for mid, name in marriage_data:
+            db.session.add(Marriage(id=mid, name=name))
+        db.session.commit()
+    if not Relation.query.first():
+        relation_data = [
+            (1, "Self"),
+            (2, "Father"),
+            (3, "Mother"),
+            (4, "Wife"),
+            (5, "Husband"),
+            (6, "Son"),
+            (7, "Daughter"),
+            (8, "Brother"),
+            (9, "Sister"),
+            (10, "Grandfather"),
+            (11, "Grandmother"),
+            (12, "Grandson"),
+            (13, "Granddaughter"),
+            (14, "Father-in Law"),
+            (15, "Mother-in Law"),
+            (16, "Daughter-in Law"),
+            (17, "Son-in Law"),
+            (18, "Other"),
+        ]
+        for rid, name in relation_data:
+            db.session.add(Relation(id=rid, name=name))
+        db.session.commit()
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+        lookup_tables()
     app.run(host='0.0.0.0', port=3000, debug=True)
