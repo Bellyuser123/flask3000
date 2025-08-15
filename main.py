@@ -1,8 +1,11 @@
-from flask import Flask, render_template, request, session, redirect, flash
+from flask import Flask, render_template, request, session, redirect, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime
+import pandas as pd, openpyxl
 from datetime import datetime
 import os
+import io
+
 
 local_server = True
 
@@ -18,7 +21,7 @@ if local_server:
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('prod_uri') + os.path.join(base_dir, 'data', 'database.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+# app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
 
@@ -103,11 +106,72 @@ class Member(db.Model):
     marriage_rel = db.relationship('Marriage')
 
 
-@app.route("/submit")
-def submit():
-    family_id = request.args.get('family_id', type=int)
-    print(family_id)
-    return render_template('end.html')
+@app.route('/export/all')
+def export_all():
+    if 'user' in session and session['user'] == admin_user:
+        output = io.BytesIO()
+        writer = pd.ExcelWriter(output, engine='openpyxl')
+
+        # Families
+        families = Family.query.all()
+        df_families = pd.DataFrame([{
+            'ID': f.id,
+            'Name': f.name,
+            'Email': f.email,
+            'Gotra': f.gotra_rel.name if f.gotra_rel else '',
+            'Village': f.village_rel.name if f.village_rel else '',
+            'Kuldevi': ', '.join([k.name for k in f.kuldevi]),
+            'Members': f.mem_num,
+            'Date': f.date
+        } for f in families])
+        df_families.to_excel(writer, index=False, sheet_name='Families')
+
+        # Members
+        members = Member.query.all()
+        df_members = pd.DataFrame([{
+            'ID': m.id,
+            'Family': m.family.name if m.family else '',
+            'Name': m.name,
+            'Father': m.father,
+            'Gender': m.gender,
+            'Relation': m.relation_rel.name if m.relation_rel else '',
+            'Marriage': m.marriage_rel.name if m.marriage_rel else '',
+            'DOB': m.dob,
+            'Education': m.edu,
+            'Occupation': m.occu,
+            'Phone': m.phone,
+            'Email': m.email,
+            'Blood': m.blood_rel.name if m.blood_rel else ''
+        } for m in members])
+        df_members.to_excel(writer, index=False, sheet_name='Members')
+
+        # Add other tables as needed...
+
+        writer.close()
+        output.seek(0)
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name='all_data.xlsx',
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    else:
+        return redirect("/admin")
+
+
+@app.route("/submit/<int:id>", methods=['GET', 'POST'])
+def submit(id):
+    fam = Family.query.filter_by(id=id).first()
+    mem = Member.query.filter_by(family_id=id).all()
+    if fam.mem_num == len(mem):
+        head = Member.query.filter_by(family_id=id, relation=1).first()
+        if fam.name == head.name:
+            return render_template('end.html')
+        else:
+            flash("Family Head name in Family details doesn't Match with Family head in Members details below", 'error')
+    else:
+        flash("Number of Family members doesn't match with provided Members", 'error')
+    return redirect('/summary/' + str(id))
 
 
 @app.route("/admin/user")
@@ -195,12 +259,11 @@ def admin():
 def form1():
     if request.method == 'POST':
         try:
-            print("Processing form submission...")
-            name = request.form.get('last_name') + " " + request.form.get('first_name') + " " + request.form.get(
-                'middle_name')
+            name = request.form.get('last_name').lower() + " " + request.form.get('first_name').lower() + " " + request.form.get(
+                'middle_name').lower()
             email = request.form.get('email')
-            ghatak = request.form.get('ghatak')
-            pradeshik = request.form.get('pradeshik')
+            ghatak = request.form.get('ghatak').lower()
+            pradeshik = request.form.get('pradeshik').lower()
             kuldevi_name = request.form.getlist('kuldevi[]')
             kuldevi_objs = Kuldevi.query.filter(Kuldevi.id.in_(kuldevi_name)).all()
             kuldevi_village = request.form.get('kuldevi_village')
@@ -224,14 +287,11 @@ def form1():
             )
             db.session.add(entry)
             db.session.commit()
-            print(f"Saved Family with ID: {entry.id}")
-            print("Data saved successfully.")
             mem = str(num_of_memb)
             if mem:
                 return redirect(f'/form2/{mem}?family_id={entry.id}')
         except Exception as e:
             print("Error during form processing:", e)
-            flash("Error submitting form.")
             return render_template('form1.html')
     return render_template('form1.html')
 
@@ -262,8 +322,8 @@ def form2(mem):
             for i in range(mem):
                 entry = Member(
                     family_id=family_id,
-                    name=f"{ln_list[i]} {fn_list[i]} {mn_list[i]}",
-                    father=f"{fln_list[i]} {ffn_list[i]} {fmn_list[i]}",
+                    name=f"{ln_list[i].lower()} {fn_list[i].lower()} {mn_list[i].lower()}",
+                    father=f"{fln_list[i].lower()} {ffn_list[i].lower()} {fmn_list[i].lower()}",
                     gender=safe_get(gender_list, i),
                     relation=relation_list[i],
                     peear=safe_get(peear_list, i),
@@ -276,25 +336,9 @@ def form2(mem):
                     email=safe_get(email_list, i),
                     blood=safe_get(blood_list, i)
                 )
-                print("Expected number of members (mem):", mem)
-                print("ln_list:", len(ln_list))
-                print("fn_list:", len(fn_list))
-                print("mn_list:", len(mn_list))
-                print("fln_list:", len(fln_list))
-                print("ffn_list:", len(ffn_list))
-                print("fmn_list:", len(fmn_list))
-                print("gender_list:", len(gender_list))
-                print("relation_list:", len(relation_list))
-                print("marriage_list:", len(marriage_list))
-                print("dob_list:", len(dob_list))
-                print("edu_list:", len(edu_list))
-                print("occu_list:", len(occu_list))
-                print("phone_list:", len(phone_list))
-                print("blood_list:", len(blood_list))
 
                 db.session.add(entry)
             db.session.commit()
-            flash("All members saved successfully.")
             return redirect(f'/summary/{family_id}')
         except Exception as e:
             print("Error:", e)
@@ -330,11 +374,11 @@ def editing_sec(id, type):
     if type == 'family':
         fam = Family.query.filter_by(id=id).first() if id != 'new' else None
         if request.method == 'POST':
-            name = request.form.get('last_name') + " " + request.form.get('first_name') + " " + request.form.get(
-                'middle_name')
+            name = request.form.get('last_name').lower() + " " + request.form.get('first_name').lower() + " " + request.form.get(
+                'middle_name').lower()
             email = request.form.get('email')
-            ghatak = request.form.get('ghatak')
-            pradeshik = request.form.get('pradeshik')
+            ghatak = request.form.get('ghatak').lower()
+            pradeshik = request.form.get('pradeshik').lower()
             kuldevi_name = request.form.getlist('kuldevi[]')
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
@@ -372,12 +416,12 @@ def editing_sec(id, type):
     elif type == 'member':
         mem = Member.query.filter_by(id=id).first() if id != 'new' else None
         if request.method == 'POST':
-            ln = request.form.get('ln')
-            fn = request.form.get('fn')
-            mn = request.form.get('mn')
-            fln = request.form.get('fln')
-            ffn = request.form.get('ffn')
-            fmn = request.form.get('fmn')
+            ln = request.form.get('ln').lower()
+            fn = request.form.get('fn').lower()
+            mn = request.form.get('mn').lower()
+            fln = request.form.get('fln').lower()
+            ffn = request.form.get('ffn').lower()
+            fmn = request.form.get('fmn').lower()
             gender = request.form.get('gender')
             relation = request.form.get('relation')
             peear = request.form.get('peear')
@@ -394,7 +438,6 @@ def editing_sec(id, type):
 
             id_list = id.split("?")
             family_id = request.args.get('family_id', type=int)
-            print(family_id)
 
             if not id_list[0] or id_list[0] == 'new':
                 mem = Member(id=None, family_id=family_id, name=name, father=father, gender=gender, relation=relation,

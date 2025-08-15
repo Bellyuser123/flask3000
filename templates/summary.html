@@ -1,29 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
+<head>
+    <meta charset="UTF-8"/>
     <title>Family Summary</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body class="bg-[#f5f5dc] text-gray-800">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 mt-10 bg-white rounded-lg shadow-lg">
-      <h1 class="text-3xl font-bold text-[#006400] mb-4 text-center">Family Summary</h1>
-      <h2 class="text-2xl font-bold text-[#f7b340] mb-4 text-center">Confirm Details</h2>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body class="bg-[#f5f5dc] text-gray-800">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 py-8 mt-10 bg-white rounded-lg shadow-lg">
+    <h1 class="text-3xl font-bold text-[#006400] mb-4 text-center">Family Summary</h1>
+    <h2 class="text-2xl font-bold text-[#f7b340] mb-4 text-center">Confirm Details</h2>
 
-      <!-- FAMILY INFO -->
-      <div class="space-y-3">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="mb-6">
+        {% for category, message in messages %}
+        <div class="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+             role="alert">
+            <svg class="fill-current w-5 h-5 mr-2 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <title>Error</title>
+                <path d="M18.364 17.364A9 9 0 1 1 2.636 2.636a9 9 0 0 1 15.728 14.728zM9 7h2v4H9V7zm0 6h2v2H9v-2z"/>
+            </svg>
+            <span class="block font-semibold">{{ message }}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+
+    <!-- FAMILY INFO -->
+    <div class="space-y-3">
         <h2 class="text-xl font-semibold text-[#006400] mb-2">Family Details</h2>
         {% set name_parts = family.name.split(' ') %}
-        <p><strong>Head Name:</strong> {{ name_parts[0] | capitalize }} {{ name_parts[1] | capitalize }} Bhai {{ name_parts[2] | capitalize }} Bhai</p>
+        <p><strong>Head Name:</strong> {{ name_parts[0] | capitalize }} {{ name_parts[1] | capitalize }} Bhai {{
+            name_parts[2] | capitalize }} Bhai</p>
         <p><strong>Email:</strong> {{ family.email }}</p>
-        <p><strong>Ghatak:</strong> {{ family.ghatak | capitalize}} | <strong>Pradeshik:</strong> {{ family.pradeshik | capitalize}}</p>
-        <p><strong>Kuldevi:</strong> {% for k in family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {% endfor %} <i>(Village: {{ family.k_village_rel.name | capitalize}})</i></p>
+        <p><strong>Ghatak:</strong> {{ family.ghatak | capitalize}} | <strong>Pradeshik:</strong> {{ family.pradeshik |
+            capitalize}}</p>
+        <p><strong>Kuldevi:</strong> {% for k in family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {%
+            endfor %} <i>(Village: {{ family.k_village_rel.name | capitalize}})</i></p>
         <p><strong>Native Village:</strong> {{ family.village_rel.name | capitalize}}</p>
         <p><strong>Gotra:</strong> {{ family.gotra_rel.name }}</p>
         <p><strong>Residential Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
         <p><strong>Residential Phone:</strong> {{ family.res_phone }}</p>
-        {% if family.off_add == "| | | |	" %}
+        {% if family.off_add == "| | | | " %}
         {% else %}
         <p><strong>Office Address:</strong> {{ (", ").join(family.off_add.split(' | ')) }}</p>
         {% endif %}
@@ -32,58 +53,67 @@
         {% endif %}
         <p><strong>Number of Members:</strong> {{ family.mem_num }}</p>
         <p><strong>Submitted On:</strong> {{ family.date.strftime("%d-%m-%Y %H:%M") }}</p>
-      </div>
+    </div>
 
-      <!-- EDIT FAMILY BUTTON -->
-      <div class="text-right mt-4">
-        <a href="/edit/family/{{ family.id }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800">Edit Family</a>
-      </div>
+    <!-- EDIT FAMILY BUTTON -->
+    <div class="text-right mt-4">
+        <a href="/edit/family/{{ family.id }}" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-800"
+         onclick="this.onclick=null; this.classList.add('pointer-events-none', 'opacity-50');"
+        >Edit Family</a>
+    </div>
 
-      <!-- MEMBER TABLE -->
-      <div class="mt-10 overflow-x-auto">
+    <!-- MEMBER TABLE -->
+    <div class="mt-10 overflow-x-auto">
         <h2 class="text-xl font-semibold text-[#006400] mb-4">Family Members</h2>
         <table class="min-w-full table-auto border border-gray-300 text-sm sm:text-base">
-          <thead class="bg-[#006400] text-white">
+            <thead class="bg-[#006400] text-white">
             <tr>
-              <th class="p-2 border">Name</th>
-              <th class="p-2 border">Father</th>
-              <th class="p-2 border">Gender</th>
-              <th class="p-2 border">Relation</th>
-              <th class="p-2 border">DOB</th>
-              <th class="p-2 border">Education</th>
-              <th class="p-2 border">Occupation</th>
-              <th class="p-2 border">Phone</th>
-              <th class="p-2 border">Blood</th>
-              <th class="p-2 border">Actions</th>
+                <th class="p-2 border">Name</th>
+                <th class="p-2 border">Father</th>
+                <th class="p-2 border">Gender</th>
+                <th class="p-2 border">Relation</th>
+                <th class="p-2 border">DOB</th>
+                <th class="p-2 border">Education</th>
+                <th class="p-2 border">Occupation</th>
+                <th class="p-2 border">Phone</th>
+                <th class="p-2 border">Blood</th>
+                <th class="p-2 border">Actions</th>
             </tr>
-          </thead>
-          <tbody>
+            </thead>
+            <tbody>
             {% for member in family.members %}
             <tr class="bg-white border-t hover:bg-gray-100">
-              <td class="p-2 border break-words">{{ member.name }}</td>
-              <td class="p-2 border break-words">{{ member.father }}</td>
-              <td class="p-2 border">{{ member.gender }}</td>
-              <td class="p-2 border">{{ member.relation_rel.name }}</td>
-              <td class="p-2 border">{{ member.dob }}</td>
-              <td class="p-2 border">{{ member.edu }}</td>
-              <td class="p-2 border">{{ member.occu }}</td>
-              <td class="p-2 border break-all">{{ member.phone }}</td>
-              <td class="p-2 border">{{ member.blood_rel.name }}</td>
-              <td class="p-2 border text-center space-x-2">
-                <a href="/edit/member/{{ member.id }}" class="text-blue-600 hover:underline">Edit</a>
-                <a href="/delete/{{ member.id }}/{{ family.id }}" class="text-red-600 hover:underline" onclick="return confirm('Delete this member?')">Delete</a>
-              </td>
+                <td class="p-2 border break-words">{{ member.name }}</td>
+                <td class="p-2 border break-words">{{ member.father }}</td>
+                <td class="p-2 border">{{ member.gender }}</td>
+                <td class="p-2 border">{{ member.relation_rel.name }}</td>
+                <td class="p-2 border">{{ member.dob }}</td>
+                <td class="p-2 border">{{ member.edu }}</td>
+                <td class="p-2 border">{{ member.occu }}</td>
+                <td class="p-2 border break-all">{{ member.phone }}</td>
+                <td class="p-2 border">{{ member.blood_rel.name }}</td>
+                <td class="p-2 border text-center space-x-2">
+                    <a href="/edit/member/{{ member.id }}" onclick="this.onclick=null; this.classList.add('pointer-events-none', 'opacity-50');" class="text-blue-600 hover:underline">Edit</a>
+                    {% if member.relation != 1 %}
+                    <a href="/delete/{{ member.id }}/{{ family.id }}" class="text-red-600 hover:underline"
+                       onclick="return confirm('Delete this member?'); this.onclick=null; this.classList.add('pointer-events-none', 'opacity-50');">Delete</a>
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
-          </tbody>
+            </tbody>
         </table>
-      </div>
-
-      <!-- ADD MEMBER BUTTON -->
-      <div class="text-center mt-6">
-        <a href="/edit/member/new?family_id={{family.id}}" class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800">Add Member</a>
-        <a href="/submit" class="bg-[#ed3333] text-white px-6 py-2 rounded hover:bg-green-800" onclick="return confirm('Are you sure you want to submit form? Once submitted, you will not be able to change or edit the information provided.')">Submit Form</a>
-      </div>
     </div>
-  </body>
+
+    <!-- ADD MEMBER BUTTON -->
+    <div class="text-center mt-6">
+        <a href="/edit/member/new?family_id={{family.id}}"
+           class="bg-[#006400] text-white px-6 py-2 rounded hover:bg-green-800"
+            onclick="this.onclick=null; this.classList.add('pointer-events-none', 'opacity-50');">Add Member</a>
+        <a href="/submit/{{ family.id }}" class="bg-[#ed3333] text-white px-6 py-2 rounded hover:bg-green-800"
+           onclick="return confirm('Are you sure you want to submit form? Once submitted, you will not be able to change or edit the information provided.'); this.onclick=null; this.classList.add('pointer-events-none', 'opacity-50');">Submit
+            Form</a>
+    </div>
+</div>
+</body>
 </html>

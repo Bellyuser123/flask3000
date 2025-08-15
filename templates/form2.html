@@ -57,23 +57,23 @@
             <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled >Select relation</option>
               <option value="1" selected >Self</option>
-              <option value="2">Father</option>
-              <option value="3">Mother</option>
-              <option value="4">Wife</option>
-              <option value="5">Husband</option>
-              <option value="6">Son</option>
-              <option value="7">Daughter</option>
-              <option value="8">Brother</option>
-              <option value="9">Sister</option>
-              <option value="10">Grandfather</option>
-              <option value="11">Grandmother</option>
-              <option value="12">Grandson</option>
-              <option value="13">Granddaughter</option>
-              <option value="14">Father-in Law</option>
-              <option value="15">Mother-in Law</option>
-              <option value="16">Daughter-in Law</option>
-              <option value="17">Son-in Law</option>
-              <option value="18">Other</option>
+              <option value="2" disabled>Father</option>
+              <option value="3" disabled>Mother</option>
+              <option value="4" disabled>Wife</option>
+              <option value="5" disabled>Husband</option>
+              <option value="6" disabled>Son</option>
+              <option value="7" disabled>Daughter</option>
+              <option value="8" disabled>Brother</option>
+              <option value="9" disabled>Sister</option>
+              <option value="10" disabled>Grandfather</option>
+              <option value="11" disabled>Grandmother</option>
+              <option value="12" disabled>Grandson</option>
+              <option value="13" disabled>Granddaughter</option>
+              <option value="14" disabled>Father-in Law</option>
+              <option value="15" disabled>Mother-in Law</option>
+              <option value="16" disabled>Daughter-in Law</option>
+              <option value="17" disabled>Son-in Law</option>
+              <option value="18" disabled>Other</option>
             </select>
           </div>
           {% else %}
@@ -81,7 +81,7 @@
             <label class="block font-medium mb-1">Relation with Family Head <span class="text-red-500">*</span></label>
             <select name="relation[]" required class="w-full border p-2 rounded-md">
               <option value="" disabled selected>Select relation</option>
-              <option value="1">Self</option>
+              <option value="1" disabled>Self</option>
               <option value="2">Father</option>
               <option value="3">Mother</option>
               <option value="4">Wife</option>
@@ -176,7 +176,7 @@
 
           <!-- Submit Button (optional if only one member) -->
           <div class="text-center mt-6 sm:mt-8">
-            <button type="submit" class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800">
+            <button type="submit" onclick="this.disabled=true; this.form.submit();" class="bg-[#006400] text-white font-semibold py-2 px-6 rounded hover:bg-green-800">
               Save Member
             </button>
           </div>
