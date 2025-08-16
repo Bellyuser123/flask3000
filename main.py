@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DateTime
-import pandas as pd, openpyxl
-from datetime import datetime
+from sqlalchemy import DateTime, extract, and_, or_
+import pandas as pd
+from collections import Counter
+from rapidfuzz import fuzz
+from datetime import datetime, timedelta
 import os
 import io
 
@@ -106,72 +108,60 @@ class Member(db.Model):
     marriage_rel = db.relationship('Marriage')
 
 
-@app.route('/export/all')
-def export_all():
+@app.route("/admin/dashboard")
+def dashboard():
     if 'user' in session and session['user'] == admin_user:
-        output = io.BytesIO()
-        writer = pd.ExcelWriter(output, engine='openpyxl')
+        total_families = Family.query.count()
+        total_members = Member.query.count()
+        data_village_count = db.session.query(
+            Village.name, db.func.count(Family.id)
+        ).join(Family, Family.village == Village.id).group_by(Village.name).all()
+        village_name = [row[0] for row in data_village_count]
+        village_count = [row[1] for row in data_village_count]
 
-        # Families
         families = Family.query.all()
-        df_families = pd.DataFrame([{
-            'ID': f.id,
-            'Name': f.name,
-            'Email': f.email,
-            'Gotra': f.gotra_rel.name if f.gotra_rel else '',
-            'Village': f.village_rel.name if f.village_rel else '',
-            'Kuldevi': ', '.join([k.name for k in f.kuldevi]),
-            'Members': f.mem_num,
-            'Date': f.date
-        } for f in families])
-        df_families.to_excel(writer, index=False, sheet_name='Families')
+        last_names = [f.name.split()[0] for f in families if f.name]
+        clusters = cluster_last_names(last_names, threshold=80)
+        counter = {key: len(vals) for key, vals in clusters.items()}
+        lst_names = list(counter.keys())
+        lst_count = list(counter.values())
 
-        # Members
-        members = Member.query.all()
-        df_members = pd.DataFrame([{
-            'ID': m.id,
-            'Family': m.family.name if m.family else '',
-            'Name': m.name,
-            'Father': m.father,
-            'Gender': m.gender,
-            'Relation': m.relation_rel.name if m.relation_rel else '',
-            'Marriage': m.marriage_rel.name if m.marriage_rel else '',
-            'DOB': m.dob,
-            'Education': m.edu,
-            'Occupation': m.occu,
-            'Phone': m.phone,
-            'Email': m.email,
-            'Blood': m.blood_rel.name if m.blood_rel else ''
-        } for m in members])
-        df_members.to_excel(writer, index=False, sheet_name='Members')
+        today = datetime.today()
+        end_date = today + timedelta(days=7)
 
-        # Add other tables as needed...
+        upcoming_birthdays = Member.query.filter(
+            and_(
+                and_(extract('month', Member.dob) == today.month,
+                     extract('day', Member.dob) >= today.day),
+                and_(extract('month', Member.dob) == end_date.month,
+                     extract('day', Member.dob) <= end_date.day)
+            )
+        ).order_by(extract('month', Member.dob), extract('day', Member.dob)).all()
+        for member in upcoming_birthdays:
+            member.day = datetime.strptime(member.dob, '%Y-%m-%d').strftime('%d %b')
+            member.age = today.year - datetime.strptime(member.dob, '%Y-%m-%d').year
 
-        writer.close()
-        output.seek(0)
-        return send_file(
-            output,
-            as_attachment=True,
-            download_name='all_data.xlsx',
-            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-        )
+        recent_fam = Family.query.order_by(Family.date.desc()).limit(3).all()
+
+        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members, village_count=village_count, village_name=village_name, upcoming_birthdays=upcoming_birthdays, recent_fam=recent_fam, lst_names=lst_names, lst_count=lst_count)
     else:
         return redirect("/admin")
 
 
-@app.route("/submit/<int:id>", methods=['GET', 'POST'])
-def submit(id):
-    fam = Family.query.filter_by(id=id).first()
-    mem = Member.query.filter_by(family_id=id).all()
-    if fam.mem_num == len(mem):
-        head = Member.query.filter_by(family_id=id, relation=1).first()
-        if fam.name == head.name:
-            return render_template('end.html')
-        else:
-            flash("Family Head name in Family details doesn't Match with Family head in Members details below", 'error')
+@app.route("/admin/report")
+def report():
+    if 'user' in session and session['user'] == admin_user:
+        return render_template('report.html')
     else:
-        flash("Number of Family members doesn't match with provided Members", 'error')
-    return redirect('/summary/' + str(id))
+        return redirect("/admin")
+
+
+@app.route("/admin/something")
+def something():
+    if 'user' in session and session['user'] == admin_user:
+        return render_template('something.html')
+    else:
+        return redirect("/admin")
 
 
 @app.route("/admin/user")
@@ -209,32 +199,6 @@ def collapse_family_row(family_id):
 def member_detail_partial(member_id):
     member = Member.query.get_or_404(member_id)
     return render_template('partials/mem_modal.html', member=member)
-
-
-@app.route("/admin/report")
-def report():
-    if 'user' in session and session['user'] == admin_user:
-        return render_template('report.html')
-    else:
-        return redirect("/admin")
-
-
-@app.route("/admin/something")
-def something():
-    if 'user' in session and session['user'] == admin_user:
-        return render_template('something.html')
-    else:
-        return redirect("/admin")
-
-
-@app.route("/admin/dashboard")
-def dashboard():
-    if 'user' in session and session['user'] == admin_user:
-        total_families = Family.query.count()
-        total_members = Member.query.count()
-        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members)
-    else:
-        return redirect("/admin")
 
 
 @app.route('/admin', methods=['GET', 'POST'])
@@ -361,6 +325,20 @@ def format_date_for_input(date_str):
         except ValueError:
             continue
     return ''  # fallback if no format matches
+
+
+def cluster_last_names(names, threshold):
+    clusters = {}
+    for name in names:
+        matched = False
+        for key in clusters.keys():
+            if fuzz.ratio(name, key) >= threshold:
+                clusters[key].append(name)
+                matched = True
+                break
+        if not matched:
+            clusters[name] = [name]
+    return clusters
 
 
 @app.route('/summary/<int:family_id>', methods=['GET', 'POST'])
@@ -502,6 +480,72 @@ def admin_delete_fam(family_id):
         db.session.delete(post)
         db.session.commit()
         return redirect(f'/admin/user?view=families')
+
+
+@app.route('/export/xsl')
+def export_all():
+    if 'user' in session and session['user'] == admin_user:
+        output = io.BytesIO()
+        writer = pd.ExcelWriter(output, engine='openpyxl')
+
+        families = Family.query.all()
+        df_families = pd.DataFrame([{
+            'ID': f.id,
+            'Name': f.name,
+            'Email': f.email,
+            'Gotra': f.gotra_rel.name if f.gotra_rel else '',
+            'Village': f.village_rel.name if f.village_rel else '',
+            'Kuldevi': ', '.join([k.name for k in f.kuldevi]),
+            'Members': f.mem_num,
+            'Date': f.date
+        } for f in families])
+        df_families.to_excel(writer, index=False, sheet_name='Families')
+
+        members = Member.query.all()
+        df_members = pd.DataFrame([{
+            'ID': m.id,
+            'Family': m.family.name if m.family else '',
+            'Name': m.name,
+            'Father': m.father,
+            'Gender': m.gender,
+            'Relation': m.relation_rel.name if m.relation_rel else '',
+            'Marriage': m.marriage_rel.name if m.marriage_rel else '',
+            'DOB': m.dob,
+            'Education': m.edu,
+            'Occupation': m.occu,
+            'Phone': m.phone,
+            'Email': m.email,
+            'Blood': m.blood_rel.name if m.blood_rel else ''
+        } for m in members])
+        df_members.to_excel(writer, index=False, sheet_name='Members')
+
+        # Add other tables as needed...
+
+        writer.close()
+        output.seek(0)
+        return send_file(
+            output,
+            as_attachment=True,
+            download_name='all_data.xlsx',
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
+    else:
+        return redirect("/admin")
+
+
+@app.route("/submit/<int:id>", methods=['GET', 'POST'])
+def submit(id):
+    fam = Family.query.filter_by(id=id).first()
+    mem = Member.query.filter_by(family_id=id).all()
+    if fam.mem_num == len(mem):
+        head = Member.query.filter_by(family_id=id, relation=1).first()
+        if fam.name == head.name:
+            return render_template('end.html')
+        else:
+            flash("Family Head name in Family details doesn't Match with Family head in Members details below", 'error')
+    else:
+        flash("Number of Family members doesn't match with provided Members", 'error')
+    return redirect('/summary/' + str(id))
 
 
 @app.route("/logout")
