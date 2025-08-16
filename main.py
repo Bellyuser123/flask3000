@@ -1,8 +1,10 @@
 from flask import Flask, render_template, request, session, redirect, flash, send_file
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DateTime, extract, and_, or_
+from sqlalchemy import DateTime, extract, and_
 import pandas as pd
-from collections import Counter
+import plotly
+import plotly.graph_objects as go
+import json
 from rapidfuzz import fuzz
 from datetime import datetime, timedelta
 import os
@@ -113,11 +115,6 @@ def dashboard():
     if 'user' in session and session['user'] == admin_user:
         total_families = Family.query.count()
         total_members = Member.query.count()
-        data_village_count = db.session.query(
-            Village.name, db.func.count(Family.id)
-        ).join(Family, Family.village == Village.id).group_by(Village.name).all()
-        village_name = [row[0] for row in data_village_count]
-        village_count = [row[1] for row in data_village_count]
 
         families = Family.query.all()
         last_names = [f.name.split()[0] for f in families if f.name]
@@ -143,7 +140,7 @@ def dashboard():
 
         recent_fam = Family.query.order_by(Family.date.desc()).limit(3).all()
 
-        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members, village_count=village_count, village_name=village_name, upcoming_birthdays=upcoming_birthdays, recent_fam=recent_fam, lst_names=lst_names, lst_count=lst_count)
+        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members, upcoming_birthdays=upcoming_birthdays, recent_fam=recent_fam, lst_names=lst_names, lst_count=lst_count)
     else:
         return redirect("/admin")
 
@@ -151,7 +148,106 @@ def dashboard():
 @app.route("/admin/report")
 def report():
     if 'user' in session and session['user'] == admin_user:
-        return render_template('report.html')
+        families = Family.query.all()
+        today = datetime.today()
+        if families:
+            for f in families:
+                avg_fam_size = [f.mem_num]
+            avg_membs_per_fam = sum(avg_fam_size) / len(avg_fam_size)
+            largest_fam = max(families, key=lambda x: x.mem_num)
+        members = Member.query.all()
+        if members:
+            age = [today.year - datetime.strptime(m.dob, '%Y-%m-%d').year for m in members if m.dob]
+            median_age = sum(age)/len(age)
+
+        families = Family.query.all()
+        last_names = [f.name.split()[0] for f in families if f.name]
+        clusters = cluster_last_names(last_names, threshold=80)
+        counter = {key: len(vals) for key, vals in clusters.items()}
+        common_count = max(counter.values())
+        name = [key for key, value in counter.items() if value == common_count]
+        common_name = str(name[0]).upper()
+        total_add_fam = Family.query.filter(extract('year', Family.date) == today.year)
+        total_add_fam = total_add_fam.count()
+
+        data_village_count = db.session.query(
+            Village.name, db.func.count(Family.id)
+        ).join(Family, Family.village == Village.id).group_by(Village.name).all()
+        village_name = [row[0] for row in data_village_count]
+        village_count = [row[1] for row in data_village_count]
+
+        data_kuldevi_count = db.session.query(
+            Kuldevi.name, db.func.count(Family.id)
+        ).join(family_kuldevi, Kuldevi.id == family_kuldevi.c.kuldevi_id) \
+            .join(Family, Family.id == family_kuldevi.c.family_id) \
+            .group_by(Kuldevi.name).all()
+        kuldevi_name = [row[0] for row in data_kuldevi_count]
+        kuldevi_count = [row[1] for row in data_kuldevi_count]
+
+        data_blood_count = db.session.query(
+            Blood.name, db.func.count(Member.id)
+        ).join(Member, Member.blood == Blood.id).group_by(Blood.name).all()
+        blood_name = [row[0] for row in data_blood_count]
+        blood_count = [row[1] for row in data_blood_count]
+
+        members = Member.query.with_entities(Member.dob, Member.gender).all()
+        df = pd.DataFrame(members, columns=['dob', 'gender'])
+        df['dob'] = pd.to_datetime(df['dob'])
+        df['age'] = df['dob'].apply(lambda d: today.year - d.year - ((today.month, today.day) < (d.month, d.day)))
+        bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 100]
+        labels = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"]
+        df['age_group'] = pd.cut(df['age'], bins=bins, labels=labels, right=False)
+        age_gender = df.groupby(['age_group', 'gender']).size().unstack(fill_value=0)
+        age_groups = age_gender.index.tolist()
+        male_counts = age_gender['M'].tolist()
+        female_counts = (-age_gender['F']).tolist()
+
+        male_bar = go.Bar(y=age_groups, x=male_counts, name='Male', orientation='h')
+        female_bar = go.Bar(y=age_groups, x=female_counts, name='Female', orientation='h')
+
+        layout = go.Layout(
+            title="Population Pyramid",
+            barmode='overlay',
+            bargap=0.1,
+            xaxis=dict(title="Population"),
+            yaxis=dict(title="Age Group")
+        )
+
+        fig = go.Figure(data=[male_bar, female_bar], layout=layout)
+        pyramid_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+        members = Member.query.with_entities(Member.dob, Member.gender, Member.marriage).all()
+        df = pd.DataFrame(members, columns=['dob', 'gender', 'marriage_rel'])
+        df['dob'] = pd.to_datetime(df['dob'])
+        df['age'] = df['dob'].apply(lambda d: today.year - d.year - ((today.month, today.day) < (d.month, d.day)))
+        bins = [0, 10, 20, 30, 40, 50, 60, 70, 80, 100]
+        labels = ["0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80+"]
+        df['age_group'] = pd.cut(df['age'], bins=bins, labels=labels, right=False)
+        marriage_map = {1: "Married", 2: "Unmarried", 3: "Widowed", 4: "Divorced"}
+        df['marriage'] = df['marriage_rel'].map(marriage_map)
+        grouped = df.groupby(['age_group', 'gender', 'marriage']).size().reset_index(name='count')
+
+        traces = []
+        for gender in grouped['gender'].unique():
+            for status in grouped['marriage'].unique():
+                subset = grouped[(grouped['gender'] == gender) & (grouped['marriage'] == status)]
+                traces.append(go.Bar(
+                    x=subset['age_group'],
+                    y=subset['count'],
+                    name=f"{gender} - {status}"
+                ))
+
+        layout = go.Layout(
+            title="Marriage Distribution by Age & Gender",
+            barmode='stack',
+            xaxis=dict(title="Age Group"),
+            yaxis=dict(title="Count")
+        )
+
+        fig = go.Figure(data=traces, layout=layout)
+        marriage_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+        return render_template('report.html', avg_family_size=avg_membs_per_fam, largest_family=largest_fam, median_age=median_age, common_name=common_name, common_count=common_count, new_families_year=total_add_fam, village_name=village_name, village_count=village_count, blood_count=blood_count, blood_name=blood_name, kuldevi_count=kuldevi_count, kuldevi_name=kuldevi_name, pyramid_json=pyramid_json, marriage_json=marriage_json)
     else:
         return redirect("/admin")
 
