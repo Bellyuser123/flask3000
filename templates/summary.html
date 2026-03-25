@@ -38,8 +38,7 @@
         <p><strong>Email:</strong> {{ family.email }}</p>
         <p><strong>Ghatak:</strong> {{ family.ghatak | capitalize}} | <strong>Pradeshik:</strong> {{ family.pradeshik |
             capitalize}}</p>
-        <p><strong>Kuldevi:</strong> {% for k in family.kuldevi %} {{ k.name }}{% if not loop.last %}, {% endif %} {%
-            endfor %} <i>(Village: {{ family.k_village_rel.name | capitalize}})</i></p>
+        <p><strong>Kuldevi:</strong> {{ family.kuldevi }} <i>(Village: {{ family.k_village_rel.name | capitalize}})</i></p>
         <p><strong>Native Village:</strong> {{ family.village_rel.name | capitalize}}</p>
         <p><strong>Gotra:</strong> {{ family.gotra_rel.name }}</p>
         <p><strong>Residential Address:</strong> {{ (", ").join(family.res_add.split(' | ')) }}</p>
