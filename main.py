@@ -319,41 +319,67 @@ def admin():
 def form1():
     if request.method == 'POST':
         try:
-            name = request.form.get('last_name').lower() + " " + request.form.get('first_name').lower() + " " + request.form.get(
-                'middle_name').lower()
+            # 1. Collect form data
+            # Ensure these names match the 'name' attribute in your form1.html
+            first = request.form.get('first_name', '')
+            middle = request.form.get('middle_name', '')
+            last = request.form.get('last_name', '')
+            
+            # This prevents the 'NoneType' has no attribute 'lower' error
+            name = f"{last.lower()} {first.lower()} {middle.lower()}"
+            
             email = request.form.get('email')
-            ghatak = request.form.get('ghatak').lower()
-            pradeshik = request.form.get('pradeshik').lower()
-            k_id = request.form.get('kuldevi')
-            kuldevi_obj = Kuldevi.query.get(int(kuldevi_id))
-            kuldevi=[kuldevi_obj]
+            ghatak = request.form.get('ghatak', '').lower()
+            pradeshik = request.form.get('pradeshik', '').lower()
+            
+            # 2. Handle the Kuldevi Relationship
+            k_id = request.form.get('kuldevi') 
+            # Fetch the actual Kuldevi object from the database
+            kuldevi_obj = Kuldevi.query.get(int(k_id)) if k_id else None
+            
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
-            address1 = request.form.get('building') + " | " + request.form.get('area') + " | " + request.form.get(
-                'street') + " | " + request.form.get('landmark') + " | " + request.form.get('pincode')
-            address2 = request.form.get('office_building') + " | " + request.form.get(
-                'office_area') + " | " + request.form.get('office_street') + " | " + request.form.get(
-                'office_landmark') + " | " + request.form.get('office_pincode')
+            
+            # 3. Process Addresses
+            address1 = f"{request.form.get('building')} | {request.form.get('area')} | {request.form.get('street')} | {request.form.get('landmark')} | {request.form.get('pincode')}"
+            address2 = f"{request.form.get('office_building')} | {request.form.get('office_area')} | {request.form.get('office_street')} | {request.form.get('office_landmark')} | {request.form.get('office_pincode')}"
+            
             phone1 = int(request.form.get('res_phone'))
             phone2_raw = request.form.get('office_phone')
             phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
             num_of_memb = int(request.form.get('family_members'))
             date = datetime.now()
 
+            # 4. Create Entry
             entry = Family(
-                name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
-                kuldevi=[Kuldevi.query.get(int(k_id))], k_village=kuldevi_village, village=native_village, gotra=gotra,
-                res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
+                name=name, 
+                email=email, 
+                ghatak=ghatak, 
+                pradeshik=pradeshik, 
+                date=date,
+                # Wrap the object in a list [ ] to satisfy the relationship
+                kuldevi=[kuldevi_obj] if kuldevi_obj else [], 
+                k_village=kuldevi_village, 
+                village=native_village, 
+                gotra=gotra,
+                res_add=address1, 
+                res_phone=phone1, 
+                off_add=address2, 
+                off_phone=phone2, 
+                mem_num=num_of_memb
             )
+            
             db.session.add(entry)
             db.session.commit()
-            mem = str(num_of_memb)
-            if mem:
-                return redirect(f'/form2/{mem}?family_id={entry.id}')
+            
+            return redirect(f'/form2/{num_of_memb}?family_id={entry.id}')
+            
         except Exception as e:
             print("Error during form processing:", e)
+            flash(f"Error: {str(e)}")
             return render_template('form1.html')
+            
     return render_template('form1.html')
 
 
