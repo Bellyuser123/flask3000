@@ -129,76 +129,69 @@
 
             <!-- Kuldevi -->
             <div>
-                <label class="block font-medium mb-1">
+                <label for="kuldevi_village" class="block font-medium mb-1">
                     Kuldevi Name <span class="text-red-500">*</span>
                 </label>
-                <div class="flex flex-wrap gap-4">
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="1" {% if 1 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Brahmani Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="2" {% if 2 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Butbhavani Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="3" {% if 3 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Chamunda Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="4" {% if 4 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Chaval Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="5" {% if 5 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Gatrad Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="6" {% if 6 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Kalika Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="7" {% if 7 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Khodiar Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="8" {% if 8 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Momai Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="9" {% if 9 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Pithad Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="10" {% if 10 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Saval Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="11" {% if 11 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Sikoter Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="12" {% if 12 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Vishal Maa</span>
-                    </label>
-                    <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="kuldevi[]" value="13" {% if 13 in fam.kuldevi|map(attribute='id')|list %}checked{% endif
-                        %}/>
-                        <span>Truthiad Maa</span>
-                    </label>
-                </div>
+                <select
+                        id="kuldevi"
+                        name="kuldevi"
+                        required
+                        class="w-full border border-gray-300 p-2 rounded-md"
+                >
+                    <option value="" disabled selected>Select village</option>
+                    <option value="1" {% if fam.kuldevi ==
+                    1 %}selected{% endif %}>Bahuchari-Bramhani Maa</option>
+                    <option value="2" {% if fam.kuldevi ==
+                    2 %}selected{% endif %}>Bramhani-Chamunda Maa</option>
+                    <option value="3" {% if fam.kuldevi ==
+                    3 %}selected{% endif %}>Bramhani-Chawal Maa</option>
+                    <option value="4" {% if fam.kuldevi ==
+                    4 %}selected{% endif %}>Bramhani-Sikotar Maa</option>
+                    <option value="5" {% if fam.kuldevi ==
+                    5 %}selected{% endif %}>Bramhani Maa</option>
+                    <option value="6" {% if fam.kuldevi ==
+                    6 %}selected{% endif %}>Bramhani-Sihwahini Maa</option>
+                    <option value="7" {% if fam.kuldevi ==
+                    7 %}selected{% endif %}>But-Bhavani Maa</option>
+                    <option value="8" {% if fam.kuldevi ==
+                    8 %}selected{% endif %}>Chamunda Maa</option>
+                    <option value="9" {% if fam.kuldevi ==
+                    9 %}selected{% endif %}>Chamunda-Chawal Maa</option>
+                    <option value="10" {% if fam.kuldevi ==
+                    10 %}selected{% endif %}>Chawal Maa</option>
+                    <option value="11" {% if fam.kuldevi ==
+                    11 %}selected{% endif %}>Chawal-But Maa</option>
+                    <option value="12" {% if fam.kuldevi ==
+                    12 %}selected{% endif %}>Chawal-Bramhani Maa</option>
+                    <option value="13" {% if fam.kuldevi ==
+                    13 %}selected{% endif %}>Kalika Maa</option>
+                    <option value="14" {% if fam.kuldevi ==
+                    14 %}selected{% endif %}>Khodiar Maa</option>
+                    <option value="15" {% if fam.kuldevi ==
+                    15 %}selected{% endif %}>Momai-Chamunda Maa</option>
+                    <option value="16" {% if fam.kuldevi ==
+                    16 %}selected{% endif %}>Momai Maa</option>
+                    <option value="17" {% if fam.kuldevi ==
+                    17 %}selected{% endif %}>Peethal Maa</option>
+                    <option value="18" {% if fam.kuldevi ==
+                    18 %}selected{% endif %}>Sikotar-Bramhani Maa</option>
+                    <option value="19" {% if fam.kuldevi ==
+                    19 %}selected{% endif %}>Sikotar Maa</option>
+                    <option value="20" {% if fam.kuldevi ==
+                    20 %}selected{% endif %}>Truthiani Maa</option>
+                    <option value="21" {% if fam.kuldevi ==
+                    21 %}selected{% endif %}>Truthiyani Maa</option>
+                    <option value="22" {% if fam.kuldevi ==
+                    22 %}selected{% endif %}>Truthiyan-Chamunda-Harsiddhi Maa</option>
+                    <option value="23" {% if fam.kuldevi ==
+                    23 %}selected{% endif %}>Truthiyan-Chamunda Maa</option>
+                    <option value="24" {% if fam.kuldevi ==
+                    24 %}selected{% endif %}>Truthiyan-Harsiddhi Maa</option>
+                    <option value="25" {% if fam.kuldevi ==
+                    25 %}selected{% endif %}>Vachra Dada</option>
+                    <option value="26" {% if fam.kuldevi ==
+                    26 %}selected{% endif %}>Vishal Maa</option>
+                </select>
             </div>
 
             <!-- Kuldevi Village -->
