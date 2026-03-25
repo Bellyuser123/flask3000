@@ -324,8 +324,7 @@ def form1():
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
-            kuldevi_name = request.form.getlist('kuldevi[]')
-            kuldevi_objs = Kuldevi.query.filter(Kuldevi.id.in_(kuldevi_name)).all()
+            kuldevi_name = request.form.get('kuldevi')
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
@@ -342,7 +341,7 @@ def form1():
 
             entry = Family(
                 name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
-                kuldevi=kuldevi_objs, k_village=kuldevi_village, village=native_village, gotra=gotra,
+                kuldevi=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra,
                 res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
             )
             db.session.add(entry)
@@ -453,7 +452,7 @@ def editing_sec(id, type):
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
-            kuldevi_name = request.form.getlist('kuldevi[]')
+            kuldevi_name = request.form.get('kuldevi')
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
@@ -473,7 +472,7 @@ def editing_sec(id, type):
                 fam.email = email
                 fam.ghatak = ghatak
                 fam.pradeshik = pradeshik
-                fam.kuldevi = Kuldevi.query.filter(Kuldevi.id.in_(kuldevi_name)).all()
+                fam.kuldevi = kuldevi_name
                 fam.k_village = kuldevi_village
                 fam.village = native_village
                 fam.gotra = gotra
@@ -591,7 +590,7 @@ def export_all():
             'Email': f.email,
             'Gotra': f.gotra_rel.name if f.gotra_rel else '',
             'Village': f.village_rel.name if f.village_rel else '',
-            'Kuldevi': ', '.join([k.name for k in f.kuldevi]),
+            'Kuldevi': f.Kuldevi.name if f.Kuldevi else '',
             'Members': f.mem_num,
             'Date': f.date
         } for f in families])
@@ -653,19 +652,32 @@ def logout():
 def lookup_tables():
     if not Kuldevi.query.first():
         kuldevi_data = [
-            (1, "Brahmani Maa"),
-            (2, "Butbhavani Maa"),
-            (3, "Chamunda Maa"),
-            (4, "Chaval Maa"),
-            (5, "Gatrad Maa"),
-            (6, "Kalika Maa"),
-            (7, "Khodiar Maa"),
-            (8, "Momai Maa"),
-            (9, "Pithad Maa"),
-            (10, "Saval Maa"),
-            (11, "Sikoter Maa"),
-            (12, "Vishal Maa"),
-            (13, "Truthiad Maa"),
+            (1, "Bahuchari-Bramhani Maa"),
+            (2, "Bramhani-Chamunda Maa"),
+            (3, "Bramhani-Chawal Maa"),
+            (4, "Bramhani-Sikotar Maa"),
+            (5, "Bramhani Maa"),
+            (6, "Bramhani-Sihwahini Maa"),
+            (7, "But-Bhavani Maa"),
+            (8, "Chamunda Maa"),
+            (9, "Chamunda-Chawal Maa"),
+            (10, "Chawal Maa"),
+            (11, "Chawal-But Maa"),
+            (12, "Chawal-Bramhani Maa"),
+            (13, "Kalika Maa"),
+            (14, "Khodiar Maa"),
+            (15, "Momai-Chamunda Maa"),
+            (16, "Momai Maa"),
+            (17, "Peethal Maa"),
+            (18, "Sikotar-Bramhani Maa"),
+            (19, "Sikotar Maa"),
+            (20, "Truthiani Maa"),
+            (21, "Truthiyani Maa"),
+            (22, "Truthiyan-Chamunda-Harsiddhi Maa"),
+            (23, "Truthiyan-Chamunda Maa"),
+            (24, "Truthiyan-Harsiddhi Maa"),
+            (25, "Vachra Dada"),
+            (26, "Vishal Maa"),
         ]
         for kid, name in kuldevi_data:
             db.session.add(Kuldevi(id=kid, name=name))
