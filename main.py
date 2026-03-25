@@ -8,8 +8,8 @@ import json
 from rapidfuzz import fuzz
 from datetime import datetime, timedelta
 import os
+from dotenv import load_dotenv
 import io
-
 
 local_server = True
 
@@ -21,10 +21,10 @@ admin_password = os.getenv('admin_password')
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
 if local_server:
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('local_uri') + os.path.join(base_dir, 'data', 'database.db')
+    uri = os.getenv('local_uri', 'sqlite:///')
+    app.config['SQLALCHEMY_DATABASE_URI'] = uri + os.path.join(base_dir, 'data', 'database.db')
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('prod_uri') + os.path.join(base_dir, 'data', 'database.db')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('prod_uri')
 # app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
@@ -81,6 +81,7 @@ class Family(db.Model):
     res_phone = db.Column(db.Integer, nullable=False)
     off_add = db.Column(db.Text, nullable=True)
     off_phone = db.Column(db.Integer, nullable=True)
+    income = db.Column(db.String(50), nullable=True)
     mem_num = db.Column(db.SmallInteger, nullable=False)
     date = db.Column(DateTime)
     gotra_rel = db.relationship('Gotra')
@@ -140,7 +141,9 @@ def dashboard():
 
         recent_fam = Family.query.order_by(Family.date.desc()).limit(3).all()
 
-        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members, upcoming_birthdays=upcoming_birthdays, recent_fam=recent_fam, lst_names=lst_names, lst_count=lst_count)
+        return render_template('dashboard.html', fam_count=total_families, mem_count=total_members,
+                               upcoming_birthdays=upcoming_birthdays, recent_fam=recent_fam, lst_names=lst_names,
+                               lst_count=lst_count)
     else:
         return redirect("/admin")
 
@@ -158,7 +161,7 @@ def report():
         members = Member.query.all()
         if members:
             age = [today.year - datetime.strptime(m.dob, '%Y-%m-%d').year for m in members if m.dob]
-            median_age = sum(age)/len(age)
+            median_age = sum(age) / len(age)
 
         families = Family.query.all()
         last_names = [f.name.split()[0] for f in families if f.name]
@@ -247,7 +250,11 @@ def report():
         fig = go.Figure(data=traces, layout=layout)
         marriage_json = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
 
-        return render_template('report.html', avg_family_size=avg_membs_per_fam, largest_family=largest_fam, median_age=median_age, common_name=common_name, common_count=common_count, new_families_year=total_add_fam, village_name=village_name, village_count=village_count, blood_count=blood_count, blood_name=blood_name, kuldevi_count=kuldevi_count, kuldevi_name=kuldevi_name, pyramid_json=pyramid_json, marriage_json=marriage_json)
+        return render_template('report.html', avg_family_size=avg_membs_per_fam, largest_family=largest_fam,
+                               median_age=median_age, common_name=common_name, common_count=common_count,
+                               new_families_year=total_add_fam, village_name=village_name, village_count=village_count,
+                               blood_count=blood_count, blood_name=blood_name, kuldevi_count=kuldevi_count,
+                               kuldevi_name=kuldevi_name, pyramid_json=pyramid_json, marriage_json=marriage_json)
     else:
         return redirect("/admin")
 
@@ -324,62 +331,64 @@ def form1():
             first = request.form.get('first_name', '')
             middle = request.form.get('middle_name', '')
             last = request.form.get('last_name', '')
-            
+
             # This prevents the 'NoneType' has no attribute 'lower' error
             name = f"{last.lower()} {first.lower()} {middle.lower()}"
-            
+
             email = request.form.get('email')
             ghatak = request.form.get('ghatak', '').lower()
             pradeshik = request.form.get('pradeshik', '').lower()
-            
+
             # 2. Handle the Kuldevi Relationship
-            k_id = request.form.get('kuldevi') 
+            k_id = request.form.get('kuldevi')
             # Fetch the actual Kuldevi object from the database
             kuldevi_obj = Kuldevi.query.get(int(k_id)) if k_id else None
-            
+
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
-            
+
             # 3. Process Addresses
             address1 = f"{request.form.get('building')} | {request.form.get('area')} | {request.form.get('street')} | {request.form.get('landmark')} | {request.form.get('pincode')}"
             address2 = f"{request.form.get('office_building')} | {request.form.get('office_area')} | {request.form.get('office_street')} | {request.form.get('office_landmark')} | {request.form.get('office_pincode')}"
-            
+
             phone1 = int(request.form.get('res_phone'))
             phone2_raw = request.form.get('office_phone')
             phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
+            income = request.form.get('income')
             num_of_memb = int(request.form.get('family_members'))
             date = datetime.now()
 
             # 4. Create Entry
             entry = Family(
-                name=name, 
-                email=email, 
-                ghatak=ghatak, 
-                pradeshik=pradeshik, 
+                name=name,
+                email=email,
+                ghatak=ghatak,
+                pradeshik=pradeshik,
                 date=date,
                 # Wrap the object in a list [ ] to satisfy the relationship
-                kuldevi=[kuldevi_obj] if kuldevi_obj else [], 
-                k_village=kuldevi_village, 
-                village=native_village, 
+                kuldevi=[kuldevi_obj] if kuldevi_obj else [],
+                k_village=kuldevi_village,
+                village=native_village,
                 gotra=gotra,
-                res_add=address1, 
-                res_phone=phone1, 
-                off_add=address2, 
-                off_phone=phone2, 
+                res_add=address1,
+                res_phone=phone1,
+                off_add=address2,
+                off_phone=phone2,
+                income=income,
                 mem_num=num_of_memb
             )
-            
+
             db.session.add(entry)
             db.session.commit()
-            
+
             return redirect(f'/form2/{num_of_memb}?family_id={entry.id}')
-            
+
         except Exception as e:
             print("Error during form processing:", e)
             flash(f"Error: {str(e)}")
             return render_template('form1.html')
-            
+
     return render_template('form1.html')
 
 
@@ -475,14 +484,15 @@ def editing_sec(id, type):
     if type == 'family':
         fam = Family.query.filter_by(id=id).first() if id != 'new' else None
         if request.method == 'POST':
-            name = request.form.get('last_name').lower() + " " + request.form.get('first_name').lower() + " " + request.form.get(
+            name = request.form.get('last_name').lower() + " " + request.form.get(
+                'first_name').lower() + " " + request.form.get(
                 'middle_name').lower()
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
             k_id = request.form.get('kuldevi')
             kuldevi_obj = Kuldevi.query.get(k_id)
-            kuldevi=[kuldevi_obj]
+            kuldevi = [kuldevi_obj]
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
@@ -494,6 +504,7 @@ def editing_sec(id, type):
             phone1 = int(request.form.get('res_phone'))
             phone2_raw = request.form.get('office_phone')
             phone2 = int(phone2_raw) if phone2_raw and phone2_raw.isdigit() else None
+            income = request.form.get('income')
             num_of_memb = int(request.form.get('family_members'))
 
             fam = Family.query.filter_by(id=id).first()
@@ -503,7 +514,8 @@ def editing_sec(id, type):
                 fam.ghatak = ghatak
                 fam.pradeshik = pradeshik
                 k_id = request.form.get('kuldevi')
-                fam.kuldevi = [Kuldevi.query.get(int(k_id))]
+                if k_id:
+                    fam.kuldevi = [Kuldevi.query.get(int(k_id))]
                 fam.k_village = kuldevi_village
                 fam.village = native_village
                 fam.gotra = gotra
@@ -511,6 +523,7 @@ def editing_sec(id, type):
                 fam.res_phone = phone1
                 fam.off_add = address2
                 fam.off_phone = phone2
+                fam.income = income
                 fam.mem_num = num_of_memb
 
             db.session.add(fam)
