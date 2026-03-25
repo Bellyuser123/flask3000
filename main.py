@@ -324,7 +324,7 @@ def form1():
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
-            kuldevi_id = request.form.get('kuldevi')
+            k_id = request.form.get('kuldevi')
             kuldevi_obj = Kuldevi.query.get(int(kuldevi_id))
             kuldevi=[kuldevi_obj]
             kuldevi_village = request.form.get('kuldevi_village')
@@ -343,7 +343,7 @@ def form1():
 
             entry = Family(
                 name=name, email=email, ghatak=ghatak, pradeshik=pradeshik, date=date,
-                kuldevi=kuldevi_name, k_village=kuldevi_village, village=native_village, gotra=gotra,
+                kuldevi=[Kuldevi.query.get(int(k_id))], k_village=kuldevi_village, village=native_village, gotra=gotra,
                 res_add=address1, res_phone=phone1, off_add=address2, off_phone=phone2, mem_num=num_of_memb
             )
             db.session.add(entry)
