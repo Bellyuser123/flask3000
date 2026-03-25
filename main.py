@@ -324,7 +324,9 @@ def form1():
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
-            kuldevi_name = request.form.get('kuldevi')
+            k_id = request.form.get('kuldevi')
+            kuldevi_obj = Kuldevi.query.get(k_id)
+            kuldevi=[kuldevi_obj]
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
@@ -452,7 +454,9 @@ def editing_sec(id, type):
             email = request.form.get('email')
             ghatak = request.form.get('ghatak').lower()
             pradeshik = request.form.get('pradeshik').lower()
-            kuldevi_name = request.form.get('kuldevi')
+            k_id = request.form.get('kuldevi')
+            kuldevi_obj = Kuldevi.query.get(k_id)
+            kuldevi=[kuldevi_obj]
             kuldevi_village = request.form.get('kuldevi_village')
             native_village = request.form.get('native_village')
             gotra = request.form.get('gotra')
