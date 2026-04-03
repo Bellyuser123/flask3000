@@ -457,19 +457,78 @@ def users():
     if 'user' in session and session['user'] == admin_user:
         search = request.args.get('search', '')
         view = request.args.get("view", "quick")
-        families = []
-        members = []
-        if view == "joined":
-            members = db.session.query(Member).join(Family).all()
-        elif view == "quick":
-            families = Family.query.all()
-        elif view == "families":
-            families = Family.query.all()
-        elif view == "members":
-            members = Member.query.all()
-        return render_template('users.html', view=view, search=search, families=families, members=members)
+        return render_template(
+            'users.html',
+            **build_users_context(view=view, search=search),
+            import_result=None,
+            default_ghatak='pune',
+            default_pradeshik='mumbai',
+        )
     else:
         return redirect("/admin")
+
+
+@app.route("/admin/import", methods=['POST'])
+def admin_import():
+    if 'user' not in session or session['user'] != admin_user:
+        return redirect("/admin")
+
+    upload = request.files.get('excel_file')
+    view = request.form.get('view', 'families')
+    mode = request.form.get('mode', 'validate')
+    default_ghatak = normalize_text(request.form.get('default_ghatak', 'pune')) or 'pune'
+    default_pradeshik = normalize_text(request.form.get('default_pradeshik', 'mumbai')) or 'mumbai'
+
+    if not upload or not upload.filename:
+        flash('Select an Excel file before importing.')
+        return render_template(
+            'users.html',
+            **build_users_context(view=view),
+            import_result=None,
+            default_ghatak=default_ghatak,
+            default_pradeshik=default_pradeshik,
+        )
+
+    suffix = os.path.splitext(upload.filename)[1].lower()
+    temp_fd, temp_path = tempfile.mkstemp(prefix='upload_', suffix=suffix, dir=os.path.join(base_dir, 'data'))
+    os.close(temp_fd)
+    upload.save(temp_path)
+
+    try:
+        import_result = import_excel_data(temp_path, mode, default_ghatak, default_pradeshik)
+        if mode == 'import':
+            flash(
+                f"Import finished. Families imported: {import_result['families_created']}, "
+                f"members imported: {import_result['members_created']}."
+            )
+        else:
+            flash('Validation finished. Review the report below before importing.')
+    except Exception as exc:
+        db.session.rollback()
+        flash(f'Import failed: {exc}')
+        import_result = {
+            'mode': mode,
+            'rows_processed': 0,
+            'families_detected': 0,
+            'families_created': 0,
+            'families_skipped': 0,
+            'members_created': 0,
+            'members_skipped': 0,
+            'warning_count': 0,
+            'error_count': 1,
+            'issues': [{'level': 'error', 'family_key': '-', 'excel_row': '-', 'field': 'file', 'message': str(exc)}],
+        }
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
+
+    return render_template(
+        'users.html',
+        **build_users_context(view=view),
+        import_result=import_result,
+        default_ghatak=default_ghatak,
+        default_pradeshik=default_pradeshik,
+    )
 
 
 @app.route('/admin/family/<int:family_id>/members')
@@ -646,6 +705,626 @@ def format_date_for_input(date_str):
         except ValueError:
             continue
     return ''  # fallback if no format matches
+
+
+def normalize_text(value):
+    if value is None:
+        return ''
+    value = str(value).strip().lower()
+    value = re.sub(r'\s+', ' ', value)
+    return value
+
+
+def normalize_key(value):
+    value = normalize_text(value)
+    value = value.replace('&', ' and ')
+    value = re.sub(r'[^a-z0-9]+', '', value)
+    return value
+
+
+def first_non_empty(*values):
+    for value in values:
+        text = str(value).strip() if value is not None else ''
+        if text:
+            return text
+    return ''
+
+
+def digits_only(value):
+    return re.sub(r'\D+', '', str(value or ''))
+
+
+def title_case_name(value):
+    parts = [part for part in re.split(r'\s+', str(value or '').strip()) if part]
+    return ' '.join(part.capitalize() for part in parts)
+
+
+def build_person_name(last_name, first_name, middle_name):
+    parts = [normalize_text(last_name), normalize_text(first_name), normalize_text(middle_name)]
+    return ' '.join(part for part in parts if part)
+
+
+def combine_address_parts(*parts):
+    values = [str(part).strip() for part in parts if str(part or '').strip()]
+    return ' | '.join(values) if values else 'Imported address not provided'
+
+
+def parse_date_value(value):
+    text = str(value or '').strip()
+    if not text:
+        return None
+
+    text = re.sub(r'(?i)^age[-:\s/]*', '', text).strip()
+    text = re.sub(r'(?i)^umar[-:\s/]*', '', text).strip()
+    text = text.replace('.', '-').replace('/', '-')
+    for fmt in ("%d-%m-%Y", "%d-%m-%y", "%Y-%m-%d", "%d-%m-%Y %H:%M:%S", "%m-%d-%Y", "%m-%d-%y"):
+        try:
+            return datetime.strptime(text, fmt).strftime("%Y-%m-%d")
+        except ValueError:
+            continue
+    return None
+
+
+def get_dataframe_from_excel(file_path, sheet_index=0):
+    suffix = os.path.splitext(file_path)[1].lower()
+    if suffix in {'.xlsx', '.xlsm'}:
+        return pd.read_excel(file_path, sheet_name=sheet_index, header=None, dtype=str)
+
+    if suffix == '.xls':
+        try:
+            return pd.read_excel(file_path, sheet_name=sheet_index, header=None, dtype=str, engine='xlrd')
+        except ImportError:
+            return read_xls_with_excel_com(file_path, sheet_index)
+
+    raise ValueError("Unsupported file type. Please upload an .xls, .xlsx, or .xlsm file.")
+
+
+def read_xls_with_excel_com(file_path, sheet_index=0):
+    csv_fd, csv_path = tempfile.mkstemp(prefix='import_', suffix='.csv', dir=os.path.join(base_dir, 'data'))
+    os.close(csv_fd)
+
+    powershell_path = os.environ.get('SystemRoot', r'C:\Windows') + r'\System32\WindowsPowerShell\v1.0\powershell.exe'
+    source = os.path.abspath(file_path).replace("'", "''")
+    target = csv_path.replace("'", "''")
+    sheet_number = int(sheet_index) + 1
+    script = f"""
+$source = '{source}'
+$target = '{target}'
+$excel = $null
+$workbook = $null
+$sheet = $null
+try {{
+  $excel = New-Object -ComObject Excel.Application
+  $excel.Visible = $false
+  $excel.DisplayAlerts = $false
+  $workbook = $excel.Workbooks.Open($source)
+  $sheet = $workbook.Worksheets.Item({sheet_number})
+  $sheet.SaveAs($target, 62)
+  $workbook.Close($false)
+}} finally {{
+  if ($excel) {{ $excel.Quit() }}
+  if ($sheet) {{ [System.Runtime.Interopservices.Marshal]::ReleaseComObject($sheet) | Out-Null }}
+  if ($workbook) {{ [System.Runtime.Interopservices.Marshal]::ReleaseComObject($workbook) | Out-Null }}
+  if ($excel) {{ [System.Runtime.Interopservices.Marshal]::ReleaseComObject($excel) | Out-Null }}
+  [GC]::Collect()
+  [GC]::WaitForPendingFinalizers()
+}}
+"""
+    try:
+        subprocess.run(
+            [powershell_path, '-NoProfile', '-Command', script],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        return pd.read_csv(csv_path, header=None, dtype=str, keep_default_na=False)
+    except FileNotFoundError as exc:
+        raise ValueError("PowerShell is not available for .xls import on this machine.") from exc
+    except subprocess.CalledProcessError as exc:
+        raise ValueError("Unable to read the .xls file. Install xlrd or Microsoft Excel for .xls support.") from exc
+    finally:
+        if os.path.exists(csv_path):
+            os.remove(csv_path)
+
+
+def dataframe_to_records(df):
+    trimmed = df.iloc[:, :len(MAIN_SHEET_COLUMNS)].copy()
+    trimmed.columns = MAIN_SHEET_COLUMNS[:trimmed.shape[1]]
+    trimmed = trimmed.fillna('')
+    records = []
+    for row_index, row in trimmed.iloc[1:].iterrows():
+        record = {column: str(row.get(column, '') or '').strip() for column in MAIN_SHEET_COLUMNS[:trimmed.shape[1]]}
+        if not any(record.values()):
+            continue
+        record['excel_row'] = int(row_index) + 1
+        records.append(record)
+    return records
+
+
+def load_surname_defaults(file_path):
+    try:
+        df = get_dataframe_from_excel(file_path, sheet_index=1).fillna('')
+    except Exception:
+        return {}
+
+    defaults = {}
+    for _, row in df.iloc[1:].iterrows():
+        surname = str(row.iloc[0]).strip() if len(row) > 0 else ''
+        if not surname:
+            continue
+        defaults[normalize_key(surname)] = {
+            'gender': str(row.iloc[1]).strip() if len(row) > 1 else '',
+            'blood_group': str(row.iloc[2]).strip() if len(row) > 2 else '',
+            'native': str(row.iloc[3]).strip() if len(row) > 3 else '',
+            'gotra': str(row.iloc[4]).strip() if len(row) > 4 else '',
+            'kuldevi': str(row.iloc[5]).strip() if len(row) > 5 else '',
+        }
+    return defaults
+
+
+def build_lookup_map(items, extra_aliases=None):
+    lookup = {}
+    for item in items:
+        lookup[normalize_key(item.name)] = item
+    for alias, item in (extra_aliases or {}).items():
+        lookup[normalize_key(alias)] = item
+    return lookup
+
+
+def build_reference_maps():
+    village_aliases = {}
+    villages = Village.query.all()
+    village_lookup = build_lookup_map(villages)
+    for alias, target in {
+        'sinugra': 'Sinogara',
+        'sinogra': 'Sinogara',
+        'galpadhar': 'Galpadar',
+        'khambhara': 'Khambhra',
+        'chandiya': 'Chandia',
+        'kumbhariya': 'Kumbharia',
+    }.items():
+        match = next((item for item in villages if item.name == target), None)
+        if match:
+            village_aliases[alias] = match
+    village_lookup.update(build_lookup_map([], village_aliases))
+
+    gotras = Gotra.query.all()
+    gotra_lookup = build_lookup_map(gotras)
+    for alias, target in {
+        'sha.bha.vishwamitra': 'VISHVAMITRA',
+        'shabha vishwamitra': 'VISHVAMITRA',
+        'vasistha': 'VASHISHTHA',
+        'sonak': 'SHAUNAK',
+    }.items():
+        match = next((item for item in gotras if item.name == target), None)
+        if match:
+            gotra_lookup[normalize_key(alias)] = match
+
+    kuldevis = Kuldevi.query.all()
+    kuldevi_lookup = build_lookup_map(kuldevis)
+    for alias, target in {
+        'bahuchara mata': 'Bahuchari-Bramhani Maa',
+        'bahuchara maa': 'Bahuchari-Bramhani Maa',
+        'boot bhavani maa': 'But-Bhavani Maa',
+        'boot bhavani mata': 'But-Bhavani Maa',
+        'boot/sikotra': 'Sikotar Maa',
+        'chaval dev': 'Chawal Maa',
+        'bramhani': 'Bramhani Maa',
+        'bramhani maa': 'Bramhani Maa',
+        'bramhnai': 'Bramhani Maa',
+    }.items():
+        match = next((item for item in kuldevis if item.name == target), None)
+        if match:
+            kuldevi_lookup[normalize_key(alias)] = match
+
+    blood_lookup = build_lookup_map(Blood.query.all())
+    for alias, target in {'unknown': 'Unknown', 'na': 'Unknown', 'n/a': 'Unknown'}.items():
+        match = Blood.query.filter_by(name=target).first()
+        if match:
+            blood_lookup[normalize_key(alias)] = match
+
+    return {
+        'village': village_lookup,
+        'gotra': gotra_lookup,
+        'kuldevi': kuldevi_lookup,
+        'blood': blood_lookup,
+        'unknown_blood': ensure_unknown_blood(),
+    }
+
+
+def ensure_unknown_blood():
+    unknown = Blood.query.filter_by(name='Unknown').first()
+    if unknown:
+        return unknown
+    next_id = max(9, (db.session.query(db.func.max(Blood.id)).scalar() or 0) + 1)
+    unknown = Blood(id=next_id, name='Unknown')
+    db.session.add(unknown)
+    db.session.flush()
+    return unknown
+
+
+def map_relation_value(raw_value):
+    normalized = normalize_key(raw_value)
+    relation_aliases = {
+        'self': 1,
+        'father': 2,
+        'mother': 3,
+        'wife': 4,
+        'husband': 5,
+        'son': 6,
+        'daughter': 7,
+        'brother': 8,
+        'sister': 9,
+        'grandfather': 10,
+        'grandmother': 11,
+        'grandson': 12,
+        'granddaughter': 13,
+        'fatherinlaw': 14,
+        'motherinlaw': 15,
+        'daughterinlaw': 16,
+        'soninlaw': 17,
+        'sonswife': 16,
+        'daughtershusband': 17,
+        'grand daughter': 13,
+        'grand son': 12,
+    }
+    return relation_aliases.get(normalized, 18 if normalized else None)
+
+
+def map_marriage_value(raw_value):
+    normalized = normalize_key(raw_value)
+    aliases = {
+        'married': 1,
+        'unmarried': 2,
+        'widowed': 4,
+        'divorced': 3,
+    }
+    return aliases.get(normalized)
+
+
+def infer_gender(raw_gender, salutation, relation_id):
+    normalized = normalize_key(raw_gender)
+    if normalized in {'male', 'm', 'purush'}:
+        return 'M'
+    if normalized in {'female', 'f', 'stri'}:
+        return 'F'
+
+    salutation_key = normalize_key(salutation)
+    if salutation_key in {'shri', 'kumar'}:
+        return 'M'
+    if salutation_key in {'shrimati', 'shirmati', 'kumari'}:
+        return 'F'
+
+    if relation_id in {2, 5, 6, 8, 10, 12, 17}:
+        return 'M'
+    if relation_id in {3, 4, 7, 9, 11, 13, 15, 16}:
+        return 'F'
+    return None
+
+
+def normalize_education_value(raw_value):
+    text = str(raw_value or '').strip()
+    if not text:
+        return 'NA', True
+    return text, text not in EDUCATION_VALUES
+
+
+def normalize_occupation_value(raw_value):
+    text = str(raw_value or '').strip()
+    aliases = {
+        'retired': 'Retired',
+        'service': 'Service',
+        'job': 'Service',
+        'business': 'business',
+        'housewife': 'House Wife',
+        'house work': 'House Work',
+        'housemaker': 'House Maker',
+        'studying': 'Student',
+        'student': 'Student',
+        'professional': 'Professional',
+        'doctor': 'Doctor',
+        'ngo': 'NGO',
+    }
+    normalized = normalize_key(text)
+    if normalized in {normalize_key(option) for option in OCCUPATION_OPTIONS}:
+        for option in OCCUPATION_OPTIONS:
+            if normalize_key(option) == normalized:
+                return option, False
+    if normalized in aliases:
+        return aliases[normalized], False
+    if not text:
+        return 'Not given', True
+    return text, True
+
+
+def add_issue(result, level, family_key, excel_row, field, message):
+    issue = {
+        'level': level,
+        'family_key': family_key,
+        'excel_row': excel_row,
+        'field': field,
+        'message': message,
+    }
+    result['issues'].append(issue)
+    if level == 'error':
+        result['error_count'] += 1
+    else:
+        result['warning_count'] += 1
+
+
+def member_sort_key(member):
+    return (
+        0 if member.relation == 1 else 1,
+        member.relation_rel.name if member.relation_rel else '',
+        member.name or '',
+    )
+
+
+def build_family_cards(families, search=''):
+    search_text = normalize_text(search)
+    cards = []
+
+    for family in families:
+        sorted_members = sorted(list(family.members), key=member_sort_key)
+        head_member = next((member for member in sorted_members if member.relation == 1), None)
+        if not head_member and sorted_members:
+            head_member = sorted_members[0]
+
+        searchable_values = [
+            family.name,
+            family.email,
+            family.ghatak,
+            family.pradeshik,
+            family.res_add,
+            family.res_phone,
+            family.off_add,
+            family.off_phone,
+            family.village_rel.name if family.village_rel else '',
+            family.k_village_rel.name if family.k_village_rel else '',
+            family.gotra_rel.name if family.gotra_rel else '',
+            ' '.join(k.name for k in family.kuldevi),
+            *(member.name for member in sorted_members),
+            *(member.phone for member in sorted_members),
+            *(member.edu for member in sorted_members),
+            *(member.occu for member in sorted_members),
+        ]
+        haystack = normalize_text(' '.join(str(value or '') for value in searchable_values))
+        if search_text and search_text not in haystack:
+            continue
+
+        cards.append({
+            'family': family,
+            'head_member': head_member,
+            'members': sorted_members,
+            'other_members': [member for member in sorted_members if not head_member or member.id != head_member.id],
+        })
+
+    return sorted(cards, key=lambda card: (card['family'].name or '', card['family'].id))
+
+
+def build_users_context(view, search=''):
+    families = Family.query.order_by(Family.name.asc()).all()
+    family_cards = build_family_cards(families, search=search)
+
+    members = []
+    if view in {"joined", "members"}:
+        members = [member for card in family_cards for member in card['members']]
+
+    return {
+        'view': view,
+        'search': search,
+        'families': [card['family'] for card in family_cards],
+        'members': members,
+        'family_cards': family_cards,
+    }
+
+
+def group_records_by_family(records):
+    groups = {}
+    for record in records:
+        family_key = first_non_empty(record.get('serial_no'), record.get('family_number'))
+        if not family_key:
+            continue
+        groups.setdefault(family_key, []).append(record)
+    return groups
+
+
+def resolve_lookup(lookup, raw_value):
+    if not raw_value:
+        return None
+    return lookup.get(normalize_key(raw_value))
+
+
+def import_excel_data(file_path, mode, default_ghatak, default_pradeshik):
+    df = get_dataframe_from_excel(file_path, sheet_index=0)
+    records = dataframe_to_records(df)
+    surname_defaults = load_surname_defaults(file_path)
+    reference_maps = build_reference_maps()
+    grouped_records = group_records_by_family(records)
+    existing_signatures = {(family.name, str(family.res_phone), family.village) for family in Family.query.all()}
+
+    result = {
+        'mode': mode,
+        'rows_processed': len(records),
+        'families_detected': len(grouped_records),
+        'families_created': 0,
+        'families_skipped': 0,
+        'members_created': 0,
+        'members_skipped': 0,
+        'warning_count': 0,
+        'error_count': 0,
+        'issues': [],
+    }
+
+    for family_key, family_rows in grouped_records.items():
+        head_row = next((row for row in family_rows if normalize_key(row.get('relation')) == 'self'), family_rows[0])
+        surname_key = normalize_key(head_row.get('last_name'))
+        defaults = surname_defaults.get(surname_key, {})
+
+        family_name = build_person_name(head_row.get('last_name'), head_row.get('first_name'), head_row.get('middle_name'))
+        if not family_name:
+            add_issue(result, 'error', family_key, head_row['excel_row'], 'name', 'Family head name is missing.')
+            result['families_skipped'] += 1
+            result['members_skipped'] += len(family_rows)
+            continue
+
+        village_text = first_non_empty(head_row.get('native'), defaults.get('native'))
+        village = resolve_lookup(reference_maps['village'], village_text)
+        if not village:
+            add_issue(result, 'error', family_key, head_row['excel_row'], 'native', f"Native village '{village_text or 'blank'}' could not be mapped.")
+            result['families_skipped'] += 1
+            result['members_skipped'] += len(family_rows)
+            continue
+
+        gotra_text = first_non_empty(head_row.get('gotra'), defaults.get('gotra'))
+        gotra = resolve_lookup(reference_maps['gotra'], gotra_text) or Gotra.query.filter_by(name='OTHER').first()
+        if not gotra_text:
+            add_issue(result, 'warning', family_key, head_row['excel_row'], 'gotra', "Gotra missing. Imported as 'OTHER'.")
+        elif not resolve_lookup(reference_maps['gotra'], gotra_text):
+            add_issue(result, 'warning', family_key, head_row['excel_row'], 'gotra', f"Gotra '{gotra_text}' not found. Imported as 'OTHER'.")
+
+        kuldevi_text = first_non_empty(head_row.get('kuldevi'), defaults.get('kuldevi'))
+        kuldevi = resolve_lookup(reference_maps['kuldevi'], kuldevi_text)
+        if kuldevi_text and not kuldevi:
+            add_issue(result, 'warning', family_key, head_row['excel_row'], 'kuldevi', f"Kuldevi '{kuldevi_text}' could not be mapped and was left blank.")
+
+        family_phone = ''
+        for row in family_rows:
+            family_phone = first_non_empty(digits_only(row.get('cellphone')), digits_only(row.get('phone')), family_phone)
+            if family_phone:
+                break
+        if not family_phone:
+            add_issue(result, 'error', family_key, head_row['excel_row'], 'phone', 'No usable phone number was found for this family.')
+            result['families_skipped'] += 1
+            result['members_skipped'] += len(family_rows)
+            continue
+
+        family_email = next((row.get('email') for row in family_rows if row.get('email')), '')
+        family_address = combine_address_parts(
+            head_row.get('address'),
+            head_row.get('building'),
+            head_row.get('road'),
+            head_row.get('locality'),
+            head_row.get('pincode'),
+        )
+
+        valid_members = []
+        family_errors_before = result['error_count']
+        for row in family_rows:
+            member_name = build_person_name(row.get('last_name'), row.get('first_name'), row.get('middle_name'))
+            if not member_name:
+                continue
+
+            relation_id = map_relation_value(row.get('relation'))
+            if not relation_id:
+                relation_id = 18
+                add_issue(result, 'warning', family_key, row['excel_row'], 'relation', f"Relation '{row.get('relation')}' not recognized. Imported as 'Other'.")
+
+            gender = infer_gender(row.get('gender'), row.get('salutation'), relation_id)
+            if not gender:
+                add_issue(result, 'error', family_key, row['excel_row'], 'gender', 'Gender is missing and could not be inferred.')
+                result['members_skipped'] += 1
+                continue
+
+            dob = parse_date_value(row.get('dob'))
+            if not dob:
+                add_issue(result, 'error', family_key, row['excel_row'], 'dob', f"DOB '{row.get('dob') or 'blank'}' is missing or invalid.")
+                result['members_skipped'] += 1
+                continue
+
+            marriage_id = map_marriage_value(row.get('marital_status'))
+            if not marriage_id:
+                marriage_id = 2
+                add_issue(result, 'warning', family_key, row['excel_row'], 'marital_status', "Marital status missing or invalid. Imported as 'Unmarried'.")
+
+            member_phone = first_non_empty(digits_only(row.get('cellphone')), digits_only(row.get('phone')), family_phone)
+            if not member_phone:
+                member_phone = family_phone
+                add_issue(result, 'warning', family_key, row['excel_row'], 'phone', 'Member phone missing. Used family phone.')
+
+            blood_text = first_non_empty(row.get('blood_group'), defaults.get('blood_group'))
+            blood = resolve_lookup(reference_maps['blood'], blood_text) or reference_maps['unknown_blood']
+            if not blood_text:
+                add_issue(result, 'warning', family_key, row['excel_row'], 'blood_group', "Blood group missing. Imported as 'Unknown'.")
+            elif blood == reference_maps['unknown_blood']:
+                add_issue(result, 'warning', family_key, row['excel_row'], 'blood_group', f"Blood group '{blood_text}' not mapped. Imported as 'Unknown'.")
+
+            education, education_warning = normalize_education_value(row.get('education'))
+            if education_warning:
+                add_issue(result, 'warning', family_key, row['excel_row'], 'education', f"Education '{row.get('education') or 'blank'}' is outside the current dropdown list.")
+
+            occupation, occupation_warning = normalize_occupation_value(row.get('occupation'))
+            if occupation_warning:
+                add_issue(result, 'warning', family_key, row['excel_row'], 'occupation', f"Occupation '{row.get('occupation') or 'blank'}' was normalized to '{occupation}'.")
+
+            father_name = title_case_name(row.get('father_name')) or 'Unknown'
+            if father_name == 'Unknown':
+                add_issue(result, 'warning', family_key, row['excel_row'], 'father_name', "Father name missing. Imported as 'Unknown'.")
+
+            valid_members.append({
+                'name': member_name,
+                'father': father_name,
+                'gender': gender,
+                'relation': relation_id,
+                'peear': row.get('father_native') or None,
+                'marriage': marriage_id,
+                'dob': dob,
+                'photo': None,
+                'edu': education,
+                'occu': occupation,
+                'phone': member_phone,
+                'email': row.get('email') or None,
+                'blood': blood.id,
+            })
+
+        if not valid_members or result['error_count'] > family_errors_before and not valid_members:
+            add_issue(result, 'error', family_key, head_row['excel_row'], 'members', 'No valid members remained after validation.')
+            result['families_skipped'] += 1
+            continue
+
+        signature = (family_name, str(family_phone), village.id)
+        if signature in existing_signatures:
+            add_issue(result, 'warning', family_key, head_row['excel_row'], 'duplicate', 'Matching family already exists. This family was skipped.')
+            result['families_skipped'] += 1
+            result['members_skipped'] += len(valid_members)
+            continue
+
+        if mode == 'import':
+            family = Family(
+                name=family_name,
+                email=family_email or 'imported@example.com',
+                ghatak=default_ghatak,
+                pradeshik=default_pradeshik,
+                date=datetime.now(),
+                kuldevi=[kuldevi] if kuldevi else [],
+                k_village=village.id,
+                village=village.id,
+                gotra=gotra.id,
+                res_add=family_address,
+                res_phone=int(family_phone[:10]) if family_phone else 0,
+                off_add='',
+                off_phone=None,
+                income='',
+                mem_num=len(valid_members),
+            )
+            db.session.add(family)
+            db.session.flush()
+
+            for member_data in valid_members:
+                db.session.add(Member(family_id=family.id, **member_data))
+
+            existing_signatures.add(signature)
+
+        result['families_created'] += 1
+        result['members_created'] += len(valid_members)
+
+    if mode == 'import':
+        db.session.commit()
+    else:
+        db.session.rollback()
+
+    result['issues'] = result['issues'][:200]
+    return result
 
 
 def cluster_last_names(names, threshold):
