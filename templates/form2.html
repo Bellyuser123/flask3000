@@ -136,13 +136,27 @@
           <!-- Education -->
           <div>
             <label class="block font-medium mb-1">Education <span class="text-red-500">*</span></label>
-            <input type="text" name="edu[]" required class="w-full border p-2 rounded-md" />
+            <select name="edu[]" required class="w-full border p-2 rounded-md">
+              <option value="" disabled selected>Select education</option>
+              {% for group, options in education_options %}
+              <optgroup label="{{ group }}">
+                {% for option in options %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+              </optgroup>
+              {% endfor %}
+            </select>
           </div>
 
           <!-- Occupation -->
           <div>
             <label class="block font-medium mb-1">Occupation <span class="text-red-500">*</span></label>
-            <input type="text" name="occu[]" required class="w-full border p-2 rounded-md" />
+            <select name="occu[]" required class="w-full border p-2 rounded-md">
+              <option value="" disabled selected>Select occupation</option>
+              {% for option in occupation_options %}
+              <option value="{{ option }}">{{ option }}</option>
+              {% endfor %}
+            </select>
           </div>
 
           <!-- Mobile No. -->

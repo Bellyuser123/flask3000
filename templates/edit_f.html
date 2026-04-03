@@ -138,59 +138,33 @@
                         required
                         class="w-full border border-gray-300 p-2 rounded-md"
                 >
-                    <option value="" disabled selected>Select village</option>
-                    <option value="1" {% if fam.kuldevi ==
-                    1 %}selected{% endif %}>Bahuchari-Bramhani Maa</option>
-                    <option value="2" {% if fam.kuldevi ==
-                    2 %}selected{% endif %}>Bramhani-Chamunda Maa</option>
-                    <option value="3" {% if fam.kuldevi ==
-                    3 %}selected{% endif %}>Bramhani-Chawal Maa</option>
-                    <option value="4" {% if fam.kuldevi ==
-                    4 %}selected{% endif %}>Bramhani-Sikotar Maa</option>
-                    <option value="5" {% if fam.kuldevi ==
-                    5 %}selected{% endif %}>Bramhani Maa</option>
-                    <option value="6" {% if fam.kuldevi ==
-                    6 %}selected{% endif %}>Bramhani-Sihwahini Maa</option>
-                    <option value="7" {% if fam.kuldevi ==
-                    7 %}selected{% endif %}>But-Bhavani Maa</option>
-                    <option value="8" {% if fam.kuldevi ==
-                    8 %}selected{% endif %}>Chamunda Maa</option>
-                    <option value="9" {% if fam.kuldevi ==
-                    9 %}selected{% endif %}>Chamunda-Chawal Maa</option>
-                    <option value="10" {% if fam.kuldevi ==
-                    10 %}selected{% endif %}>Chawal Maa</option>
-                    <option value="11" {% if fam.kuldevi ==
-                    11 %}selected{% endif %}>Chawal-But Maa</option>
-                    <option value="12" {% if fam.kuldevi ==
-                    12 %}selected{% endif %}>Chawal-Bramhani Maa</option>
-                    <option value="13" {% if fam.kuldevi ==
-                    13 %}selected{% endif %}>Kalika Maa</option>
-                    <option value="14" {% if fam.kuldevi ==
-                    14 %}selected{% endif %}>Khodiar Maa</option>
-                    <option value="15" {% if fam.kuldevi ==
-                    15 %}selected{% endif %}>Momai-Chamunda Maa</option>
-                    <option value="16" {% if fam.kuldevi ==
-                    16 %}selected{% endif %}>Momai Maa</option>
-                    <option value="17" {% if fam.kuldevi ==
-                    17 %}selected{% endif %}>Peethal Maa</option>
-                    <option value="18" {% if fam.kuldevi ==
-                    18 %}selected{% endif %}>Sikotar-Bramhani Maa</option>
-                    <option value="19" {% if fam.kuldevi ==
-                    19 %}selected{% endif %}>Sikotar Maa</option>
-                    <option value="20" {% if fam.kuldevi ==
-                    20 %}selected{% endif %}>Truthiani Maa</option>
-                    <option value="21" {% if fam.kuldevi ==
-                    21 %}selected{% endif %}>Truthiyani Maa</option>
-                    <option value="22" {% if fam.kuldevi ==
-                    22 %}selected{% endif %}>Truthiyan-Chamunda-Harsiddhi Maa</option>
-                    <option value="23" {% if fam.kuldevi ==
-                    23 %}selected{% endif %}>Truthiyan-Chamunda Maa</option>
-                    <option value="24" {% if fam.kuldevi ==
-                    24 %}selected{% endif %}>Truthiyan-Harsiddhi Maa</option>
-                    <option value="25" {% if fam.kuldevi ==
-                    25 %}selected{% endif %}>Vachra Dada</option>
-                    <option value="26" {% if fam.kuldevi ==
-                    26 %}selected{% endif %}>Vishal Maa</option>
+                    <option value="" disabled>Select village</option>
+                    <option value="1" {% if fam.kuldevi and fam.kuldevi[0].id == 1 %}selected{% endif %}>Bahuchari-Bramhani Maa</option>
+                    <option value="2" {% if fam.kuldevi and fam.kuldevi[0].id == 2 %}selected{% endif %}>Bramhani-Chamunda Maa</option>
+                    <option value="3" {% if fam.kuldevi and fam.kuldevi[0].id == 3 %}selected{% endif %}>Bramhani-Chawal Maa</option>
+                    <option value="4" {% if fam.kuldevi and fam.kuldevi[0].id == 4 %}selected{% endif %}>Bramhani-Sikotar Maa</option>
+                    <option value="5" {% if fam.kuldevi and fam.kuldevi[0].id == 5 %}selected{% endif %}>Bramhani Maa</option>
+                    <option value="6" {% if fam.kuldevi and fam.kuldevi[0].id == 6 %}selected{% endif %}>Bramhani-Sihwahini Maa</option>
+                    <option value="7" {% if fam.kuldevi and fam.kuldevi[0].id == 7 %}selected{% endif %}>But-Bhavani Maa</option>
+                    <option value="8" {% if fam.kuldevi and fam.kuldevi[0].id == 8 %}selected{% endif %}>Chamunda Maa</option>
+                    <option value="9" {% if fam.kuldevi and fam.kuldevi[0].id == 9 %}selected{% endif %}>Chamunda-Chawal Maa</option>
+                    <option value="10" {% if fam.kuldevi and fam.kuldevi[0].id == 10 %}selected{% endif %}>Chawal Maa</option>
+                    <option value="11" {% if fam.kuldevi and fam.kuldevi[0].id == 11 %}selected{% endif %}>Chawal-But Maa</option>
+                    <option value="12" {% if fam.kuldevi and fam.kuldevi[0].id == 12 %}selected{% endif %}>Chawal-Bramhani Maa</option>
+                    <option value="13" {% if fam.kuldevi and fam.kuldevi[0].id == 13 %}selected{% endif %}>Kalika Maa</option>
+                    <option value="14" {% if fam.kuldevi and fam.kuldevi[0].id == 14 %}selected{% endif %}>Khodiar Maa</option>
+                    <option value="15" {% if fam.kuldevi and fam.kuldevi[0].id == 15 %}selected{% endif %}>Momai-Chamunda Maa</option>
+                    <option value="16" {% if fam.kuldevi and fam.kuldevi[0].id == 16 %}selected{% endif %}>Momai Maa</option>
+                    <option value="17" {% if fam.kuldevi and fam.kuldevi[0].id == 17 %}selected{% endif %}>Peethal Maa</option>
+                    <option value="18" {% if fam.kuldevi and fam.kuldevi[0].id == 18 %}selected{% endif %}>Sikotar-Bramhani Maa</option>
+                    <option value="19" {% if fam.kuldevi and fam.kuldevi[0].id == 19 %}selected{% endif %}>Sikotar Maa</option>
+                    <option value="20" {% if fam.kuldevi and fam.kuldevi[0].id == 20 %}selected{% endif %}>Truthiani Maa</option>
+                    <option value="21" {% if fam.kuldevi and fam.kuldevi[0].id == 21 %}selected{% endif %}>Truthiyani Maa</option>
+                    <option value="22" {% if fam.kuldevi and fam.kuldevi[0].id == 22 %}selected{% endif %}>Truthiyan-Chamunda-Harsiddhi Maa</option>
+                    <option value="23" {% if fam.kuldevi and fam.kuldevi[0].id == 23 %}selected{% endif %}>Truthiyan-Chamunda Maa</option>
+                    <option value="24" {% if fam.kuldevi and fam.kuldevi[0].id == 24 %}selected{% endif %}>Truthiyan-Harsiddhi Maa</option>
+                    <option value="25" {% if fam.kuldevi and fam.kuldevi[0].id == 25 %}selected{% endif %}>Vachra Dada</option>
+                    <option value="26" {% if fam.kuldevi and fam.kuldevi[0].id == 26 %}selected{% endif %}>Vishal Maa</option>
                 </select>
             </div>
 
@@ -490,6 +464,16 @@
                 />
             </div>
         </section>
+
+        <select id="income" name="income" required class="w-full border border-gray-300 p-2 rounded-md">
+    <option value="0-1,00,000" {% if fam.income == "0-1,00,000" %}selected{% endif %}>0 - 1,00,000</option>
+    <option value="1,00,001-3,00,000" {% if fam.income == "1,00,001-3,00,000" %}selected{% endif %}>1,00,001 - 3,00,000</option>
+    <option value="3,00,001-5,00,000" {% if fam.income == "3,00,001-5,00,000" %}selected{% endif %}>3,00,001 - 5,00,000</option>
+    <option value="5,00,001-8,00,000" {% if fam.income == "5,00,001-8,00,000" %}selected{% endif %}>5,00,001 - 8,00,000</option>
+    <option value="8,00,001-10,00,000" {% if fam.income == "8,00,001-10,00,000" %}selected{% endif %}>8,00,001 - 10,00,000</option>
+    <option value="10,00,001-15,00,000" {% if fam.income == "10,00,001-15,00,000" %}selected{% endif %}>10,00,001 - 15,00,000</option>
+    <option value="Above 15,00,000" {% if fam.income == "Above 15,00,000" %}selected{% endif %}>Above 15,00,000</option>
+</select>
 
         <!-- Section 5: Family Members -->
         <section>
