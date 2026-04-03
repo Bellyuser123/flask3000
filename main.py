@@ -8,8 +8,15 @@ import json
 from rapidfuzz import fuzz
 from datetime import datetime, timedelta
 import os
+import sqlite3
+import re
+import subprocess
+import tempfile
 from dotenv import load_dotenv
 import io
+
+
+load_dotenv()
 
 local_server = True
 
@@ -20,14 +27,192 @@ admin_user = os.getenv('admin_user')
 admin_password = os.getenv('admin_password')
 
 base_dir = os.path.abspath(os.path.dirname(__file__))
+database_uri_prefix = os.getenv('local_uri', 'sqlite:///')
+database_path = os.path.join(base_dir, 'data', 'database.db')
+runtime_database_path = os.path.join(base_dir, 'data', 'database_runtime.db')
+
+
+def resolve_local_database_uri():
+    os.makedirs(os.path.dirname(database_path), exist_ok=True)
+    if not os.path.exists(database_path):
+        return database_uri_prefix + database_path
+
+    try:
+        with sqlite3.connect(database_path) as conn:
+            conn.execute('PRAGMA schema_version;').fetchone()
+        return database_uri_prefix + database_path
+    except sqlite3.DatabaseError:
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        backup_path = os.path.join(os.path.dirname(database_path), f'database_invalid_{timestamp}.db')
+        try:
+            os.replace(database_path, backup_path)
+            print(f"Invalid SQLite database detected. Backed up to {backup_path}")
+            return database_uri_prefix + database_path
+        except PermissionError:
+            print(
+                "Invalid SQLite database detected but the file is locked. "
+                f"Using a fresh database at {runtime_database_path}"
+            )
+            return database_uri_prefix + runtime_database_path
+
+
 if local_server:
-    uri = os.getenv('local_uri', 'sqlite:///')
-    app.config['SQLALCHEMY_DATABASE_URI'] = uri + os.path.join(base_dir, 'data', 'database.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = resolve_local_database_uri()
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('prod_uri')
 # app.config['SQLALCHEMY_ECHO'] = True
 
 db = SQLAlchemy(app)
+
+EDUCATION_OPTIONS = [
+    ("uneducated", ["uneducated"]),
+    ("schooling", [
+        "nurecery/ KGI/ KGII",
+        "class 1",
+        "class 2",
+        "class 3",
+        "class 4",
+        "class 5",
+        "class 6",
+        "class 7",
+        "class 8",
+        "class 9",
+        "class 10",
+    ]),
+    ("senior secondary", [
+        "class 11",
+        "class 12",
+    ]),
+    ("diploma", ["diploma"]),
+    ("Graduation 3 Years", [
+        "bachlor of Laws - L.L.B",
+        "bachlor of Commerce - B.Com",
+        "bachlor of Computer Applications - B.C.A.",
+        "bachlor of Business Administration - B.B.A",
+        "bachlor of Library Science - B.Lib. / B.Lib.Sc.",
+        "bachlor of Mass Communication - B.M.C./B.M.M.",
+        "bachlor of Education - B.Ed.",
+        "bachlor of Fine Arts - B.FA. / B.VA.",
+        "bachlor of Fisherise Science - B.F.Sc.",
+        "bachlor of Physical Education - B.P.Ed.",
+        "bachlor of Science - B.Sc.",
+        "bachlor of Social work - BSW / B.A. (SW)",
+        "bachlor of Arts - B.A.",
+        "graduation",
+    ]),
+    ("Graduation 4 Years", [
+        "bachlor of Architechture - B.Arch.",
+        "bachlor of Engineering/bachlor of Technology- B.E./B.Tech",
+        "bachlor of Design - B.Des. / B.D.",
+        "bachlor of Nursing",
+        "bachlor of Pharmacy - B.Pharm. / B.Pharma.",
+        "bachlor of Physiotherapy - B.P.T",
+    ]),
+    ("Graduation 5 Years", [
+        "bachlor of Dential Surgery - B.D.S.",
+        "bachlor of Medicine and bachlor of Surgery - M.B.B.S",
+        "bachlor of Veterinary Science and Animal Husbandry- B.V.Sc. & A.H. / B.V.Sc.",
+        "bachlor of Ayurvedic Medicine and Surgery- B.A.M.S.",
+        "bachlor of Homoeopathic Medicine and Surgery- B.H.M.S.",
+        "bachlor of Education - B.Ed.",
+    ]),
+    ("Post Graduation", [
+        "Master of Architechture - M.Arch.",
+        "Master of Arts - M.A.",
+        "Master of Business Administration - M.B.A.",
+        "Master of Chirurgiae - M.Ch.",
+        "Master of Commerce - M.Com.",
+        "Master of Computer Application - M.C.A.",
+        "Master of Dential Surgery - M.D.S",
+        "Master of Design- M.Des. / M.D",
+        "Master of Education- M.Ed.",
+        "Master of Engineering/Master of Technology - M.E. / M.Tech.",
+        "Master of Fine Arts - M.FA / MVA",
+        "Master of Laws - L.L.M.",
+        "Master of Library Science - M.Lib. / M.Lib.Sc.",
+        "Master of Mass Communication - M.M.C. / M.M.M.",
+        "Master of Pharmacy - M.Pharm. / M.Pharma.",
+        "Master of Philosophy - M.Phil.",
+        "Master of Physiotherapy - M.P.T.",
+        "Master of Science - M.Sc.",
+        "Master of Social Work - M.S.W.",
+        "Master of Surgery - M.S.",
+        "Master of Veterinary Science - M.V.Sc.",
+        "Masters",
+    ]),
+    ("Doctorate", [
+        "Doctor of Medicine - M.D",
+        "Doctor of Medicine in Homoeopathy - M.D",
+        "Doctor of Philosophy - Pharma.D",
+        "Doctor of Pharmacy - Ph.D",
+        "Doctorate of Medicine - D.M",
+    ]),
+    ("Professinal", ["CA"]),
+    ("Not in the List", ["NA"]),
+]
+EDUCATION_VALUES = [option for _, options in EDUCATION_OPTIONS for option in options]
+OCCUPATION_OPTIONS = [
+    "Agriculture",
+    "business",
+    "Consultancy",
+    "Contractor",
+    "Doctor",
+    "House Maker",
+    "House Wife",
+    "House Work",
+    "Industrlist",
+    "Manufacturer",
+    "NGO",
+    "Not given",
+    "Politics",
+    "Professional",
+    "Rental Income",
+    "Retired",
+    "Self Employeed",
+    "Service",
+    "Service - Abroad",
+    "Service - Central Govt",
+    "Service - Govt",
+    "Service - MNC",
+    "Service - PSU",
+    "Service - Private",
+    "Service - State Govt",
+    "Service Provider",
+    "Small Scale Industries",
+    "Social Service",
+    "Startup Owner",
+    "Student",
+    "Unemployeed",
+]
+MAIN_SHEET_COLUMNS = [
+    "serial_no",
+    "family_number",
+    "salutation",
+    "last_name",
+    "first_name",
+    "middle_name",
+    "relation",
+    "dob",
+    "education",
+    "occupation",
+    "gender",
+    "marital_status",
+    "father_name",
+    "father_native",
+    "father_current_city",
+    "email",
+    "address",
+    "building",
+    "road",
+    "locality",
+    "pincode",
+    "phone",
+    "cellphone",
+    "blood_group",
+    "native",
+    "gotra",
+    "kuldevi",
+]
 
 
 class Kuldevi(db.Model):
@@ -100,7 +285,7 @@ class Member(db.Model):
     marriage = db.Column(db.SmallInteger, db.ForeignKey('marriage.id'), nullable=False)
     dob = db.Column(db.String(50), nullable=False)
     photo = db.Column(db.String(50), nullable=True)
-    edu = db.Column(db.String(50), nullable=False)
+    edu = db.Column(db.String(150), nullable=False)
     occu = db.Column(db.String(50), nullable=False)
     phone = db.Column(db.String(50), nullable=False)
     email = db.Column(db.String(50), nullable=True)
@@ -439,8 +624,12 @@ def form2(mem):
         except Exception as e:
             print("Error:", e)
             flash("Error submitting form.")
-            return render_template('form2.html', mem=mem)
-    return render_template('form2.html', mem=mem, family_id=family_id)
+            return render_template('form2.html', mem=mem, family_id=family_id,
+                                   education_options=EDUCATION_OPTIONS,
+                                   occupation_options=OCCUPATION_OPTIONS)
+    return render_template('form2.html', mem=mem, family_id=family_id,
+                           education_options=EDUCATION_OPTIONS,
+                           occupation_options=OCCUPATION_OPTIONS)
 
 
 def safe_get(lst, i, default="N/A"):
@@ -576,6 +765,7 @@ def editing_sec(id, type):
                     mem.marriage = marriage
                     mem.dob = dob
                     mem.photo = photo
+                    mem.edu = edu
                     mem.occu = occu
                     mem.phone = phone
                     mem.email = email
@@ -584,7 +774,10 @@ def editing_sec(id, type):
 
                     db.session.commit()
                     return redirect('/summary/' + str(family_id))
-        return render_template('edit_m.html', id=id, mem=mem, type=type)
+        return render_template('edit_m.html', id=id, mem=mem, type=type,
+                               education_options=EDUCATION_OPTIONS,
+                               education_values=EDUCATION_VALUES,
+                               occupation_options=OCCUPATION_OPTIONS)
 
 
 @app.route("/delete/<string:id>/<int:family_id>")
@@ -822,8 +1015,14 @@ def lookup_tables():
         db.session.commit()
 
 
-if __name__ == '__main__':
+def initialize_database():
     with app.app_context():
         db.create_all()
         lookup_tables()
+
+
+initialize_database()
+
+
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=3000, debug=True)
